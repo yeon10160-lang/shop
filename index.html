@@ -222,6 +222,75 @@
       background-color: #EAF7E4;
     }
 
+    /* ===== 쇼핑몰 소개 ===== */
+    .about {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: #FFFFFF;
+    }
+    .about h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .about-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      margin: 0 auto 35px auto;
+      max-width: 620px;
+    }
+    /* 만드는 순서 3단계 */
+    .step-box {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .step {
+      background-color: #F4FBF0;
+      border: 2px solid #DFF3D8;
+      border-radius: 15px;
+      width: 200px;
+      padding: 25px 15px;
+    }
+    /* 단계 번호 동그라미 */
+    .step-num {
+      display: inline-block;
+      background-color: #7CC576;
+      color: white;
+      font-weight: bold;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 50%;
+      margin-bottom: 12px;
+    }
+    .step h3 {
+      font-size: 18px;
+      margin: 0 0 8px 0;
+    }
+    .step p {
+      font-size: 14px;
+      line-height: 1.7;
+      margin: 0;
+    }
+    /* 배송 안내 상자 */
+    .delivery-note {
+      display: inline-block;
+      background-color: #FFF6CC;
+      border: 2px dashed #FFD400;
+      border-radius: 15px;
+      padding: 20px 30px;
+      margin-top: 35px;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+    /* 3일 강조 */
+    .days {
+      color: #E5732A;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
     /* ===== 맨 아래: 연락처 ===== */
     footer {
       background-color: #35502F;
@@ -548,6 +617,43 @@
       </div>
 
     </div>
+  </section>
+
+  <!-- 쇼핑몰 소개 -->
+  <section class="about">
+    <h2>연니네 푸드는 이렇게 만듭니다</h2>
+    <p class="about-desc">
+      미리 만들어 두고 파는 샐러드가 아닙니다.<br>
+      주문을 받은 뒤에 그날 쓸 재료를 사고, 하나하나 손질해서, 정성껏 만들어 보내드립니다.<br>
+      그래서 조금 늦지만, 그만큼 신선합니다.
+    </p>
+
+    <div class="step-box">
+
+      <div class="step">
+        <span class="step-num">1</span>
+        <h3>재료 구입</h3>
+        <p>주문을 확인한 뒤<br>그날 필요한 채소를<br>새로 사 옵니다.</p>
+      </div>
+
+      <div class="step">
+        <span class="step-num">2</span>
+        <h3>손질</h3>
+        <p>씻고 다듬어<br>먹기 좋은 크기로<br>준비합니다.</p>
+      </div>
+
+      <div class="step">
+        <span class="step-num">3</span>
+        <h3>만들기</h3>
+        <p>주문하신 메뉴대로<br>담아서 포장해<br>보내드립니다.</p>
+      </div>
+
+    </div>
+
+    <p class="delivery-note">
+      주문 후 받아보시기까지 <span class="days">3일</span>이 걸립니다.<br>
+      재료를 사고 손질해서 만드는 과정을 모두 거치기 때문입니다.
+    </p>
   </section>
 
   <!-- 맨 아래: 연락처 안내 -->
