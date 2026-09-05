@@ -114,37 +114,15 @@
       background-color: #F4FBF0;
     }
 
-    /* ===== 카테고리: 왼쪽 세로 목록 ===== */
-    /* 왼쪽 카테고리 + 오른쪽 상품을 나란히 놓기 */
-    .main-area {
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
-      flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 30px 20px;
-    }
-    /* 왼쪽 카테고리 칸 */
+    /* ===== 카테고리 버튼 ===== */
     .category-box {
-      width: 150px;
-      flex-shrink: 0;
+      text-align: center;
+      padding: 30px 20px 0 20px;
     }
-    .category-title {
-      font-size: 15px;
-      font-weight: bold;
-      margin: 0 0 12px 6px;
-    }
-    /* 검정색 카테고리 버튼 (한 줄에 하나씩) */
+    /* 검정색 카테고리 버튼 */
     .category-btn {
-      display: block;
-      width: 100%;
       background-color: #222222;
-      margin-bottom: 8px;
-      padding: 12px 10px;
-      font-size: 15px;
-      border-radius: 10px;
-      text-align: left;
+      margin: 5px;
     }
     /* 지금 고른 카테고리 버튼 */
     .category-btn.active {
@@ -152,16 +130,6 @@
     }
     .category-btn:hover {
       background-color: #000000;
-    }
-    /* 오른쪽 상품 칸 */
-    .product-area {
-      flex-grow: 1;
-      min-width: 0;
-    }
-    /* 오른쪽 칸 안에서는 구역 여백을 줄임 */
-    .product-area .products {
-      padding: 30px 15px;
-      border-radius: 15px;
     }
 
     /* ===== 상품 구역 (샐러드 / 샐러드볼 / 드레싱 공통) ===== */
@@ -301,12 +269,12 @@
     #dressing .card,
     #burger .card,
     #sandwich .card {
-      width: 170px;
+      width: 190px;
     }
     #dressing .card img,
     #burger .card img,
     #sandwich .card img {
-      height: 125px;
+      height: 140px;
     }
     #dressing .card h3,
     #burger .card h3,
@@ -459,12 +427,8 @@
     <input type="text" id="searchInput" placeholder="상품 이름 검색" oninput="searchProduct()">
   </div>
 
-  <!-- 왼쪽 카테고리 + 오른쪽 상품 -->
-  <div class="main-area">
-
-  <!-- 왼쪽 카테고리 목록 (누르면 그 상품만 보임) -->
+  <!-- 카테고리 버튼 (누르면 그 상품만 보임) -->
   <div class="category-box">
-    <p class="category-title">카테고리</p>
     <button class="category-btn active" onclick="showCategory('all', this)">전체</button>
     <button class="category-btn" onclick="showCategory('salad', this)">샐러드</button>
     <button class="category-btn" onclick="showCategory('bowl', this)">샐러드볼</button>
@@ -472,8 +436,6 @@
     <button class="category-btn" onclick="showCategory('sandwich', this)">샌드위치</button>
     <button class="category-btn" onclick="showCategory('dressing', this)">드레싱</button>
   </div>
-
-  <div class="product-area">
 
   <!-- 검색 결과가 없을 때 -->
   <p class="no-result" id="noResult">찾으시는 상품이 없어요. 다른 이름으로 검색해 보세요.</p>
@@ -730,9 +692,6 @@
 
     </div>
   </section>
-
-  </div><!-- product-area 끝 -->
-  </div><!-- main-area 끝 -->
 
   <!-- 쇼핑몰 소개 -->
   <section class="about">
