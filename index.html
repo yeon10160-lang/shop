@@ -71,6 +71,18 @@
       font-size: 18px;
       margin: 0 0 25px 0;
     }
+    /* 이달의 메뉴 라벨 */
+    .banner-label {
+      display: inline-block;
+      background-color: #4B8A45;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin: 0 0 12px 0;
+    }
+
     /* 배너 사진 */
     .banner img {
       width: 100%;
@@ -450,10 +462,11 @@
 
   <!-- 큰 배너 -->
   <section class="banner">
-    <img src="https://images.pexels.com/photos/33323285/pexels-photo-33323285.jpeg?auto=compress&w=1200" alt="신선한 샐러드 한 그릇">
-    <h2>첫 주문 30% 할인!</h2>
-    <p>매일 새벽 배송되는 신선한 샐러드를 만나보세요</p>
-    <button onclick="showAlert('지금 바로 할인 상품을 확인해 보세요!')">할인 상품 보러가기</button>
+    <img src="https://images.pexels.com/photos/19859324/pexels-photo-19859324.jpeg?auto=compress&w=1200" alt="리코타 새우 샐러드">
+    <p class="banner-label">이달의 메뉴</p>
+    <h2>리코타 새우 샐러드</h2>
+    <p>부드러운 리코타 치즈와 탱글한 새우를 듬뿍 올렸어요<br>첫 주문은 30% 할인!</p>
+    <button onclick="showAlert('리코타 새우 샐러드를 장바구니에 담았어요!')">이 메뉴 담기</button>
   </section>
 
   <!-- 이벤트 안내 -->
