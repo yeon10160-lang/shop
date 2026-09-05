@@ -89,6 +89,31 @@
       background-color: #5FA95A;
     }
 
+    /* ===== 검색창 (상품 목록 오른쪽 위) ===== */
+    .search-box {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 25px 20px 0 20px;
+      text-align: right;
+    }
+    #searchInput {
+      width: 220px;
+      padding: 10px 16px;
+      font-size: 15px;
+      color: #35502F;
+      border: 2px solid #C9EBBF;
+      border-radius: 20px;
+    }
+    /* 검색 결과가 없을 때 보여줄 글 */
+    .no-result {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 16px;
+      color: #4B8A45;
+      background-color: #F4FBF0;
+    }
+
     /* ===== 카테고리 버튼 ===== */
     .category-box {
       text-align: center;
@@ -397,6 +422,11 @@
     <button onclick="showAlert('지금 바로 할인 상품을 확인해 보세요!')">할인 상품 보러가기</button>
   </section>
 
+  <!-- 검색창 (상품 목록 오른쪽 위) -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="상품 이름 검색" oninput="searchProduct()">
+  </div>
+
   <!-- 카테고리 버튼 (누르면 그 상품만 보임) -->
   <div class="category-box">
     <button class="category-btn active" onclick="showCategory('all', this)">전체</button>
@@ -406,6 +436,9 @@
     <button class="category-btn" onclick="showCategory('sandwich', this)">샌드위치</button>
     <button class="category-btn" onclick="showCategory('dressing', this)">드레싱</button>
   </div>
+
+  <!-- 검색 결과가 없을 때 -->
+  <p class="no-result" id="noResult">찾으시는 상품이 없어요. 다른 이름으로 검색해 보세요.</p>
 
   <!-- 샐러드 상품 3개 -->
   <section class="products" id="salad">
@@ -734,7 +767,66 @@
       showCategory("all", buttons[0]);
     }
 
+    // 검색창에 글자를 칠 때마다 실행됨
+    // 상품 이름에 그 글자가 들어간 상품만 보여줌
+    function searchProduct() {
+      var word = document.getElementById("searchInput").value.trim();
+      var sections = document.querySelectorAll(".products");
+      var totalFound = 0;
+
+      for (var i = 0; i < sections.length; i++) {
+        var cardList = sections[i].querySelectorAll(".card");
+        var found = 0;
+
+        for (var j = 0; j < cardList.length; j++) {
+          var name = cardList[j].querySelector("h3").innerText;
+
+          if (name.indexOf(word) > -1) {
+            cardList[j].style.display = "block";
+            found = found + 1;
+          } else {
+            cardList[j].style.display = "none";
+          }
+        }
+
+        totalFound = totalFound + found;
+
+        // 찾은 상품이 하나도 없는 구역은 통째로 숨기기
+        if (found === 0) {
+          sections[i].style.display = "none";
+        } else {
+          sections[i].style.display = "block";
+        }
+      }
+
+      // 검색 결과가 하나도 없으면 안내문 보여주기
+      if (totalFound === 0) {
+        document.getElementById("noResult").innerText =
+          "'" + word + "' 에 해당하는 상품이 없어요. 다른 이름으로 검색해 보세요.";
+        document.getElementById("noResult").style.display = "block";
+      } else {
+        document.getElementById("noResult").style.display = "none";
+      }
+
+      // 검색창을 비우면 카테고리 버튼을 '전체'로 되돌리기
+      if (word === "") {
+        var buttons = document.querySelectorAll(".category-btn");
+        for (var k = 0; k < buttons.length; k++) {
+          buttons[k].classList.remove("active");
+        }
+        buttons[0].classList.add("active");
+      }
+    }
+
     function showCategory(id, clickedButton) {
+      // 검색 상태 지우기 (숨겨둔 상품 카드 다시 보이게)
+      document.getElementById("searchInput").value = "";
+      document.getElementById("noResult").style.display = "none";
+      var allCards = document.querySelectorAll(".card");
+      for (var c = 0; c < allCards.length; c++) {
+        allCards[c].style.display = "block";
+      }
+
       // 모든 상품 구역을 확인해서 보일지 숨길지 정하기
       var sections = document.querySelectorAll(".products");
       for (var i = 0; i < sections.length; i++) {
