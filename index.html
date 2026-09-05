@@ -199,18 +199,21 @@
       margin-right: 6px;
     }
 
-    /* ===== 드레싱 · 샐러드버거 구역: 카드 5개를 한 줄로 ===== */
+    /* ===== 드레싱 · 샐러드버거 · 샌드위치 구역: 카드 5개를 한 줄로 ===== */
     /* 카드를 조금 작게 만들어 한 줄에 다 들어가게 함 */
     #dressing .card,
-    #burger .card {
+    #burger .card,
+    #sandwich .card {
       width: 190px;
     }
     #dressing .card img,
-    #burger .card img {
+    #burger .card img,
+    #sandwich .card img {
       height: 140px;
     }
     #dressing .card h3,
-    #burger .card h3 {
+    #burger .card h3,
+    #sandwich .card h3 {
       font-size: 16px;
     }
 
@@ -272,6 +275,7 @@
     <a href="#bowl" onclick="showAll()">샐러드볼</a>
     <a href="#dressing" onclick="showAll()">드레싱</a>
     <a href="#burger" onclick="showAll()">샐러드버거</a>
+    <a href="#sandwich" onclick="showAll()">샌드위치</a>
     <a href="#contact">고객센터</a>
   </nav>
 
@@ -290,6 +294,7 @@
     <button class="category-btn" onclick="showCategory('bowl', this)">샐러드볼</button>
     <button class="category-btn" onclick="showCategory('dressing', this)">드레싱</button>
     <button class="category-btn" onclick="showCategory('burger', this)">샐러드버거</button>
+    <button class="category-btn" onclick="showCategory('sandwich', this)">샌드위치</button>
   </div>
 
   <!-- 샐러드 상품 3개 -->
@@ -488,6 +493,55 @@
         <p class="old-price">12,000원</p>
         <p class="new-price">8,400원</p>
         <button onclick="showAlert('팔라펠 통밀 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 샐러드 샌드위치 상품 5개 -->
+  <section class="products" id="sandwich">
+    <h2>샐러드 샌드위치</h2>
+    <p class="section-desc">채소를 가득 넣어 든든한 한 끼 샌드위치</p>
+    <div class="card-box">
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/9012028/pexels-photo-9012028.jpeg?auto=compress&w=500" alt="아보카도 새싹 샌드위치">
+        <h3>아보카도 새싹 샌드위치</h3>
+        <p class="old-price">9,500원</p>
+        <p class="new-price">6,650원</p>
+        <button onclick="showAlert('아보카도 새싹 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/6169449/pexels-photo-6169449.jpeg?auto=compress&w=500" alt="그릴 치킨 사워도우 샌드위치">
+        <h3>그릴 치킨 사워도우</h3>
+        <p class="old-price">12,000원</p>
+        <p class="new-price">8,400원</p>
+        <button onclick="showAlert('그릴 치킨 사워도우 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/30910204/pexels-photo-30910204.jpeg?auto=compress&w=500" alt="통곡물 채소 샌드위치">
+        <h3>통곡물 채소 샌드위치</h3>
+        <p class="old-price">9,000원</p>
+        <p class="new-price">6,300원</p>
+        <button onclick="showAlert('통곡물 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/6327138/pexels-photo-6327138.jpeg?auto=compress&w=500" alt="아보카도 오픈 샌드위치">
+        <h3>아보카도 오픈 샌드위치</h3>
+        <p class="old-price">10,000원</p>
+        <p class="new-price">7,000원</p>
+        <button onclick="showAlert('아보카도 오픈 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/28396784/pexels-photo-28396784.jpeg?auto=compress&w=500" alt="바게트 채소 샌드위치">
+        <h3>바게트 채소 샌드위치</h3>
+        <p class="old-price">11,000원</p>
+        <p class="new-price">7,700원</p>
+        <button onclick="showAlert('바게트 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
     </div>
