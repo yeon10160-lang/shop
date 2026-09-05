@@ -133,9 +133,49 @@
       border-radius: 15px;
       width: 240px;
       padding: 15px;
+      /* 오른쪽 아래 하트 버튼이 들어갈 자리 */
+      padding-bottom: 50px;
       /* 베스트 딱지의 기준이 되는 위치 */
       position: relative;
     }
+    /* 맨 위 찜한 개수 표시 */
+    .wish-count {
+      background-color: #2E7BE5;
+      color: white;
+      display: inline-block;
+      margin-top: 12px;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    /* 찜하기 하트 버튼 - 오른쪽 아래, 파랑 */
+    .heart-btn {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      background-color: transparent;
+      border: none;
+      color: #2E7BE5;
+      font-size: 26px;
+      padding: 0;
+      line-height: 1;
+      cursor: pointer;
+    }
+    /* 2단계: 파란 하트 */
+    .heart-btn.on {
+      color: #2E7BE5;
+    }
+    /* 3단계: 진한 파란 하트 */
+    .heart-btn.dark {
+      color: #0B3C87;
+    }
+    .heart-btn:hover {
+      background-color: transparent;
+      opacity: 0.7;
+    }
+
     /* 베스트 딱지 (BEST) - 오른쪽 위, 빨강 */
     .best-tag {
       position: absolute;
@@ -336,6 +376,7 @@
   <header>
     <h1>연니네 푸드</h1>
     <p>오늘 아침에 딴 채소로 만든 산뜻한 한 그릇</p>
+    <p class="wish-count">찜한 상품 <span id="wishNumber">0</span>개</p>
   </header>
 
   <!-- 메뉴 4개 (누르면 해당 구역으로 이동) -->
@@ -728,6 +769,41 @@
 
       // 가격 앞에 노란색 할인율 딱지 붙이기
       newBox.innerHTML = '<span class="sale">' + rate + '%</span>' + newBox.innerText;
+    }
+
+    // 상품 카드마다 오른쪽 아래에 하트(찜하기) 버튼 만들기
+    for (var k = 0; k < cards.length; k++) {
+      var heart = document.createElement("button");
+      heart.className = "heart-btn";
+      heart.innerHTML = "♡";
+      heart.onclick = toggleHeart;
+      cards[k].appendChild(heart);
+    }
+
+    // 하트를 누를 때마다 3단계로 바뀜
+    // 빈 하트 -> 파란 하트 -> 진한 파란 하트 -> 다시 빈 하트
+    function toggleHeart() {
+      if (this.classList.contains("dark")) {
+        // 3단계였으면 풀기
+        this.classList.remove("dark");
+        this.innerHTML = "♡";
+      } else if (this.classList.contains("on")) {
+        // 2단계였으면 진하게
+        this.classList.remove("on");
+        this.classList.add("dark");
+        this.innerHTML = "♥";
+      } else {
+        // 빈 하트였으면 채우기
+        this.classList.add("on");
+        this.innerHTML = "♥";
+      }
+      countWish();
+    }
+
+    // 찜한 개수를 세어서 맨 위에 보여주기 (파란 하트 + 진한 하트)
+    function countWish() {
+      var picked = document.querySelectorAll(".heart-btn.on, .heart-btn.dark");
+      document.getElementById("wishNumber").innerText = picked.length;
     }
   </script>
 
