@@ -410,6 +410,7 @@
     <a href="#bowl" onclick="showAll()">샐러드볼</a>
     <a href="#burger" onclick="showAll()">샐러드버거</a>
     <a href="#sandwich" onclick="showAll()">샌드위치</a>
+    <a href="#pizza" onclick="showAll()">샐러드피자</a>
     <a href="#dressing" onclick="showAll()">드레싱</a>
     <a href="#contact">고객센터</a>
   </nav>
@@ -434,6 +435,7 @@
     <button class="category-btn" onclick="showCategory('bowl', this)">샐러드볼</button>
     <button class="category-btn" onclick="showCategory('burger', this)">샐러드버거</button>
     <button class="category-btn" onclick="showCategory('sandwich', this)">샌드위치</button>
+    <button class="category-btn" onclick="showCategory('pizza', this)">샐러드피자</button>
     <button class="category-btn" onclick="showCategory('dressing', this)">드레싱</button>
   </div>
 
@@ -644,8 +646,42 @@
     </div>
   </section>
 
+  <!-- 샐러드 피자 상품 3개 -->
+  <section class="products" id="pizza">
+    <h2>샐러드 피자</h2>
+    <p class="section-desc">갓 구운 도우 위에 신선한 채소를 듬뿍</p>
+    <div class="card-box">
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/11654221/pexels-photo-11654221.jpeg?auto=compress&w=500" alt="루꼴라 토마토 피자">
+        <h3>루꼴라 토마토 피자</h3>
+        <p class="old-price">18,000원</p>
+        <p class="new-price">12,600원</p>
+        <button onclick="showAlert('루꼴라 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <span class="new-tag">NEW</span>
+        <img src="https://images.pexels.com/photos/37604434/pexels-photo-37604434.jpeg?auto=compress&w=500" alt="부라타 루꼴라 피자">
+        <h3>부라타 루꼴라 피자</h3>
+        <p class="old-price">21,000원</p>
+        <p class="new-price">14,700원</p>
+        <button onclick="showAlert('부라타 루꼴라 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+      <div class="card">
+        <img src="https://images.pexels.com/photos/6697470/pexels-photo-6697470.jpeg?auto=compress&w=500" alt="선드라이 토마토 피자">
+        <h3>선드라이 토마토 피자</h3>
+        <p class="old-price">19,000원</p>
+        <p class="new-price">13,300원</p>
+        <button onclick="showAlert('선드라이 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+      </div>
+
+    </div>
+  </section>
+
   <!-- 드레싱 상품 3개 -->
-  <section class="products" id="dressing">
+  <section class="products bowl-section" id="dressing">
     <h2>드레싱</h2>
     <p class="section-desc">집에서도 가게 맛 그대로, 직접 만든 수제 드레싱</p>
     <div class="card-box">
