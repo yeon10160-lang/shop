@@ -3,7 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YEONNI'S FOOD - 신선한 샐러드</title>
+  <title>연니네 채소가게 - 화곡동 골목시장</title>
+
+  <!-- 시장 간판 글씨체 (간판용 굵은 글씨 + 손글씨 가격표) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gaegu:wght@400;700&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
     /* ===== 공통 설정 ===== */
@@ -12,14 +17,24 @@
     }
     body {
       margin: 0;
-      font-family: "맑은 고딕", sans-serif;
-      background-color: #F4FBF0;
-      color: #35502F;
+      font-family: "Gowun Batang", "맑은 고딕", serif;
+      background-color: #FBF4E6;
+      color: #33302B;
+    }
+    /* 간판 글씨 (상호, 구역 제목) */
+    h1, h2, h3, .signboard {
+      font-family: "Black Han Sans", "맑은 고딕", sans-serif;
+      letter-spacing: 1px;
+      font-weight: 400;
+    }
+    /* 손글씨 (가격표, 딱지) */
+    .handwrite {
+      font-family: "Gaegu", "맑은 고딕", cursive;
     }
 
     /* ===== 맨 위: 쇼핑몰 이름 ===== */
     header {
-      background-color: #7CC576;
+      background-color: #B5342B;
       color: white;
       text-align: center;
       padding: 30px 20px;
@@ -36,31 +51,39 @@
 
     /* 영문 쇼핑몰 이름 */
     .eng-name {
-      font-size: 40px;
-      letter-spacing: 5px;
+      font-size: 42px;
+      letter-spacing: 2px;
       margin: 0;
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.18);
+    }
+    /* 간판 아래 시장 위치 한 줄 */
+    .market-line {
+      font-family: "Gaegu", "맑은 고딕", cursive;
+      font-size: 18px;
+      margin: 4px 0 0 0;
+      color: #FFE9C7;
     }
 
     /* ===== 메뉴 4개 ===== */
     nav {
-      background-color: #DFF3D8;
+      background-color: #F2E4CA;
       text-align: center;
       padding: 15px;
     }
     nav a {
-      color: #4B8A45;
+      color: #8C2A22;
       text-decoration: none;
       font-weight: bold;
       margin: 0 15px;
       font-size: 16px;
     }
     nav a:hover {
-      color: #7CC576;
+      color: #B5342B;
     }
 
     /* ===== 큰 배너 ===== */
     .banner {
-      background-color: #C9EBBF;
+      background-color: #E8D5B5;
       text-align: center;
       padding: 50px 20px;
     }
@@ -84,7 +107,7 @@
 
     /* ===== 버튼 ===== */
     button {
-      background-color: #7CC576;
+      background-color: #B5342B;
       color: white;
       border: none;
       border-radius: 25px;
@@ -94,12 +117,12 @@
       cursor: pointer;
     }
     button:hover {
-      background-color: #5FA95A;
+      background-color: #8C2A22;
     }
 
     /* ===== 이벤트 안내 (3개 주문 시 1개 서비스) ===== */
     .promo {
-      background-color: #4B8A45;
+      background-color: #8C2A22;
       color: white;
       text-align: center;
       padding: 22px 20px;
@@ -116,7 +139,7 @@
     /* 이벤트 문구 강조 */
     .promo .point {
       background-color: #FFD400;
-      color: #35502F;
+      color: #33302B;
       font-weight: bold;
       padding: 2px 10px;
       border-radius: 12px;
@@ -133,8 +156,8 @@
       width: 280px;
       padding: 10px 16px;
       font-size: 15px;
-      color: #35502F;
-      border: 2px solid #C9EBBF;
+      color: #33302B;
+      border: 2px solid #E8D5B5;
       border-radius: 20px;
     }
     /* 검색 결과가 없을 때 보여줄 글 */
@@ -143,8 +166,8 @@
       text-align: center;
       padding: 40px 20px;
       font-size: 16px;
-      color: #4B8A45;
-      background-color: #F4FBF0;
+      color: #8C2A22;
+      background-color: #FBF4E6;
     }
 
     /* ===== 카테고리 버튼 ===== */
@@ -159,7 +182,7 @@
     }
     /* 지금 고른 카테고리 버튼 */
     .category-btn.active {
-      background-color: #7CC576;
+      background-color: #B5342B;
     }
     .category-btn:hover {
       background-color: #000000;
@@ -187,7 +210,7 @@
     }
     .card {
       background-color: white;
-      border: 2px solid #DFF3D8;
+      border: 2px solid #F2E4CA;
       border-radius: 15px;
       width: 240px;
       padding: 15px;
@@ -198,7 +221,7 @@
     }
     /* 찜한 개수 딱지 */
     .wish-count {
-      background-color: #2E7BE5;
+      background-color: #D1622A;
       color: white;
       border-radius: 20px;
       padding: 2px 9px;
@@ -207,7 +230,7 @@
     }
     /* 찜한 상품 합계 금액 딱지 */
     .wish-price {
-      background-color: #0B3C87;
+      background-color: #8C3C12;
       color: white;
       border-radius: 20px;
       padding: 2px 9px;
@@ -220,7 +243,7 @@
       display: block;
       margin: 12px auto 0 auto;
       background-color: white;
-      color: #35502F;
+      color: #33302B;
       border: none;
       padding: 10px 18px;
       border-radius: 20px;
@@ -229,7 +252,7 @@
       cursor: pointer;
     }
     .top-btn:hover {
-      background-color: #DFF3D8;
+      background-color: #F2E4CA;
     }
     /* 오른쪽 위 구석: 계정 버튼과 로그아웃 버튼이 나란히 */
     .auth-corner {
@@ -252,11 +275,11 @@
     }
     /* 헤더의 로그아웃 버튼 (연한 초록) */
     .top-btn.logout-top-btn {
-      background-color: #DFF3D8;
-      color: #4B8A45;
+      background-color: #F2E4CA;
+      color: #8C2A22;
     }
     .top-btn.logout-top-btn:hover {
-      background-color: #C9E8BE;
+      background-color: #E8D5B5;
     }
     /* 화면이 좁으면 제목과 겹치지 않게 흐름 배치로 */
     @media (max-width: 700px) {
@@ -272,7 +295,7 @@
     }
     /* 장바구니에 담은 개수 딱지 */
     .cart-count {
-      background-color: #2E7BE5;
+      background-color: #D1622A;
       color: white;
       border-radius: 20px;
       padding: 2px 9px;
@@ -281,7 +304,7 @@
     }
     /* 장바구니 합계 금액 딱지 */
     .cart-price {
-      background-color: #4B8A45;
+      background-color: #8C2A22;
       color: white;
       border-radius: 20px;
       padding: 2px 9px;
@@ -320,7 +343,7 @@
     }
     /* 상자 맨 위 초록 띠 */
     .cart-head {
-      background-color: #7CC576;
+      background-color: #B5342B;
       color: white;
       padding: 16px 20px;
       display: flex;
@@ -347,16 +370,16 @@
     }
     /* 찜 상세 창 머리띠는 파란색 */
     .cart-head.wish-head {
-      background-color: #2E7BE5;
+      background-color: #D1622A;
     }
-    /* 회원가입 창 머리띠는 진한 초록색 */
+    /* 단골 창 머리띠 */
     .cart-head.auth-head {
-      background-color: #4B8A45;
+      background-color: #8C2A22;
     }
     /* 가입 화면 맨 위 가게 소개 한 줄 */
     .auth-intro {
-      background-color: #F4FBF0;
-      color: #4B8A45;
+      background-color: #FBF4E6;
+      color: #8C2A22;
       font-size: 14px;
       line-height: 1.6;
       text-align: center;
@@ -366,7 +389,7 @@
     }
     .auth-intro b {
       display: block;
-      color: #35502F;
+      color: #33302B;
       letter-spacing: 2px;
       margin-bottom: 3px;
     }
@@ -383,30 +406,30 @@
       display: block;
       font-size: 14px;
       font-weight: bold;
-      color: #35502F;
+      color: #33302B;
       margin-bottom: 6px;
     }
     .auth-input {
       width: 100%;
       box-sizing: border-box;
-      border: 2px solid #DFF3D8;
+      border: 2px solid #F2E4CA;
       border-radius: 10px;
       padding: 11px 13px;
       font-size: 15px;
       font-family: inherit;
-      color: #35502F;
+      color: #33302B;
     }
     .auth-input:focus {
       outline: none;
-      border-color: #7CC576;
+      border-color: #B5342B;
     }
     /* 입력 칸 아래 작은 도움말 */
     .auth-hint {
       margin: 6px 0 0 0;
       font-size: 12px;
-      color: #7A8F75;
+      color: #8A7B66;
     }
-    /* 회원이 되기 버튼 (칸 너비에 꽉 차게) */
+    /* 단골 트기 버튼 (칸 너비에 꽉 차게) */
     .auth-submit {
       width: 100%;
       margin-top: 4px;
@@ -426,8 +449,8 @@
     }
     /* 성공은 초록, 실패는 빨강 */
     .auth-msg.ok {
-      background-color: #DFF3D8;
-      color: #35502F;
+      background-color: #F2E4CA;
+      color: #33302B;
     }
     .auth-msg.err {
       background-color: #FBE3E3;
@@ -437,7 +460,7 @@
     .auth-who {
       text-align: center;
       padding: 10px 0 18px 0;
-      color: #35502F;
+      color: #33302B;
       font-size: 15px;
     }
     .auth-who b {
@@ -467,13 +490,13 @@
       text-align: center;
       margin: 16px 0 0 0;
       font-size: 14px;
-      color: #7A8F75;
+      color: #8A7B66;
     }
     /* 글자처럼 보이는 전환 버튼 */
     .auth-link {
       background-color: transparent;
       border: none;
-      color: #4B8A45;
+      color: #8C2A22;
       font-size: 14px;
       font-weight: bold;
       font-family: inherit;
@@ -483,7 +506,7 @@
     }
     .auth-link:hover {
       background-color: transparent;
-      color: #7CC576;
+      color: #B5342B;
     }
 
     /* 로그인한 계정의 이메일 (작게) */
@@ -491,17 +514,17 @@
       text-align: center;
       margin: -10px 0 18px 0;
       font-size: 13px;
-      color: #7A8F75;
+      color: #8A7B66;
     }
     /* 로그아웃 / 취소 버튼 */
     .auth-logout {
       width: 100%;
-      background-color: #DFF3D8;
-      color: #4B8A45;
+      background-color: #F2E4CA;
+      color: #8C2A22;
       margin-top: 10px;
     }
     .auth-logout:hover {
-      background-color: #C9E8BE;
+      background-color: #E8D5B5;
     }
 
     /* 담은 상품 목록 (넘치면 스크롤) */
@@ -515,7 +538,7 @@
       align-items: center;
       gap: 12px;
       padding: 12px 0;
-      border-bottom: 1px solid #DFF3D8;
+      border-bottom: 1px solid #F2E4CA;
     }
     /* 상품 작은 사진 */
     .cart-item img {
@@ -537,18 +560,18 @@
     .cart-item-each {
       margin: 0;
       font-size: 13px;
-      color: #7A8F75;
+      color: #8A7B66;
     }
     /* 할인 전 정가는 흐린 취소선으로 */
     .cart-item-each s {
-      color: #B3C4AE;
+      color: #C4B49A;
       margin-right: 4px;
     }
     /* 한 상품의 합계 금액 */
     .cart-item-sum {
       font-size: 15px;
       font-weight: bold;
-      color: #35502F;
+      color: #33302B;
       white-space: nowrap;
     }
     /* 수량 조절 줄 ( - 숫자 + 삭제 ) */
@@ -560,8 +583,8 @@
     }
     /* 빼기 / 더하기 동그란 버튼 */
     .qty-btn {
-      background-color: #DFF3D8;
-      color: #35502F;
+      background-color: #F2E4CA;
+      color: #33302B;
       border: none;
       border-radius: 50%;
       width: 26px;
@@ -573,7 +596,7 @@
       cursor: pointer;
     }
     .qty-btn:hover {
-      background-color: #A8DC9E;
+      background-color: #E0C9A0;
     }
     /* 가운데 수량 숫자 */
     .qty-num {
@@ -596,11 +619,47 @@
       background-color: transparent;
       color: #8A3F3F;
     }
+    /* 서비스로 들어가는 상품 줄 (노란 바탕) */
+    .cart-item.service {
+      background-color: #FFFBEA;
+    }
+    /* '서비스' 딱지 */
+    .service-tag {
+      background-color: #FFD400;
+      color: #5A4B00;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    /* 서비스 금액은 0원이므로 눈에 덜 띄게 */
+    .cart-item.service .cart-item-sum {
+      color: #8A6D00;
+    }
+    /* 몇 개 더 담으면 서비스가 늘어나는지 알려주는 줄 */
+    .cart-progress {
+      background-color: #FFF4CC;
+      color: #8A6D00;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      padding: 9px 12px;
+      border-radius: 10px;
+      margin: 12px 0 2px 0;
+    }
+    /* 맨 아래 계산 줄 중 서비스 줄은 노란 글씨 */
+    .cart-sum-row.service-row {
+      color: #8A6D00;
+      font-weight: bold;
+    }
+
     /* 장바구니가 비었을 때 안내 */
     .cart-empty {
       text-align: center;
       padding: 40px 0;
-      color: #7A8F75;
+      color: #8A7B66;
     }
     /* 할인 자동 적용 안내 띠 */
     .first-order-note {
@@ -615,7 +674,7 @@
     }
     /* 주문 금액 계산 줄들이 들어가는 맨 아래 칸 */
     .cart-foot-order {
-      border-top: 2px solid #DFF3D8;
+      border-top: 2px solid #F2E4CA;
       padding: 14px 20px 16px 20px;
     }
     /* 계산 한 줄 (왼쪽 이름 / 오른쪽 금액) */
@@ -623,7 +682,7 @@
       display: flex;
       justify-content: space-between;
       font-size: 14px;
-      color: #7A8F75;
+      color: #8A7B66;
       padding: 3px 0;
     }
     /* 할인 줄은 주황색 */
@@ -633,12 +692,12 @@
     }
     /* 마지막 결제 금액 줄 */
     .cart-sum-row.total-row {
-      border-top: 1px solid #DFF3D8;
+      border-top: 1px solid #F2E4CA;
       margin-top: 7px;
       padding-top: 10px;
       font-size: 18px;
       font-weight: bold;
-      color: #35502F;
+      color: #33302B;
     }
     /* 비우기 버튼은 계산 줄 아래 왼쪽에 */
     .cart-foot-order .cart-clear {
@@ -647,7 +706,7 @@
 
     /* 상자 맨 아래 합계 줄 */
     .cart-foot {
-      border-top: 2px solid #DFF3D8;
+      border-top: 2px solid #F2E4CA;
       padding: 16px 20px;
       display: flex;
       justify-content: space-between;
@@ -656,12 +715,12 @@
     .cart-foot-total {
       font-size: 18px;
       font-weight: bold;
-      color: #35502F;
+      color: #33302B;
     }
     /* 비우기 버튼 */
     .cart-clear {
-      background-color: #DFF3D8;
-      color: #4B8A45;
+      background-color: #F2E4CA;
+      color: #8C2A22;
       border: none;
       padding: 9px 16px;
       border-radius: 20px;
@@ -670,7 +729,7 @@
       cursor: pointer;
     }
     .cart-clear:hover {
-      background-color: #C9E8BE;
+      background-color: #E8D5B5;
     }
 
     /* 찜하기 별 버튼 - 오른쪽 아래, 파랑 */
@@ -680,7 +739,7 @@
       right: 12px;
       background-color: transparent;
       border: none;
-      color: #2E7BE5;
+      color: #D1622A;
       font-size: 26px;
       padding: 0;
       line-height: 1;
@@ -688,11 +747,11 @@
     }
     /* 2단계: 파란 별 */
     .heart-btn.on {
-      color: #2E7BE5;
+      color: #D1622A;
     }
     /* 3단계: 진한 파란 별 */
     .heart-btn.dark {
-      color: #0B3C87;
+      color: #8C3C12;
     }
     .heart-btn:hover {
       background-color: transparent;
@@ -717,7 +776,7 @@
       position: absolute;
       top: 8px;
       left: 8px;
-      background-color: #2E7BE5;
+      background-color: #D1622A;
       color: white;
       font-size: 13px;
       font-weight: bold;
@@ -745,7 +804,7 @@
       margin: 0;
     }
     .new-price {
-      color: #5FA95A;
+      color: #8C2A22;
       font-size: 20px;
       font-weight: bold;
       margin: 5px 0 15px 0;
@@ -782,7 +841,7 @@
 
     /* ===== 가운데 구역만 배경색 다르게 ===== */
     .bowl-section {
-      background-color: #EAF7E4;
+      background-color: #F7EDDC;
     }
 
     /* ===== 쇼핑몰 소개 ===== */
@@ -809,8 +868,8 @@
       gap: 20px;
     }
     .step {
-      background-color: #F4FBF0;
-      border: 2px solid #DFF3D8;
+      background-color: #FBF4E6;
+      border: 2px solid #F2E4CA;
       border-radius: 15px;
       width: 200px;
       padding: 25px 15px;
@@ -818,7 +877,7 @@
     /* 단계 번호 동그라미 */
     .step-num {
       display: inline-block;
-      background-color: #7CC576;
+      background-color: #B5342B;
       color: white;
       font-weight: bold;
       width: 32px;
@@ -856,8 +915,8 @@
 
     /* ===== 맨 아래: 연락처 ===== */
     footer {
-      background-color: #35502F;
-      color: #DFF3D8;
+      background-color: #33302B;
+      color: #F2E4CA;
       text-align: center;
       padding: 40px 20px;
       font-size: 15px;
@@ -877,19 +936,19 @@
     }
     /* 항목 이름 (전화, 이메일 등) */
     .contact-label {
-      color: #A8DC9E;
+      color: #E0C9A0;
       font-weight: bold;
       margin-right: 8px;
     }
     /* 이메일 링크 */
     footer a {
-      color: #DFF3D8;
+      color: #F2E4CA;
     }
     /* 맨 아래 저작권 */
     .copyright {
       margin-top: 25px;
       font-size: 13px;
-      color: #9CB795;
+      color: #A89880;
     }
   </style>
 </head>
@@ -898,89 +957,90 @@
 
   <!-- 맨 위: 쇼핑몰 이름과 한 줄 소개 -->
   <header>
-    <h1 class="eng-name">YEONNI'S FOOD</h1>
-    <p>오늘 아침에 딴 채소로 만든 산뜻한 한 그릇</p>
+    <h1 class="eng-name">연니네 채소가게</h1>
+    <p class="market-line">화곡동 골목시장 안쪽 세 번째 집</p>
+    <p>새벽장서 떼 온 채소, 오늘 아침에 손수 무쳤습니다</p>
     <div class="auth-corner">
-      <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 로그인 · 가입</button>
+      <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 단골 등록 · 들어오기</button>
       <button class="top-btn logout-top-btn" id="logoutBtn" onclick="signOut()" style="display: none;">로그아웃</button>
     </div>
     <button class="top-btn" onclick="openWish()">
-      ⭐ 찜한 상품 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
+      ⭐ 찜해둔 것 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
     </button>
     <button class="top-btn" onclick="openCart()">
-      🛒 장바구니 담기 <span class="cart-count" id="cartNumber">0개</span><span class="cart-price" id="cartPrice">0원</span>
+      🧺 장바구니 <span class="cart-count" id="cartNumber">0개</span><span class="cart-price" id="cartPrice">0원</span>
     </button>
   </header>
 
   <!-- 메뉴 4개 (누르면 해당 구역으로 이동) -->
   <nav>
-    <a href="#salad" onclick="showAll()">샐러드</a>
-    <a href="#bowl" onclick="showAll()">샐러드볼</a>
-    <a href="#burger" onclick="showAll()">샐러드버거</a>
+    <a href="#salad" onclick="showAll()">잘나가는샐러드</a>
+    <a href="#bowl" onclick="showAll()">한사발</a>
+    <a href="#burger" onclick="showAll()">채소버거</a>
     <a href="#sandwich" onclick="showAll()">샌드위치</a>
-    <a href="#pizza" onclick="showAll()">샐러드피자</a>
+    <a href="#pizza" onclick="showAll()">채소피자</a>
     <a href="#dressing" onclick="showAll()">드레싱</a>
-    <a href="#contact">고객센터</a>
+    <a href="#contact">가게 연락처</a>
   </nav>
 
   <!-- 큰 배너 -->
   <section class="banner">
     <img src="https://images.pexels.com/photos/33323285/pexels-photo-33323285.jpeg?auto=compress&w=1200" alt="신선한 샐러드 한 그릇">
-    <h2>인기 샐러드 20% 할인!</h2>
-    <p>매일 새벽 배송되는 신선한 샐러드를 만나보세요</p>
-    <button onclick="showAlert('인기 샐러드 7종이 20% 할인 중이에요!')">할인 상품 보러가기</button>
+    <h2>잘나가는 샐러드 20% 깎아드려요</h2>
+    <p>새벽장 보고 그날 무쳐서, 그날 보내드립니다</p>
+    <button onclick="showAlert('잘나가는 샐러드 일곱 가지, 20% 깎아드려요!')">깎아주는 것 보러가기</button>
   </section>
 
   <!-- 이벤트 안내 -->
   <section class="promo">
-    <h3>🎁 <span class="point">3개 주문하시면 1개 더!</span></h3>
+    <h3>🎁 <span class="point">세 개 사면 하나 더 얹어드려요</span></h3>
     <p>
-      상품 3개를 주문하시면 1개를 서비스로 함께 보내드립니다.<br>
-      서로 다른 메뉴여도 괜찮아요. 주문할 때 원하시는 서비스 메뉴를 적어주세요.
+      세 개 담으시면 한 개는 그냥 넣어드립니다.<br>
+      말씀 안 하셔도 돼요. 장바구니에 <b>알아서 담아둡니다.</b>
     </p>
   </section>
 
   <!-- 검색창 (상품 목록 위, 가운데) -->
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="상품 이름 검색" oninput="searchProduct()">
+    <input type="text" id="searchInput" placeholder="무엇을 찾으세요?" oninput="searchProduct()">
   </div>
 
   <!-- 카테고리 버튼 (누르면 그 상품만 보임) -->
   <div class="category-box">
-    <button class="category-btn active" onclick="showCategory('all', this)">전체</button>
-    <button class="category-btn" onclick="showCategory('salad', this)">샐러드</button>
-    <button class="category-btn" onclick="showCategory('bowl', this)">샐러드볼</button>
-    <button class="category-btn" onclick="showCategory('burger', this)">샐러드버거</button>
+    <button class="category-btn active" onclick="showCategory('all', this)">다 보기</button>
+    <button class="category-btn" onclick="showCategory('salad', this)">잘나가는샐러드</button>
+    <button class="category-btn" onclick="showCategory('bowl', this)">한사발</button>
+    <button class="category-btn" onclick="showCategory('burger', this)">채소버거</button>
     <button class="category-btn" onclick="showCategory('sandwich', this)">샌드위치</button>
-    <button class="category-btn" onclick="showCategory('pizza', this)">샐러드피자</button>
+    <button class="category-btn" onclick="showCategory('pizza', this)">채소피자</button>
     <button class="category-btn" onclick="showCategory('dressing', this)">드레싱</button>
   </div>
 
   <!-- 검색 결과가 없을 때 -->
-  <p class="no-result" id="noResult">찾으시는 상품이 없어요. 다른 이름으로 검색해 보세요.</p>
+  <p class="no-result" id="noResult">그건 오늘 안 들어왔네요. 다른 걸로 찾아보세요.</p>
 
   <!-- 샐러드 상품 3개 -->
   <section class="products" id="salad">
-    <h2>인기 샐러드</h2>
-    <p class="section-desc">가볍게 즐기는 신선한 채소 한 접시</p>
+    <h2>제일 잘나가는 샐러드</h2>
+    <p class="section-desc">아침마다 제일 먼저 나가는 것들입니다</p>
     <div class="card-box">
 
       <div class="card">
-        <span class="best-tag">BEST</span>
+        <span class="best-tag">잘나가요</span>
         <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" alt="닭가슴살 리코타 샐러드">
         <h3>닭가슴살 리코타 샐러드</h3>
         <p class="old-price">12,000원</p>
         <p class="new-price">9,600원</p>
-        <button onclick="showAlert('닭가슴살 리코타 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('닭가슴살 리코타 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
-        <span class="new-tag">NEW</span>
+        <span class="new-tag">새로왔어요</span>
         <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500" alt="아보카도 연어 샐러드">
         <h3>아보카도 연어 샐러드</h3>
         <p class="old-price">15,000원</p>
         <p class="new-price">12,000원</p>
-        <button onclick="showAlert('아보카도 연어 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('아보카도 연어 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
@@ -988,7 +1048,7 @@
         <h3>토마토 부라타 샐러드</h3>
         <p class="old-price">13,000원</p>
         <p class="new-price">10,400원</p>
-        <button onclick="showAlert('토마토 부라타 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('토마토 부라타 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
@@ -996,7 +1056,7 @@
         <h3>크런치 오리엔탈 샐러드</h3>
         <p class="old-price">11,000원</p>
         <p class="new-price">8,800원</p>
-        <button onclick="showAlert('크런치 오리엔탈 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('크런치 오리엔탈 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
@@ -1004,7 +1064,7 @@
         <h3>가든 그린 샐러드</h3>
         <p class="old-price">10,000원</p>
         <p class="new-price">8,000원</p>
-        <button onclick="showAlert('가든 그린 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('가든 그린 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
@@ -1012,7 +1072,7 @@
         <h3>그릴드 치킨 시저 샐러드</h3>
         <p class="old-price">13,000원</p>
         <p class="new-price">10,400원</p>
-        <button onclick="showAlert('그릴드 치킨 시저 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('그릴드 치킨 시저 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
@@ -1020,7 +1080,7 @@
         <h3>새우 시저 샐러드</h3>
         <p class="old-price">16,000원</p>
         <p class="new-price">12,800원</p>
-        <button onclick="showAlert('새우 시저 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('새우 시저 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1028,30 +1088,30 @@
 
   <!-- 샐러드볼 상품 3개 -->
   <section class="products bowl-section" id="bowl">
-    <h2>샐러드볼</h2>
-    <p class="section-desc">한 그릇으로 든든하게, 밥 대신 먹는 샐러드볼</p>
+    <h2>든든한 한 사발</h2>
+    <p class="section-desc">밥 대신 드셔도 배부른 한 사발</p>
     <div class="card-box">
 
       <div class="card">
-        <span class="new-tag">NEW</span>
+        <span class="new-tag">새로왔어요</span>
         <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500" alt="현미 포케볼">
         <h3>현미 포케볼</h3>
         <p class="new-price">14,000원</p>
-        <button onclick="showAlert('현미 포케볼을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('현미 포케볼 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1512852939750-1305098529bf?w=500" alt="퀴노아 두부볼">
         <h3>퀴노아 두부볼</h3>
         <p class="new-price">13,500원</p>
-        <button onclick="showAlert('퀴노아 두부볼을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('퀴노아 두부볼 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=500" alt="구운채소 곡물볼">
         <h3>구운채소 곡물볼</h3>
         <p class="new-price">12,500원</p>
-        <button onclick="showAlert('구운채소 곡물볼을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('구운채소 곡물볼 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1060,45 +1120,45 @@
 
   <!-- 샐러드버거 상품 3개 -->
   <section class="products" id="burger">
-    <h2>샐러드버거</h2>
-    <p class="section-desc">빵보다 채소가 더 많은, 죄책감 없는 버거</p>
+    <h2>채소 꽉 찬 버거</h2>
+    <p class="section-desc">빵보다 채소가 더 많습니다, 속 편해요</p>
     <div class="card-box">
 
       <div class="card">
-        <span class="new-tag">NEW</span>
+        <span class="new-tag">새로왔어요</span>
         <img src="https://images.pexels.com/photos/3607284/pexels-photo-3607284.jpeg?auto=compress&w=500" alt="비트 패티 버거">
         <h3>비트 패티 버거</h3>
         <p class="new-price">11,000원</p>
-        <button onclick="showAlert('비트 패티 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('비트 패티 버거 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
-        <span class="best-tag">BEST</span>
+        <span class="best-tag">잘나가요</span>
         <img src="https://images.pexels.com/photos/20722067/pexels-photo-20722067.jpeg?auto=compress&w=500" alt="아보카도 흑미번 버거">
         <h3>아보카도 흑미번 버거</h3>
         <p class="new-price">12,500원</p>
-        <button onclick="showAlert('아보카도 흑미번 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('아보카도 흑미번 버거 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/10654301/pexels-photo-10654301.jpeg?auto=compress&w=500" alt="시금치번 두부 버거">
         <h3>시금치번 두부 버거</h3>
         <p class="new-price">11,500원</p>
-        <button onclick="showAlert('시금치번 두부 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('시금치번 두부 버거 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/20741663/pexels-photo-20741663.jpeg?auto=compress&w=500" alt="크리스피 채소 버거">
         <h3>크리스피 채소 버거</h3>
         <p class="new-price">10,500원</p>
-        <button onclick="showAlert('크리스피 채소 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('크리스피 채소 버거 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/6546025/pexels-photo-6546025.jpeg?auto=compress&w=500" alt="팔라펠 통밀 버거">
         <h3>팔라펠 통밀 버거</h3>
         <p class="new-price">12,000원</p>
-        <button onclick="showAlert('팔라펠 통밀 버거를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('팔라펠 통밀 버거 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1106,45 +1166,45 @@
 
   <!-- 샐러드 샌드위치 상품 5개 -->
   <section class="products bowl-section" id="sandwich">
-    <h2>샐러드 샌드위치</h2>
-    <p class="section-desc">채소를 가득 넣어 든든한 한 끼 샌드위치</p>
+    <h2>손으로 눌러 만든 샌드위치</h2>
+    <p class="section-desc">채소 아끼지 않고 꾹꾹 눌러 담았습니다</p>
     <div class="card-box">
 
       <div class="card">
         <img src="https://images.pexels.com/photos/9012028/pexels-photo-9012028.jpeg?auto=compress&w=500" alt="아보카도 새싹 샌드위치">
         <h3>아보카도 새싹 샌드위치</h3>
         <p class="new-price">9,500원</p>
-        <button onclick="showAlert('아보카도 새싹 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('아보카도 새싹 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
-        <span class="best-tag">BEST</span>
+        <span class="best-tag">잘나가요</span>
         <img src="https://images.pexels.com/photos/6169449/pexels-photo-6169449.jpeg?auto=compress&w=500" alt="그릴 치킨 사워도우 샌드위치">
         <h3>그릴 치킨 사워도우</h3>
         <p class="new-price">12,000원</p>
-        <button onclick="showAlert('그릴 치킨 사워도우 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('그릴 치킨 사워도우 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/30910204/pexels-photo-30910204.jpeg?auto=compress&w=500" alt="통곡물 채소 샌드위치">
         <h3>통곡물 채소 샌드위치</h3>
         <p class="new-price">9,000원</p>
-        <button onclick="showAlert('통곡물 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('통곡물 채소 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
-        <span class="new-tag">NEW</span>
+        <span class="new-tag">새로왔어요</span>
         <img src="https://images.pexels.com/photos/6327138/pexels-photo-6327138.jpeg?auto=compress&w=500" alt="아보카도 오픈 샌드위치">
         <h3>아보카도 오픈 샌드위치</h3>
         <p class="new-price">10,000원</p>
-        <button onclick="showAlert('아보카도 오픈 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('아보카도 오픈 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/28396784/pexels-photo-28396784.jpeg?auto=compress&w=500" alt="바게트 채소 샌드위치">
         <h3>바게트 채소 샌드위치</h3>
         <p class="new-price">11,000원</p>
-        <button onclick="showAlert('바게트 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('바게트 채소 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1152,30 +1212,30 @@
 
   <!-- 샐러드 피자 상품 3개 -->
   <section class="products" id="pizza">
-    <h2>샐러드 피자</h2>
-    <p class="section-desc">갓 구운 도우 위에 신선한 채소를 듬뿍</p>
+    <h2>채소 올린 피자</h2>
+    <p class="section-desc">갓 구운 반죽 위에 채소를 수북이</p>
     <div class="card-box">
 
       <div class="card">
         <img src="https://images.pexels.com/photos/11654221/pexels-photo-11654221.jpeg?auto=compress&w=500" alt="루꼴라 토마토 피자">
         <h3>루꼴라 토마토 피자</h3>
         <p class="new-price">18,000원</p>
-        <button onclick="showAlert('루꼴라 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('루꼴라 토마토 피자 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
-        <span class="new-tag">NEW</span>
+        <span class="new-tag">새로왔어요</span>
         <img src="https://images.pexels.com/photos/37604434/pexels-photo-37604434.jpeg?auto=compress&w=500" alt="부라타 루꼴라 피자">
         <h3>부라타 루꼴라 피자</h3>
         <p class="new-price">21,000원</p>
-        <button onclick="showAlert('부라타 루꼴라 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('부라타 루꼴라 피자 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/6697470/pexels-photo-6697470.jpeg?auto=compress&w=500" alt="선드라이 토마토 피자">
         <h3>선드라이 토마토 피자</h3>
         <p class="new-price">19,000원</p>
-        <button onclick="showAlert('선드라이 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('선드라이 토마토 피자 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1183,43 +1243,43 @@
 
   <!-- 드레싱 상품 3개 -->
   <section class="products bowl-section" id="dressing">
-    <h2>드레싱</h2>
-    <p class="section-desc">집에서도 가게 맛 그대로, 직접 만든 수제 드레싱</p>
+    <h2>직접 담근 드레싱</h2>
+    <p class="section-desc">가게에서 쓰는 그대로 담아드립니다</p>
     <div class="card-box">
 
       <div class="card">
         <img src="https://images.pexels.com/photos/10060235/pexels-photo-10060235.jpeg?auto=compress&w=500" alt="발사믹 드레싱">
         <h3>발사믹 드레싱</h3>
         <p class="new-price">8,000원</p>
-        <button onclick="showAlert('발사믹 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('발사믹 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/1332313/pexels-photo-1332313.jpeg?auto=compress&w=500" alt="요거트 어니언 드레싱">
         <h3>요거트 어니언 드레싱</h3>
         <p class="new-price">8,500원</p>
-        <button onclick="showAlert('요거트 어니언 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('요거트 어니언 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/17942046/pexels-photo-17942046.jpeg?auto=compress&w=500" alt="오리엔탈 참깨 드레싱">
         <h3>오리엔탈 참깨 드레싱</h3>
         <p class="new-price">9,000원</p>
-        <button onclick="showAlert('오리엔탈 참깨 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('오리엔탈 참깨 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500" alt="레몬 올리브 드레싱">
         <h3>레몬 올리브 드레싱</h3>
         <p class="new-price">9,500원</p>
-        <button onclick="showAlert('레몬 올리브 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('레몬 올리브 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/12203617/pexels-photo-12203617.jpeg?auto=compress&w=500" alt="홀그레인 머스터드 드레싱">
         <h3>홀그레인 머스터드 드레싱</h3>
         <p class="new-price">8,800원</p>
-        <button onclick="showAlert('홀그레인 머스터드 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
+        <button onclick="showAlert('홀그레인 머스터드 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
       </div>
 
     </div>
@@ -1227,44 +1287,44 @@
 
   <!-- 쇼핑몰 소개 -->
   <section class="about">
-    <h2>연니네 푸드는 이렇게 만듭니다</h2>
+    <h2>연니네는 이렇게 만듭니다</h2>
     <p class="about-desc">
-      미리 만들어 두고 파는 샐러드가 아닙니다.<br>
-      주문을 받은 뒤에 그날 쓸 재료를 사고, 하나하나 손질해서, 정성껏 만들어 보내드립니다.<br>
-      그래서 조금 늦지만, 그만큼 신선합니다.
+      미리 만들어 쌓아놓고 파는 집이 아닙니다.<br>
+      주문 받고 나서 그날 쓸 것만 장에서 떼 와, 하나하나 다듬어 만들어 보냅니다.<br>
+      그래서 조금 늦습니다. 대신 싱싱합니다.
     </p>
 
     <div class="step-box">
 
       <div class="step">
         <span class="step-num">1</span>
-        <h3>재료 구입</h3>
-        <p>주문을 확인한 뒤<br>그날 필요한 채소를<br>새로 사 옵니다.</p>
+        <h3>장 보기</h3>
+        <p>주문 받은 날<br>새벽시장에서<br>직접 골라 옵니다.</p>
       </div>
 
       <div class="step">
         <span class="step-num">2</span>
-        <h3>손질</h3>
-        <p>씻고 다듬어<br>먹기 좋은 크기로<br>준비합니다.</p>
+        <h3>다듬기</h3>
+        <p>씻고 다듬어<br>드시기 좋게<br>썰어둡니다.</p>
       </div>
 
       <div class="step">
         <span class="step-num">3</span>
-        <h3>만들기</h3>
-        <p>주문하신 메뉴대로<br>담아서 포장해<br>보내드립니다.</p>
+        <h3>담기</h3>
+        <p>주문하신 대로<br>차곡차곡 담아<br>보내드립니다.</p>
       </div>
 
     </div>
 
     <p class="delivery-note">
-      주문 후 받아보시기까지 <span class="days">3일</span>이 걸립니다.<br>
-      재료를 사고 손질해서 만드는 과정을 모두 거치기 때문입니다.
+      주문하시고 받으시기까지 <span class="days">3일</span> 걸립니다.<br>
+      장 보고 다듬고 만드는 걸 전부 거치느라 그렇습니다. 양해 부탁드려요.
     </p>
   </section>
 
   <!-- 맨 아래: 연락처 안내 -->
   <footer id="contact">
-    <p class="shop-name">YEONNI'S FOOD</p>
+    <p class="shop-name">연니네 채소가게</p>
 
     <p class="contact-line">
       <span class="contact-label">전화</span><a href="tel:00000000000">000 0000 0000</a>
@@ -1274,37 +1334,37 @@
       <a href="mailto:yeonni@food.com">yeonni@food.com</a>
     </p>
     <p class="contact-line">
-      <span class="contact-label">카카오톡</span>@연니네푸드
+      <span class="contact-label">카카오톡</span>@연니네채소가게
     </p>
     <p class="contact-line">
-      <span class="contact-label">주소</span>서울시 강남구 테헤란로 123, 1층
+      <span class="contact-label">주소</span>서울시 강서구 화곡동 골목시장 3번 골목
     </p>
     <p class="contact-line">
-      <span class="contact-label">영업시간</span>평일 10:00 ~ 18:00 (주말·공휴일 휴무)
+      <span class="contact-label">여는 시간</span>새벽 6시 ~ 저녁 8시 (둘째·넷째 일요일 쉽니다)
     </p>
 
-    <p class="copyright">ⓒ 2026 연니네 푸드. All rights reserved.</p>
+    <p class="copyright">ⓒ 2026 연니네 채소가게 · 화곡동 골목시장</p>
   </footer>
 
   <!-- 회원가입 창 (평소에는 숨어 있음) -->
   <div class="cart-back" id="authBack" onclick="closeAuthOutside(event)">
     <div class="cart-window">
       <div class="cart-head auth-head">
-        <h3 id="authTitle">👤 로그인</h3>
+        <h3 id="authTitle">👤 단골 들어오기</h3>
         <button class="cart-close" onclick="closeAuth()">&times;</button>
       </div>
 
       <!-- 가입 전 화면 -->
       <div class="auth-form" id="authForm" style="display: none;">
         <p class="auth-intro">
-          <b>YEONNI'S FOOD</b>
-          오늘 아침에 딴 채소로 만든 산뜻한 한 그릇, 새벽마다 신선하게 배송해 드려요.
+          <b>연니네 채소가게</b>
+          화곡동 골목시장에서 새벽마다 장 봐서, 그날 무쳐 보내드립니다.
         </p>
         <p class="auth-msg" id="authMsg"></p>
 
         <div class="auth-field">
           <label for="authNick">닉네임</label>
-          <input class="auth-input" type="text" id="authNick" placeholder="가게에서 불릴 이름" autocomplete="nickname" maxlength="12">
+          <input class="auth-input" type="text" id="authNick" placeholder="가게에서 부를 이름" autocomplete="nickname" maxlength="12">
           <p class="auth-hint">2~12자로 적어 주세요. 가입 후 화면에 이 이름이 보여요.</p>
         </div>
 
@@ -1324,15 +1384,15 @@
           <input class="auth-input" type="password" id="authPw2" placeholder="한 번 더 입력해 주세요" autocomplete="new-password">
         </div>
 
-        <button class="auth-submit" id="authSubmit" onclick="signUp()">회원이 되기</button>
-        <p class="auth-switch">이미 회원이신가요?<button class="auth-link" onclick="showLogin()">로그인</button></p>
+        <button class="auth-submit" id="authSubmit" onclick="signUp()">단골 트기</button>
+        <p class="auth-switch">이미 단골이신가요?<button class="auth-link" onclick="showLogin()">들어오기</button></p>
       </div>
 
       <!-- 로그인 화면 -->
       <div class="auth-form" id="authLogin">
         <p class="auth-intro">
-          <b>YEONNI'S FOOD</b>
-          다시 오셨군요! 이메일과 비밀번호로 들어와 주세요.
+          <b>연니네 채소가게</b>
+          또 오셨네요! 이메일하고 비밀번호 넣어주세요.
         </p>
         <p class="auth-msg" id="authLoginMsg"></p>
 
@@ -1347,15 +1407,15 @@
         </div>
 
         <button class="auth-submit" id="authLoginBtn" onclick="signIn()">로그인</button>
-        <p class="auth-switch">아직 회원이 아니신가요?<button class="auth-link" onclick="showSignUp()">회원가입</button></p>
+        <p class="auth-switch">처음 오셨나요?<button class="auth-link" onclick="showSignUp()">단골 트기</button></p>
       </div>
 
       <!-- 가입(로그인)된 뒤 화면 -->
       <div class="auth-form" id="authDone" style="display: none;">
         <p class="auth-msg" id="authDoneMsg"></p>
-        <p class="auth-who" id="authWelcome">환영합니다!<b id="authWho"></b></p>
+        <p class="auth-who" id="authWelcome">어서 오세요!<b id="authWho"></b></p>
         <p class="auth-mail" id="authMail"></p>
-        <button class="auth-submit" onclick="openEdit()">내 정보 수정</button>
+        <button class="auth-submit" onclick="openEdit()">내 장부 고치기</button>
         <button class="cart-clear auth-logout" onclick="signOut()">로그아웃</button>
       </div>
 
@@ -1392,12 +1452,12 @@
   <div class="cart-back" id="wishBack" onclick="closeWishOutside(event)">
     <div class="cart-window">
       <div class="cart-head wish-head">
-        <h3>⭐ 찜한 상품</h3>
+        <h3>⭐ 찜해둔 것</h3>
         <button class="cart-close" onclick="closeWish()">&times;</button>
       </div>
       <div class="cart-list" id="wishList"></div>
       <div class="cart-foot">
-        <button class="cart-clear" onclick="clearWish()">비우기</button>
+        <button class="cart-clear" onclick="clearWish()">싹 비우기</button>
         <span class="cart-foot-total">합계 <span id="wishFootSum">0원</span></span>
       </div>
     </div>
@@ -1407,24 +1467,28 @@
   <div class="cart-back" id="cartBack" onclick="closeCartOutside(event)">
     <div class="cart-window">
       <div class="cart-head">
-        <h3>🛒 내 장바구니</h3>
+        <h3>🧺 내 장바구니</h3>
         <button class="cart-close" onclick="closeCart()">&times;</button>
       </div>
       <div class="cart-list" id="cartList"></div>
       <div class="cart-foot-order">
         <div class="cart-sum-row" id="cartListRow">
-          <span>정가 합계</span>
+          <span>원래 값</span>
           <span id="cartListSum">0원</span>
         </div>
         <div class="cart-sum-row sale-row" id="cartSaleRow">
-          <span>인기 샐러드 20% 할인 (자동 적용)</span>
+          <span>깎아드린 값 (잘나가는 샐러드 20%)</span>
           <span id="cartSaleSum">-0원</span>
         </div>
+        <div class="cart-sum-row service-row" id="cartServiceRow">
+          <span>서비스로 넣은 것 (3개당 1개)</span>
+          <span id="cartServiceText">+0개</span>
+        </div>
         <div class="cart-sum-row total-row">
-          <span>결제 금액</span>
+          <span>내실 값</span>
           <span id="cartFootSum">0원</span>
         </div>
-        <button class="cart-clear" onclick="clearCart()">비우기</button>
+        <button class="cart-clear" onclick="clearCart()">싹 비우기</button>
       </div>
     </div>
   </div>
@@ -1538,6 +1602,26 @@
     }
 
     // 맨 위 버튼의 개수 딱지와 금액 딱지를 다시 그리기
+    // 3개 담을 때마다 1개를 서비스로 드리는 행사 계산
+    // 서비스 상품은 장바구니에서 가장 싼 것으로 자동으로 골라 넣음
+    function serviceInfo() {
+      var total = 0;
+      var cheapest = null;
+      for (var i = 0; i < cartItems.length; i++) {
+        total = total + cartItems[i].count;
+        if (!cheapest || cartItems[i].price < cheapest.price) {
+          cheapest = cartItems[i];
+        }
+      }
+      var qty = Math.floor(total / 3);
+      return {
+        total: total,
+        qty: qty,
+        item: cheapest,
+        need: (qty + 1) * 3 - total
+      };
+    }
+
     function refreshCart() {
       cartTotal = 0;
       cartSum = 0;
@@ -1560,6 +1644,16 @@
       document.getElementById("cartListRow").style.display = showSale;
       document.getElementById("cartSaleRow").style.display = showSale;
 
+      // 3개당 1개 서비스 줄
+      var service = serviceInfo();
+      var serviceRow = document.getElementById("cartServiceRow");
+      if (service.qty > 0) {
+        serviceRow.style.display = "flex";
+        document.getElementById("cartServiceText").innerText = "+" + service.qty + "개 (0원)";
+      } else {
+        serviceRow.style.display = "none";
+      }
+
       // 상세 창이 열려 있으면 그 안의 목록도 같이 고치기
       if (document.getElementById("cartBack").classList.contains("open")) {
         drawCartList();
@@ -1571,12 +1665,12 @@
       var box = document.getElementById("cartList");
 
       if (cartItems.length === 0) {
-        box.innerHTML = '<p class="cart-empty">장바구니가 비어 있어요.<br>마음에 드는 상품을 담아 주세요!</p>';
+        box.innerHTML = '<p class="cart-empty">봉지가 아직 비었습니다.<br>마음에 드는 걸로 담아보세요!</p>';
       } else {
         // 할인 상품이 담겨 있을 때만 안내 띠 보여주기
         var html = "";
         if (cartListSum > cartSum) {
-          html = '<p class="first-order-note">\uD83C\uDF89 인기 샐러드 20% 할인이 자동으로 적용되었습니다</p>';
+          html = '<p class="first-order-note">\uD83C\uDF89 잘나가는 샐러드는 20% 깎아서 계산했습니다</p>';
         }
         for (var i = 0; i < cartItems.length; i++) {
           var item = cartItems[i];
@@ -1600,6 +1694,24 @@
           html += '  <span class="cart-item-sum">' + won(item.price * item.count) + '</span>';
           html += '</div>';
         }
+
+        // 3개당 1개 서비스 상품을 목록 맨 아래에 자동으로 붙이기
+        var service = serviceInfo();
+        if (service.qty > 0 && service.item) {
+          html += '<div class="cart-item service">';
+          html += '  <img src="' + service.item.img + '" alt="' + service.item.name + '">';
+          html += '  <div class="cart-item-info">';
+          html += '    <p class="cart-item-name">' + service.item.name + '<span class="service-tag">서비스</span></p>';
+          html += '    <p class="cart-item-each">세 개마다 하나씩 그냥 드립니다</p>';
+          html += '    <div class="cart-qty"><span class="qty-num">x ' + service.qty + '</span></div>';
+          html += '  </div>';
+          html += '  <span class="cart-item-sum">0원</span>';
+          html += '</div>';
+        }
+
+        // 몇 개 더 담으면 서비스가 하나 더 늘어나는지 알려주기
+        html += '<p class="cart-progress">\uD83C\uDF81 ' + service.need + '개만 더 담으시면 하나 더 얹어드려요!</p>';
+
         box.innerHTML = html;
       }
       document.getElementById("cartFootSum").innerText = won(cartSum);
@@ -1734,7 +1846,7 @@
 
       // 두 번 눌리지 않게 잠깐 버튼을 잠그기
       button.disabled = true;
-      button.innerText = "가입하는 중...";
+      button.innerText = "장부에 적는 중...";
       showAuthMsg("", "");
 
       // 닉네임은 수파베이스 사용자 정보(user_metadata)에 함께 저장됨
@@ -1744,13 +1856,13 @@
         options: { data: { nickname: nick } }
       }).then(function (result) {
         button.disabled = false;
-        button.innerText = "회원이 되기";
+        button.innerText = "단골 트기";
 
         if (result.error) {
           // 이미 가입된 이메일이면 로그인 화면으로 옮겨 주기
           if (result.error.message.indexOf("already registered") !== -1) {
             showLogin(email);
-            showLoginMsg("이미 가입된 이메일이에요. 비밀번호를 넣고 로그인해 주세요.", "err");
+            showLoginMsg("이미 단골로 적혀 있네요. 비밀번호 넣고 들어오세요.", "err");
             return;
           }
           showAuthMsg(authErrorText(result.error.message), "err");
@@ -1762,7 +1874,7 @@
         document.getElementById("authEmail").value = "";
         document.getElementById("authPw").value = "";
         document.getElementById("authPw2").value = "";
-        showAuthMsg("\uD83C\uDF89 축하합니다! 회원가입이 완료되었습니다.", "ok");
+        showAuthMsg("\uD83C\uDF89 축하합니다! 이제 연니네 단골이십니다.", "ok");
         drawAuthState(result.data.user, true);
       });
     }
@@ -1776,9 +1888,9 @@
         // 창이 열려 있으면 로그인 화면에 안내를 띄우고,
         // 헤더 버튼으로 로그아웃한 경우에는 알림창으로 알려주기
         if (document.getElementById("authBack").classList.contains("open")) {
-          showLoginMsg("로그아웃 되었습니다.", "ok");
+          showLoginMsg("안녕히 가세요. 또 오세요!", "ok");
         } else {
-          showAlert("로그아웃 되었습니다.");
+          showAlert("안녕히 가세요. 또 오세요!");
         }
       });
     }
@@ -1798,7 +1910,7 @@
     function showSignUp() {
       document.getElementById("authLogin").style.display = "none";
       document.getElementById("authForm").style.display = "block";
-      document.getElementById("authTitle").innerText = "\uD83D\uDC64 회원가입";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 단골 트기";
       showLoginMsg("", "");
     }
 
@@ -1846,7 +1958,7 @@
     // 로그인 실패 메시지를 한국어로 바꿔주기
     function loginErrorText(message) {
       if (message.indexOf("Invalid login credentials") !== -1) {
-        return "이메일 또는 비밀번호가 맞지 않아요.";
+        return "이메일이나 비밀번호가 안 맞네요. 다시 한번 봐주세요.";
       }
       if (message.indexOf("Email not confirmed") !== -1) {
         return "이메일 인증을 먼저 마쳐 주세요.";
@@ -1870,14 +1982,14 @@
       document.getElementById("editPw2").value = "";
       document.getElementById("authDone").style.display = "none";
       document.getElementById("authEdit").style.display = "block";
-      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 정보 수정";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 장부 고치기";
     }
 
     // 수정하지 않고 돌아가기
     function cancelEdit() {
       document.getElementById("authEdit").style.display = "none";
       document.getElementById("authDone").style.display = "block";
-      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 장부";
     }
 
     // 저장하기 버튼을 눌렀을 때
@@ -1962,10 +2074,10 @@
         var nick = nickOf(user);
 
         // 방금 가입했으면 축하 인사, 그냥 로그인 상태면 환영 인사
-        var greeting = justJoined ? "\uD83C\uDF89 축하합니다! 회원이 되셨어요." : "환영합니다!";
+        var greeting = justJoined ? "\uD83C\uDF89 축하합니다! 이제 단골이십니다." : "어서 오세요!";
         document.getElementById("authWelcome").innerHTML = greeting + '<b id="authWho"></b>';
         document.getElementById("authWho").innerText = nick + "님";
-        document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
+        document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 장부";
         topButton.innerHTML = "\uD83D\uDC64 " + nick + "님";
         logoutButton.style.display = "block";
       } else {
@@ -1982,7 +2094,7 @@
     // 수파베이스가 보내주는 영어 오류를 한국어로 바꿔주기
     function authErrorText(message) {
       if (message.indexOf("already registered") !== -1) {
-        return "이미 가입된 이메일이에요.";
+        return "이미 단골로 적혀 있는 이메일이에요.";
       }
       if (message.indexOf("Password should be") !== -1) {
         return "비밀번호는 6자 이상이어야 해요.";
@@ -1993,7 +2105,7 @@
       if (message.indexOf("rate limit") !== -1 || message.indexOf("security purposes") !== -1) {
         return "잠시 후에 다시 시도해 주세요.";
       }
-      return "가입에 실패했어요. (" + message + ")";
+      return "단골 등록이 안 됐어요. (" + message + ")";
     }
 
     // 페이지를 열 때 이미 로그인되어 있으면 그 상태로 보여주기
@@ -2069,7 +2181,7 @@
       var box = document.getElementById("wishList");
 
       if (wishItems.length === 0) {
-        box.innerHTML = '<p class="cart-empty">찜한 상품이 없어요.<br>마음에 드는 상품의 별을 눌러 보세요!</p>';
+        box.innerHTML = '<p class="cart-empty">아직 찜해둔 게 없습니다.<br>마음에 드는 것에 별을 눌러두세요!</p>';
         return;
       }
 
