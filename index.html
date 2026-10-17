@@ -148,28 +148,47 @@
     /* ===== 검색창 (상품 목록 위, 가운데) ===== */
     /* 간판 바로 아래 검색창 */
     .search-box {
-      margin: 16px auto 0 auto;
+      margin: 18px auto 0 auto;
+      padding: 0 16px;
       text-align: center;
+    }
+    /* 돋보기와 입력칸을 한 덩어리로 */
+    .search-wrap {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: 440px;
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      line-height: 1;
+      pointer-events: none;
     }
     #searchInput {
       width: 100%;
-      max-width: 360px;
       box-sizing: border-box;
-      padding: 11px 18px;
-      font-size: 15px;
+      padding: 15px 20px 15px 52px;
+      font-size: 18px;
+      font-weight: bold;
       font-family: inherit;
       color: #33302B;
-      background-color: #FFFDF8;
-      border: 3px solid #8C2A22;
-      border-radius: 22px;
-      text-align: center;
+      background-color: #FFFFFF;
+      border: 4px solid #33302B;
+      border-radius: 28px;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.28);
     }
     #searchInput::placeholder {
-      color: #A89880;
+      color: #8A7B66;
+      font-weight: normal;
     }
     #searchInput:focus {
       outline: none;
       border-color: #FFD400;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.28), 0 0 0 5px rgba(255, 212, 0, 0.45);
     }
     /* 검색 결과가 없을 때 보여줄 글 */
     .no-result {
@@ -984,7 +1003,10 @@
 
     <!-- 간판 바로 아래 검색창 -->
     <div class="search-box">
-      <input type="text" id="searchInput" placeholder="무엇을 찾으세요?" oninput="searchProduct()">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="무엇을 찾으세요?" oninput="searchProduct()">
+      </div>
     </div>
     <p>새벽장서 떼 온 채소, 오늘 아침에 손수 무쳤습니다</p>
     <div class="top-bar">
