@@ -264,6 +264,13 @@
       /* 베스트 딱지의 기준이 되는 위치 */
       position: relative;
     }
+    /* 상품 카드의 '봉지에 담기' 버튼만 작게 (별 버튼은 제외) */
+    .card button:not(.heart-btn) {
+      padding: 7px 15px;
+      font-size: 13px;
+      border-radius: 14px;
+    }
+
     /* 찜한 개수 딱지 */
     .wish-count {
       background-color: #D1622A;
