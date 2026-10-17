@@ -1250,14 +1250,12 @@
   <div class="cart-back" id="authBack" onclick="closeAuthOutside(event)">
     <div class="cart-window">
       <div class="cart-head auth-head">
-        <h3 id="authTitle">
-👤
- 회원가입</h3>
+        <h3 id="authTitle">👤 로그인</h3>
         <button class="cart-close" onclick="closeAuth()">&times;</button>
       </div>
 
       <!-- 가입 전 화면 -->
-      <div class="auth-form" id="authForm">
+      <div class="auth-form" id="authForm" style="display: none;">
         <p class="auth-intro">
           <b>YEONNI'S FOOD</b>
           오늘 아침에 딴 채소로 만든 산뜻한 한 그릇, 새벽마다 신선하게 배송해 드려요.
@@ -1291,7 +1289,7 @@
       </div>
 
       <!-- 로그인 화면 -->
-      <div class="auth-form" id="authLogin" style="display: none;">
+      <div class="auth-form" id="authLogin">
         <p class="auth-intro">
           <b>YEONNI'S FOOD</b>
           다시 오셨군요! 이메일과 비밀번호로 들어와 주세요.
@@ -1401,13 +1399,24 @@
     var SUPABASE_KEY = "sb_publishable_41iA_dp6bnZhGY4_t7GI0w_VVcKbGs1";
 
     // 연결된 수파베이스를 db 라는 이름으로 쓰기
-    var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // 인터넷이 느려 라이브러리를 못 받아온 경우에도 페이지 나머지는 그대로 동작하게 함
+    var db = null;
+    if (window.supabase && window.supabase.createClient) {
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    }
 
     // 연결이 잘 됐는지 개발자 도구(F12) 콘솔에 알려주기
     if (db) {
       console.log("[수파베이스] 연결 준비 완료:", SUPABASE_URL);
     } else {
       console.error("[수파베이스] 연결 실패 - 라이브러리를 불러오지 못했습니다");
+    }
+
+    // 로그인/가입 기능을 쓸 수 있는 상태인지 확인하고, 아니면 안내 문구 보여주기
+    function dbReady(msgBoxId) {
+      if (db) return true;
+      setMsg(msgBoxId, "지금은 접속이 어려워요. 잠시 후 새로고침해 주세요.", "err");
+      return false;
     }
   </script>
 
@@ -1680,6 +1689,8 @@
         return;
       }
 
+      if (!dbReady("authMsg")) return;
+
       // 두 번 눌리지 않게 잠깐 버튼을 잠그기
       button.disabled = true;
       button.innerText = "가입하는 중...";
@@ -1717,6 +1728,7 @@
 
     // 로그아웃
     function signOut() {
+      if (!dbReady("authDoneMsg")) return;
       db.auth.signOut().then(function () {
         drawAuthState(null);
         showAuthMsg("로그아웃 되었습니다.", "ok");
@@ -1761,6 +1773,8 @@
         showLoginMsg("비밀번호를 입력해 주세요.", "err");
         return;
       }
+
+      if (!dbReady("authLoginMsg")) return;
 
       button.disabled = true;
       button.innerText = "들어가는 중...";
@@ -1844,6 +1858,8 @@
       if (pw) {
         changes.password = pw;
       }
+
+      if (!dbReady("authEditMsg")) return;
 
       button.disabled = true;
       button.innerText = "저장하는 중...";
@@ -1930,10 +1946,12 @@
     }
 
     // 페이지를 열 때 이미 로그인되어 있으면 그 상태로 보여주기
-    db.auth.getSession().then(function (result) {
-      var session = result.data.session;
-      drawAuthState(session ? session.user : null);
-    });
+    if (db) {
+      db.auth.getSession().then(function (result) {
+        var session = result.data.session;
+        drawAuthState(session ? session.user : null);
+      });
+    }
     // ===== 찜한 상품 =====
     // 별을 누른 상품을 모아두는 목록 (장바구니와 같은 모양으로 저장)
     var wishItems = [];
