@@ -425,6 +425,30 @@
       margin-top: 6px;
       font-size: 17px;
     }
+    /* 로그인 <-> 회원가입 오가는 줄 */
+    .auth-switch {
+      text-align: center;
+      margin: 16px 0 0 0;
+      font-size: 14px;
+      color: #7A8F75;
+    }
+    /* 글자처럼 보이는 전환 버튼 */
+    .auth-link {
+      background-color: transparent;
+      border: none;
+      color: #4B8A45;
+      font-size: 14px;
+      font-weight: bold;
+      font-family: inherit;
+      padding: 0 0 0 4px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .auth-link:hover {
+      background-color: transparent;
+      color: #7CC576;
+    }
+
     /* 로그인한 계정의 이메일 (작게) */
     .auth-mail {
       text-align: center;
@@ -839,7 +863,7 @@
   <header>
     <h1 class="eng-name">YEONNI'S FOOD</h1>
     <p>오늘 아침에 딴 채소로 만든 산뜻한 한 그릇</p>
-    <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 회원가입</button>
+    <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 로그인 · 가입</button>
     <button class="top-btn" onclick="openWish()">
       ⭐ 찜한 상품 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
     </button>
@@ -1263,6 +1287,29 @@
         </div>
 
         <button class="auth-submit" id="authSubmit" onclick="signUp()">회원이 되기</button>
+        <p class="auth-switch">이미 회원이신가요?<button class="auth-link" onclick="showLogin()">로그인</button></p>
+      </div>
+
+      <!-- 로그인 화면 -->
+      <div class="auth-form" id="authLogin" style="display: none;">
+        <p class="auth-intro">
+          <b>YEONNI'S FOOD</b>
+          다시 오셨군요! 이메일과 비밀번호로 들어와 주세요.
+        </p>
+        <p class="auth-msg" id="authLoginMsg"></p>
+
+        <div class="auth-field">
+          <label for="loginEmail">이메일</label>
+          <input class="auth-input" type="email" id="loginEmail" placeholder="example@email.com" autocomplete="email">
+        </div>
+
+        <div class="auth-field">
+          <label for="loginPw">비밀번호</label>
+          <input class="auth-input" type="password" id="loginPw" placeholder="비밀번호" autocomplete="current-password">
+        </div>
+
+        <button class="auth-submit" id="authLoginBtn" onclick="signIn()">로그인</button>
+        <p class="auth-switch">아직 회원이 아니신가요?<button class="auth-link" onclick="showSignUp()">회원가입</button></p>
       </div>
 
       <!-- 가입(로그인)된 뒤 화면 -->
@@ -1537,6 +1584,8 @@
       if (event.key === "Enter" && event.target.classList.contains("auth-input")) {
         if (event.target.closest("#authEdit")) {
           saveProfile();
+        } else if (event.target.closest("#authLogin")) {
+          signIn();
         } else {
           signUp();
         }
@@ -1565,6 +1614,7 @@
     // 회원가입 창 열기 / 닫기
     function openAuth() {
       showAuthMsg("", "");
+      showLoginMsg("", "");
       setMsg("authDoneMsg", "", "");
       document.getElementById("authBack").classList.add("open");
     }
@@ -1645,6 +1695,12 @@
         button.innerText = "회원이 되기";
 
         if (result.error) {
+          // 이미 가입된 이메일이면 로그인 화면으로 옮겨 주기
+          if (result.error.message.indexOf("already registered") !== -1) {
+            showLogin(email);
+            showLoginMsg("이미 가입된 이메일이에요. 비밀번호를 넣고 로그인해 주세요.", "err");
+            return;
+          }
           showAuthMsg(authErrorText(result.error.message), "err");
           return;
         }
@@ -1665,6 +1721,78 @@
         drawAuthState(null);
         showAuthMsg("로그아웃 되었습니다.", "ok");
       });
+    }
+
+    // 로그인 화면 보여주기 (email 을 주면 미리 채워 둠)
+    function showLogin(email) {
+      document.getElementById("authForm").style.display = "none";
+      document.getElementById("authLogin").style.display = "block";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 로그인";
+      if (email) {
+        document.getElementById("loginEmail").value = email;
+        document.getElementById("loginPw").focus();
+      }
+    }
+
+    // 회원가입 화면으로 돌아가기
+    function showSignUp() {
+      document.getElementById("authLogin").style.display = "none";
+      document.getElementById("authForm").style.display = "block";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 회원가입";
+      showLoginMsg("", "");
+    }
+
+    // 로그인 화면 메시지
+    function showLoginMsg(text, kind) {
+      setMsg("authLoginMsg", text, kind);
+    }
+
+    // 로그인 버튼을 눌렀을 때
+    function signIn() {
+      var email = document.getElementById("loginEmail").value.trim();
+      var pw = document.getElementById("loginPw").value;
+      var button = document.getElementById("authLoginBtn");
+
+      if (!email) {
+        showLoginMsg("이메일을 입력해 주세요.", "err");
+        return;
+      }
+      if (!pw) {
+        showLoginMsg("비밀번호를 입력해 주세요.", "err");
+        return;
+      }
+
+      button.disabled = true;
+      button.innerText = "들어가는 중...";
+      showLoginMsg("", "");
+
+      db.auth.signInWithPassword({ email: email, password: pw }).then(function (result) {
+        button.disabled = false;
+        button.innerText = "로그인";
+
+        if (result.error) {
+          showLoginMsg(loginErrorText(result.error.message), "err");
+          return;
+        }
+
+        document.getElementById("loginPw").value = "";
+        drawAuthState(result.data.user);
+        setMsg("authDoneMsg", "로그인되었습니다!", "ok");
+      });
+    }
+
+    // 로그인 실패 메시지를 한국어로 바꿔주기
+    function loginErrorText(message) {
+      if (message.indexOf("Invalid login credentials") !== -1) {
+        return "이메일 또는 비밀번호가 맞지 않아요.";
+      }
+      if (message.indexOf("Email not confirmed") !== -1) {
+        return "이메일 인증을 먼저 마쳐 주세요.";
+      }
+      if (message.indexOf("rate limit") !== -1 || message.indexOf("security purposes") !== -1) {
+        return "잠시 후에 다시 시도해 주세요.";
+      }
+      return "로그인에 실패했어요. (" + message + ")";
     }
 
     // 지금 로그인한 사람 (없으면 null)
@@ -1751,6 +1879,7 @@
       var form = document.getElementById("authForm");
       var done = document.getElementById("authDone");
       var edit = document.getElementById("authEdit");
+      var login = document.getElementById("authLogin");
       var topButton = document.getElementById("authBtn");
 
       // 지금 로그인한 사람을 기억해 두기 (내 정보 수정에서 사용)
@@ -1761,6 +1890,7 @@
 
       if (user) {
         form.style.display = "none";
+        login.style.display = "none";
         done.style.display = "block";
         document.getElementById("authMail").innerText = user.email;
 
@@ -1773,10 +1903,12 @@
         document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
         topButton.innerHTML = "\uD83D\uDC64 " + nick + "님";
       } else {
-        form.style.display = "block";
+        // 로그인하지 않은 상태에서는 로그인 화면을 먼저 보여주기
+        form.style.display = "none";
+        login.style.display = "block";
         done.style.display = "none";
-        document.getElementById("authTitle").innerText = "\uD83D\uDC64 회원가입";
-        topButton.innerHTML = "\uD83D\uDC64 회원가입";
+        document.getElementById("authTitle").innerText = "\uD83D\uDC64 로그인";
+        topButton.innerHTML = "\uD83D\uDC64 로그인 \u00B7 가입";
       }
     }
 
