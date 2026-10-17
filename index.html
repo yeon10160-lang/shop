@@ -496,6 +496,19 @@
       border-top: none;
     }
 
+    /* 안 적힌 칸을 빨갛게 알려주기 */
+    #orderBack .auth-input.wrong {
+      border-color: #E23B3B;
+      background-color: #FFF2F2;
+    }
+    #orderBack .auth-input.wrong::placeholder {
+      color: #D08A8A;
+    }
+    /* 빨간 칸 바로 위 이름표도 빨갛게 */
+    #orderBack .auth-field.wrong label {
+      color: #E23B3B;
+    }
+
     /* 주문 완료 화면 */
     .order-done-mark {
       text-align: center;
@@ -2305,6 +2318,7 @@
       }
 
       setMsg("orderMsg", "", "");
+      clearWrong();
       resetOrderView();
       drawOrderSummary();
 
@@ -2385,18 +2399,24 @@
         setMsg("orderMsg", "담으신 것이 없어요.", "err");
         return;
       }
+      // 덜 적힌 칸이 있으면 그 칸을 빨갛게 바꾸고 그리로 옮겨줌
       if (!name) {
-        setMsg("orderMsg", "받으실 분 성함을 적어주세요.", "err");
+        markWrong("orderName", "받으실 분 성함을 적어주세요.");
+        return;
+      }
+      if (!phone) {
+        markWrong("orderPhone", "연락처를 적어주세요.");
         return;
       }
       if (phone.replace(/[^0-9]/g, "").length < 9) {
-        setMsg("orderMsg", "연락처를 다시 확인해 주세요.", "err");
+        markWrong("orderPhone", "연락처가 짧아요. 다시 확인해 주세요.");
         return;
       }
       if (!addr) {
-        setMsg("orderMsg", "받으실 곳을 적어주세요.", "err");
+        markWrong("orderAddr", "받으실 곳을 적어주세요.");
         return;
       }
+      clearWrong();
       if (!dbReady("orderMsg")) return;
 
       var service = serviceInfo();
@@ -2465,6 +2485,40 @@
 
           showOrderDone(orderId, name, addr, payTotal, service.qty);
         });
+      });
+    }
+
+    // 빨간 표시를 모두 지우기
+    function clearWrong() {
+      var boxes = document.querySelectorAll("#orderForm .auth-input");
+      for (var i = 0; i < boxes.length; i++) {
+        boxes[i].classList.remove("wrong");
+        if (boxes[i].parentNode) boxes[i].parentNode.classList.remove("wrong");
+      }
+    }
+
+    // 덜 적힌 칸을 빨갛게 바꾸고 그 자리로 옮겨주기
+    function markWrong(id, message) {
+      clearWrong();
+      setMsg("orderMsg", message, "err");
+
+      var box = document.getElementById(id);
+      if (!box) return;
+
+      box.classList.add("wrong");
+      if (box.parentNode) box.parentNode.classList.add("wrong");
+
+      // 그 칸이 보이도록 옮기고 바로 적을 수 있게 하기
+      box.scrollIntoView({ behavior: "smooth", block: "center" });
+      box.focus();
+    }
+
+    // 다시 적기 시작하면 빨간 표시를 풀어주기
+    var orderBoxes = document.querySelectorAll("#orderForm .auth-input");
+    for (var ob = 0; ob < orderBoxes.length; ob++) {
+      orderBoxes[ob].addEventListener("input", function () {
+        this.classList.remove("wrong");
+        if (this.parentNode) this.parentNode.classList.remove("wrong");
       });
     }
 
