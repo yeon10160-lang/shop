@@ -254,21 +254,18 @@
     .top-btn:hover {
       background-color: #F2E4CA;
     }
-    /* 오른쪽 위 구석: 계정 버튼과 로그아웃 버튼이 나란히 */
-    .auth-corner {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+    /* 머리말 아래 버튼들을 한 줄로 나란히 */
+    .top-bar {
       display: flex;
-      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
       align-items: center;
+      gap: 8px;
+      margin-top: 14px;
     }
-    .auth-corner .top-btn {
+    .top-bar .top-btn {
       margin: 0;
-    }
-    /* 계정 이름이 길면 말줄임표로 */
-    .top-btn.auth-top-btn {
-      max-width: 230px;
+      max-width: 260px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -280,18 +277,6 @@
     }
     .top-btn.logout-top-btn:hover {
       background-color: #E8D5B5;
-    }
-    /* 화면이 좁으면 제목과 겹치지 않게 흐름 배치로 */
-    @media (max-width: 700px) {
-      .auth-corner {
-        position: static;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 14px;
-      }
-      .top-btn.auth-top-btn {
-        max-width: 100%;
-      }
     }
     /* 장바구니에 담은 개수 딱지 */
     .cart-count {
@@ -732,6 +717,32 @@
       background-color: #E8D5B5;
     }
 
+    /* 오늘 다 나간 상품 */
+    .card.sold-out img {
+      filter: grayscale(100%);
+      opacity: 0.55;
+    }
+    .card.sold-out h3,
+    .card.sold-out .new-price {
+      color: #A89880;
+    }
+    .card.sold-out button {
+      background-color: #D8CCB8;
+      color: #7A6B55;
+      cursor: default;
+    }
+    .soldout-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #6B6256;
+      color: white;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 9px;
+      border-radius: 8px;
+    }
+
     /* 찜하기 별 버튼 - 오른쪽 아래, 파랑 */
     .heart-btn {
       position: absolute;
@@ -960,16 +971,17 @@
     <h1 class="eng-name">연니네 채소가게</h1>
     <p class="market-line">화곡동 골목시장 안쪽 세 번째 집</p>
     <p>새벽장서 떼 온 채소, 오늘 아침에 손수 무쳤습니다</p>
-    <div class="auth-corner">
-      <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 단골 등록 · 들어오기</button>
+    <div class="top-bar">
+      <button class="top-btn" onclick="openWish()">
+        ⭐ 찜해둔 것 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
+      </button>
+      <button class="top-btn" onclick="openCart()">
+        🧺 장바구니 <span class="cart-count" id="cartNumber">0개</span><span class="cart-price" id="cartPrice">0원</span>
+      </button>
+      <button class="top-btn" id="loginBtn" onclick="openAuth()">👤 로그인</button>
+      <button class="top-btn" id="mypageBtn" onclick="openAuth()" style="display: none;">📒 마이페이지</button>
       <button class="top-btn logout-top-btn" id="logoutBtn" onclick="signOut()" style="display: none;">로그아웃</button>
     </div>
-    <button class="top-btn" onclick="openWish()">
-      ⭐ 찜해둔 것 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
-    </button>
-    <button class="top-btn" onclick="openCart()">
-      🧺 장바구니 <span class="cart-count" id="cartNumber">0개</span><span class="cart-price" id="cartPrice">0원</span>
-    </button>
   </header>
 
   <!-- 메뉴 4개 (누르면 해당 구역으로 이동) -->
@@ -1566,18 +1578,6 @@
     // { 이름, 사진주소, 한개값, 개수 } 모양으로 저장됨
     var cartItems = [];
 
-    // 상품 카드의 '장바구니 담기' 버튼마다 그 카드의 정보를 기억시켜 두기
-    var addButtons = document.querySelectorAll(".card button:not(.heart-btn)");
-    for (var c = 0; c < addButtons.length; c++) {
-      var card = addButtons[c].closest(".card");
-      var cardImg = card.querySelector("img");
-      var cardName = card.querySelector("h3");
-      addButtons[c].setAttribute("data-price", readPrice(card));
-      addButtons[c].setAttribute("data-list", readListPrice(card));
-      addButtons[c].setAttribute("data-name", cardName ? cardName.innerText : "상품");
-      addButtons[c].setAttribute("data-img", cardImg ? cardImg.getAttribute("src") : "");
-      addButtons[c].addEventListener("click", addToCart);
-    }
 
     // 버튼을 누르면 목록에 넣고 개수와 금액을 다시 계산하기
     function addToCart() {
@@ -2056,7 +2056,8 @@
       var done = document.getElementById("authDone");
       var edit = document.getElementById("authEdit");
       var login = document.getElementById("authLogin");
-      var topButton = document.getElementById("authBtn");
+      var loginButton = document.getElementById("loginBtn");
+      var mypageButton = document.getElementById("mypageBtn");
       var logoutButton = document.getElementById("logoutBtn");
 
       // 지금 로그인한 사람을 기억해 두기 (내 정보 수정에서 사용)
@@ -2078,15 +2079,19 @@
         document.getElementById("authWelcome").innerHTML = greeting + '<b id="authWho"></b>';
         document.getElementById("authWho").innerText = nick + "님";
         document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 장부";
-        topButton.innerHTML = "\uD83D\uDC64 " + nick + "님";
+        loginButton.style.display = "none";
+        mypageButton.style.display = "block";
+        mypageButton.innerHTML = "\uD83D\uDCD2 " + nick + "님 장부";
         logoutButton.style.display = "block";
       } else {
         // 로그인하지 않은 상태에서는 로그인 화면을 먼저 보여주기
         form.style.display = "none";
         login.style.display = "block";
         done.style.display = "none";
-        document.getElementById("authTitle").innerText = "\uD83D\uDC64 로그인";
-        topButton.innerHTML = "\uD83D\uDC64 로그인 \u00B7 가입";
+        document.getElementById("authTitle").innerText = "\uD83D\uDC64 단골 들어오기";
+        loginButton.style.display = "block";
+        loginButton.innerHTML = "\uD83D\uDC64 로그인";
+        mypageButton.style.display = "none";
         logoutButton.style.display = "none";
       }
     }
@@ -2342,35 +2347,145 @@
       clickedButton.classList.add("active");
     }
 
-    // 상품마다 할인율을 자동으로 계산해서 노란색으로 보여주기
-    var cards = document.querySelectorAll(".card");
+    // 상품 카드가 만들어진 뒤에 해야 하는 준비를 한 번에 모아둔 함수
+    // (처음 열 때 한 번, 수파베이스에서 상품을 받아 다시 그린 뒤 또 한 번 부름)
+    function setupCards() {
+      var cards = document.querySelectorAll(".card");
 
-    for (var i = 0; i < cards.length; i++) {
-      var oldBox = cards[i].querySelector(".old-price");
-      var newBox = cards[i].querySelector(".new-price");
+      // 상품마다 할인율을 자동으로 계산해서 노란색으로 보여주기
+      for (var i = 0; i < cards.length; i++) {
+        var oldBox = cards[i].querySelector(".old-price");
+        var newBox = cards[i].querySelector(".new-price");
 
-      // 할인하지 않는 상품은 정가 줄이 없으므로 딱지도 붙이지 않음
-      if (!oldBox) continue;
+        // 할인하지 않는 상품은 정가 줄이 없으므로 딱지도 붙이지 않음
+        if (!oldBox || !newBox) continue;
+        // 이미 딱지가 붙어 있으면 건너뛰기
+        if (newBox.querySelector(".sale")) continue;
 
-      // 글자에서 숫자만 뽑아내기 (예: "12,000원" -> 12000)
-      var oldPrice = Number(oldBox.innerText.replace(/[^0-9]/g, ""));
-      var newPrice = Number(newBox.innerText.replace(/[^0-9]/g, ""));
+        // 글자에서 숫자만 뽑아내기 (예: "12,000원" -> 12000)
+        var oldPrice = Number(oldBox.innerText.replace(/[^0-9]/g, ""));
+        var newPrice = Number(newBox.innerText.replace(/[^0-9]/g, ""));
 
-      // 할인율 계산 (소수점은 반올림)
-      var rate = Math.round((oldPrice - newPrice) / oldPrice * 100);
-      if (rate <= 0) continue;
+        // 할인율 계산 (소수점은 반올림)
+        var rate = Math.round((oldPrice - newPrice) / oldPrice * 100);
+        if (rate <= 0) continue;
 
-      // 가격 앞에 노란색 할인율 딱지 붙이기
-      newBox.innerHTML = '<span class="sale">' + rate + '%</span>' + newBox.innerText;
+        // 가격 앞에 노란색 할인율 딱지 붙이기
+        newBox.innerHTML = '<span class="sale">' + rate + '%</span>' + newBox.innerText;
+      }
+
+      // 상품 카드마다 오른쪽 아래에 별(찜하기) 버튼 만들기
+      for (var k = 0; k < cards.length; k++) {
+        if (cards[k].querySelector(".heart-btn")) continue;
+        var heart = document.createElement("button");
+        heart.className = "heart-btn";
+        heart.innerHTML = "\u2606";
+        heart.onclick = toggleHeart;
+        cards[k].appendChild(heart);
+      }
+
+      // '봉지에 담기' 버튼마다 그 카드의 정보를 기억시키고 눌렀을 때 동작 연결하기
+      var addButtons = document.querySelectorAll(".card button:not(.heart-btn)");
+      for (var c = 0; c < addButtons.length; c++) {
+        if (addButtons[c].getAttribute("data-ready")) continue;
+        var card = addButtons[c].closest(".card");
+        var cardImg = card.querySelector("img");
+        var cardName = card.querySelector("h3");
+        addButtons[c].setAttribute("data-price", readPrice(card));
+        addButtons[c].setAttribute("data-list", readListPrice(card));
+        addButtons[c].setAttribute("data-name", cardName ? cardName.innerText : "상품");
+        addButtons[c].setAttribute("data-img", cardImg ? cardImg.getAttribute("src") : "");
+        addButtons[c].setAttribute("data-ready", "1");
+        addButtons[c].addEventListener("click", addToCart);
+      }
     }
 
-    // 상품 카드마다 오른쪽 아래에 별(찜하기) 버튼 만들기
-    for (var k = 0; k < cards.length; k++) {
-      var heart = document.createElement("button");
-      heart.className = "heart-btn";
-      heart.innerHTML = "☆";
-      heart.onclick = toggleHeart;
-      cards[k].appendChild(heart);
+    setupCards();
+
+    // ===== 수파베이스에서 상품 불러오기 =====
+    // 글자 안의 따옴표나 꺾쇠가 화면을 망가뜨리지 않게 바꿔주기
+    function esc(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    // 상품 하나를 카드 모양 글자로 만들기
+    function productCard(item) {
+      var name = esc(item.name);
+      var html = '<div class="card' + (item.sold_out ? ' sold-out' : '') + '">';
+
+      if (item.sold_out) {
+        html += '<span class="soldout-tag">오늘은 다 나갔어요</span>';
+      } else if (item.tag === "잘나가요") {
+        html += '<span class="best-tag">잘나가요</span>';
+      } else if (item.tag === "새로왔어요") {
+        html += '<span class="new-tag">새로왔어요</span>';
+      }
+
+      html += '<img src="' + esc(item.image_url) + '" alt="' + name + '">';
+      html += '<h3>' + name + '</h3>';
+      if (item.list_price > item.sale_price) {
+        html += '<p class="old-price">' + won(item.list_price) + '</p>';
+      }
+      html += '<p class="new-price">' + won(item.sale_price) + '</p>';
+
+      if (item.sold_out) {
+        html += '<button disabled>다 나갔어요</button>';
+      } else {
+        html += '<button onclick="showAlert(&#39;' + name + ' 봉지에 담았습니다!&#39;)">봉지에 담기</button>';
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    // 받아온 상품들을 구역별로 나눠 화면에 다시 그리기
+    function drawProducts(list) {
+      var byCategory = {};
+      for (var i = 0; i < list.length; i++) {
+        var cat = list[i].category;
+        if (!byCategory[cat]) byCategory[cat] = [];
+        byCategory[cat].push(list[i]);
+      }
+
+      var drawn = 0;
+      for (var cat2 in byCategory) {
+        var section = document.getElementById(cat2);
+        if (!section) continue;
+        var box = section.querySelector(".card-box");
+        if (!box) continue;
+
+        var html = "";
+        for (var j = 0; j < byCategory[cat2].length; j++) {
+          html += productCard(byCategory[cat2][j]);
+        }
+        box.innerHTML = html;
+        drawn = drawn + byCategory[cat2].length;
+      }
+
+      // 카드가 새로 만들어졌으니 담아둔 것은 비우고 준비를 다시 하기
+      cartItems = [];
+      wishItems = [];
+      refreshCart();
+      refreshWish();
+      setupCards();
+      console.log("[상품] 수파베이스에서 " + drawn + "개를 불러왔습니다.");
+    }
+
+    // 페이지를 열 때 상품을 불러오기
+    // 못 불러오면 아무것도 바꾸지 않아서, 원래 적혀 있던 상품이 그대로 보임
+    if (db) {
+      db.from("products").select("*").order("sort_order").then(function (result) {
+        if (result.error || !result.data || result.data.length === 0) {
+          console.warn("[상품] 수파베이스에서 불러오지 못해 원래 목록을 그대로 씁니다.", result.error);
+          return;
+        }
+        drawProducts(result.data);
+      });
     }
 
     // 별을 누를 때마다 3단계로 바뀜
