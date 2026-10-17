@@ -441,6 +441,80 @@
     .cart-head.wish-head {
       background-color: #D1622A;
     }
+    /* 주문서 창 머리띠 */
+    .cart-head.order-head {
+      background-color: #8C2A22;
+    }
+    /* 주문서 안의 작은 제목 */
+    .order-part {
+      font-family: "Gaegu", "맑은 고딕", cursive;
+      font-size: 19px;
+      color: #8C2A22;
+      margin: 18px 0 10px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px dashed #E8D5B5;
+    }
+    /* 주문 내역 한 줄 */
+    .order-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      padding: 5px 0;
+    }
+    .order-line .name {
+      color: #33302B;
+    }
+    .order-line .cost {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    .order-line.gift .name,
+    .order-line.gift .cost {
+      color: #8A6D00;
+    }
+    /* 주문서 속은 누런 종이처럼 */
+    #orderBack .cart-list {
+      background-color: #FBF4E6;
+    }
+    /* 주문서 입력칸은 영수증 칸처럼 네모나게 */
+    #orderBack .auth-input {
+      border-radius: 8px;
+      border-color: #E0C9A0;
+      background-color: #FFFDF8;
+    }
+    #orderBack .auth-input:focus {
+      border-color: #B5342B;
+    }
+    /* 주문서 맨 아래 내실 값은 손글씨로 크게 */
+    #orderBack .total-row {
+      font-family: "Gaegu", "맑은 고딕", cursive;
+      font-size: 24px;
+      border-top: 2px dashed #B5342B;
+    }
+    #orderBack .cart-foot-order {
+      background-color: #FBF4E6;
+      border-top: none;
+    }
+
+    /* 장바구니의 주문하기 버튼 */
+    .order-go {
+      width: 100%;
+      margin-top: 14px;
+      font-size: 16px;
+    }
+    /* 주문할 수 없을 때는 눌리지 않게 흐리게 */
+    .order-go:disabled {
+      background-color: #D8CCB8;
+      color: #7A6B55;
+      cursor: default;
+    }
+    .order-go:disabled:hover {
+      background-color: #D8CCB8;
+    }
+    .cart-foot-order .order-go + .cart-clear {
+      margin-top: 10px;
+    }
+
     /* 단골 창 머리띠 */
     .cart-head.auth-head {
       background-color: #8C2A22;
@@ -1243,6 +1317,50 @@
     <p class="copyright">ⓒ 2026 YEONNI'S SALAD · 화곡동 골목시장</p>
   </footer>
 
+  <!-- 주문서 창 (평소에는 숨어 있음) -->
+  <div class="cart-back" id="orderBack" onclick="closeOrderOutside(event)">
+    <div class="cart-window">
+      <div class="cart-head order-head">
+        <h3>🧾 주문서</h3>
+        <button class="cart-close" onclick="closeOrder()">&times;</button>
+      </div>
+
+      <div class="cart-list" id="orderBody">
+        <p class="auth-msg" id="orderMsg"></p>
+
+        <h4 class="order-part">무엇을 담으셨나요</h4>
+        <div id="orderSummary"></div>
+
+        <h4 class="order-part">어디로 보내드릴까요</h4>
+        <div class="auth-field">
+          <label for="orderName">받으실 분</label>
+          <input class="auth-input" type="text" id="orderName" placeholder="성함" maxlength="20">
+        </div>
+        <div class="auth-field">
+          <label for="orderPhone">연락처</label>
+          <input class="auth-input" type="tel" id="orderPhone" placeholder="010-0000-0000" maxlength="20">
+        </div>
+        <div class="auth-field">
+          <label for="orderAddr">받으실 곳</label>
+          <input class="auth-input" type="text" id="orderAddr" placeholder="주소를 적어주세요" maxlength="120">
+        </div>
+        <div class="auth-field">
+          <label for="orderMemo">하실 말씀</label>
+          <input class="auth-input" type="text" id="orderMemo" placeholder="문 앞에 놓아주세요 등 (안 적으셔도 됩니다)" maxlength="100">
+        </div>
+      </div>
+
+      <div class="cart-foot-order">
+        <div class="cart-sum-row total-row">
+          <span>내실 값</span>
+          <span id="orderTotal">0원</span>
+        </div>
+        <button class="auth-submit" id="orderSubmit" onclick="submitOrder()">이대로 주문하기</button>
+        <button class="cart-clear auth-logout" onclick="backToCart()">← 장바구니로</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 회원가입 창 (평소에는 숨어 있음) -->
   <div class="cart-back" id="authBack" onclick="closeAuthOutside(event)">
     <div class="cart-window">
@@ -1385,6 +1503,7 @@
           <span>내실 값</span>
           <span id="cartFootSum">0원</span>
         </div>
+        <button class="order-go" onclick="openOrder()">주문하기</button>
         <button class="cart-clear" onclick="clearCart()">싹 비우기</button>
       </div>
     </div>
@@ -1578,6 +1697,24 @@
       };
     }
 
+    // 주문할 수 있는 상태인지에 따라 주문하기 버튼 모양 바꾸기
+    // 단골로 들어오지 않았거나 담은 것이 없으면 누를 수 없음
+    function updateOrderButton() {
+      var button = document.querySelector(".order-go");
+      if (!button) return;
+
+      if (!currentUser) {
+        button.disabled = true;
+        button.innerText = "주문하려면 단골로 들어오세요";
+      } else if (cartItems.length === 0) {
+        button.disabled = true;
+        button.innerText = "담으신 것이 없어요";
+      } else {
+        button.disabled = false;
+        button.innerText = "주문하기";
+      }
+    }
+
     function refreshCart() {
       cartTotal = 0;
       cartSum = 0;
@@ -1609,6 +1746,8 @@
       } else {
         serviceRow.style.display = "none";
       }
+
+      updateOrderButton();
 
       // 상세 창이 열려 있으면 그 안의 목록도 같이 고치기
       if (document.getElementById("cartBack").classList.contains("open")) {
@@ -1697,6 +1836,7 @@
         closeCart();
         closeWish();
         closeAuth();
+        closeOrder();
       }
       // 입력 칸에서 엔터를 치면 그 화면의 버튼을 누른 것과 같게 하기
       if (event.key === "Enter" && event.target.classList.contains("auth-input")) {
@@ -2100,6 +2240,110 @@
         drawAuthState(session ? session.user : null);
       });
     }
+    // ===== 주문서 화면 =====
+
+    // 장바구니에서 '주문하기' 를 눌렀을 때
+    // 단골로 들어오지 않았거나 봉지가 비어 있으면 주문서로 갈 수 없음
+    function openOrder() {
+      if (!currentUser) {
+        closeCart();
+        showAlert("주문은 단골만 하실 수 있어요. 먼저 들어와 주세요!");
+        openAuth();
+        return;
+      }
+      if (cartItems.length === 0) {
+        showAlert("봉지가 비었습니다. 먼저 담아주세요!");
+        return;
+      }
+
+      setMsg("orderMsg", "", "");
+      drawOrderSummary();
+
+      // 단골이면 이름을 미리 적어두기
+      if (currentUser) {
+        var nameBox = document.getElementById("orderName");
+        if (!nameBox.value) nameBox.value = nickOf(currentUser);
+      }
+
+      closeCart();
+      document.getElementById("orderBack").classList.add("open");
+    }
+
+    function closeOrder() {
+      document.getElementById("orderBack").classList.remove("open");
+    }
+
+    function closeOrderOutside(event) {
+      if (event.target.id === "orderBack") {
+        closeOrder();
+      }
+    }
+
+    // 주문서를 닫고 장바구니로 돌아가기
+    function backToCart() {
+      closeOrder();
+      openCart();
+    }
+
+    // 주문서 안에 무엇을 얼마에 사는지 적어주기
+    function drawOrderSummary() {
+      var box = document.getElementById("orderSummary");
+      var html = "";
+
+      for (var i = 0; i < cartItems.length; i++) {
+        var item = cartItems[i];
+        html += '<div class="order-line">';
+        html += '  <span class="name">' + esc(item.name) + ' x ' + item.count + '</span>';
+        html += '  <span class="cost">' + won(item.price * item.count) + '</span>';
+        html += '</div>';
+      }
+
+      // 3개당 1개 서비스도 함께 적어주기
+      var service = serviceInfo();
+      if (service.qty > 0 && service.item) {
+        html += '<div class="order-line gift">';
+        html += '  <span class="name">\uD83C\uDF81 ' + esc(service.item.name) + ' x ' + service.qty + ' (서비스)</span>';
+        html += '  <span class="cost">0원</span>';
+        html += '</div>';
+      }
+
+      // 깎아드린 값이 있으면 보여주기
+      var saleSum = cartListSum - cartSum;
+      if (saleSum > 0) {
+        html += '<div class="order-line">';
+        html += '  <span class="name">깎아드린 값</span>';
+        html += '  <span class="cost" style="color: #D98324;">-' + won(saleSum) + '</span>';
+        html += '</div>';
+      }
+
+      box.innerHTML = html;
+      document.getElementById("orderTotal").innerText = won(cartSum);
+    }
+
+    // '이대로 주문하기' 를 눌렀을 때
+    function submitOrder() {
+      var name = document.getElementById("orderName").value.trim();
+      var phone = document.getElementById("orderPhone").value.trim();
+      var addr = document.getElementById("orderAddr").value.trim();
+
+      if (!name) {
+        setMsg("orderMsg", "받으실 분 성함을 적어주세요.", "err");
+        return;
+      }
+      if (phone.replace(/[^0-9]/g, "").length < 9) {
+        setMsg("orderMsg", "연락처를 다시 확인해 주세요.", "err");
+        return;
+      }
+      if (!addr) {
+        setMsg("orderMsg", "받으실 곳을 적어주세요.", "err");
+        return;
+      }
+
+      // 아직 주문을 가게 장부에 적는 기능은 연결되어 있지 않습니다
+      setMsg("orderMsg", "주문서는 다 적으셨어요! (가게로 보내는 기능은 아직 준비 중입니다)", "ok");
+      document.getElementById("orderBody").scrollTop = 0;
+    }
+
     // ===== 찜한 상품 =====
     // 별을 누른 상품을 모아두는 목록 (장바구니와 같은 모양으로 저장)
     var wishItems = [];
