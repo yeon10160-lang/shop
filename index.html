@@ -190,6 +190,36 @@
       border-color: #FFD400;
       box-shadow: 0 4px 0 rgba(0, 0, 0, 0.28), 0 0 0 5px rgba(255, 212, 0, 0.45);
     }
+    /* 검색 결과 구역 */
+    .search-result {
+      background-color: #F7EDDC;
+    }
+    .search-result .section-desc {
+      margin-bottom: 4px;
+    }
+    /* 검색어를 돋보이게 */
+    .search-word {
+      background-color: #FFD400;
+      color: #33302B;
+      font-weight: bold;
+      padding: 2px 9px;
+      border-radius: 10px;
+    }
+    /* 전체 상품으로 돌아가는 버튼 */
+    .search-clear {
+      background-color: transparent;
+      color: #8C2A22;
+      border: 2px solid #8C2A22;
+      padding: 8px 18px;
+      font-size: 14px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+    }
+    .search-clear:hover {
+      background-color: #8C2A22;
+      color: white;
+    }
+
     /* 상품 불러오는 중 / 실패 안내 */
     .load-note {
       text-align: center;
@@ -1094,6 +1124,14 @@
   <p class="no-result" id="noResult">그건 오늘 안 들어왔네요. 다른 걸로 찾아보세요.</p>
 
   <!-- 샐러드 상품 3개 -->
+  <!-- 검색했을 때만 보이는 검색 결과 구역 -->
+  <section class="products search-result" id="searchResults" style="display: none;">
+    <h2 id="searchTitle">찾으신 물건</h2>
+    <p class="section-desc" id="searchSummary"></p>
+    <button class="search-clear" onclick="clearSearch()">← 전체 상품 보기</button>
+    <div class="card-box" id="searchBox"></div>
+  </section>
+
   <section class="products" id="salad">
     <h2>제일 잘나가는 샐러드</h2>
     <p class="section-desc">아침마다 제일 먼저 나가는 것들입니다</p>
@@ -2080,29 +2118,62 @@
 
     // 별을 채웠을 때 찜 목록에 넣기 (이미 있으면 그대로 두기)
     function putInWish(card) {
+      var pid = card.getAttribute("data-pid") || "";
       for (var i = 0; i < wishItems.length; i++) {
-        if (wishItems[i].card === card) return;
+        if (String(wishItems[i].pid) === String(pid)) return;
       }
       wishItems.push(readCard(card));
+      markStars(pid, true);
     }
 
     // 별을 풀었을 때 찜 목록에서 빼기
     function takeOutWish(card) {
+      var pid = card.getAttribute("data-pid") || "";
       for (var i = 0; i < wishItems.length; i++) {
-        if (wishItems[i].card === card) {
+        if (String(wishItems[i].pid) === String(pid)) {
           wishItems.splice(i, 1);
+          markStars(pid, false);
           return;
+        }
+      }
+    }
+
+    // 같은 상품 카드가 검색 결과에도 있을 수 있으므로 전부 찾아서 별을 맞춰주기
+    function markStars(pid, on) {
+      if (!pid) return;
+      var cards = document.querySelectorAll('.card[data-pid="' + pid + '"]');
+      for (var i = 0; i < cards.length; i++) {
+        var star = cards[i].querySelector(".heart-btn");
+        if (!star) continue;
+        star.classList.remove("dark");
+        if (on) {
+          star.classList.add("on");
+          star.innerHTML = "\u2605";
+        } else {
+          star.classList.remove("on");
+          star.innerHTML = "\u2606";
         }
       }
     }
 
     // 카드의 별을 다시 빈 별로 되돌리기
     function resetStar(card) {
-      var star = card.querySelector(".heart-btn");
-      if (!star) return;
-      star.classList.remove("on");
-      star.classList.remove("dark");
-      star.innerHTML = "\u2606";
+      if (!card) return;
+      markStars(card.getAttribute("data-pid") || "", false);
+    }
+
+    // 지금 화면에 있는 모든 카드의 별을 찜 목록에 맞춰 다시 칠하기
+    // (검색 결과처럼 카드를 새로 만든 뒤에 부름)
+    function syncStars() {
+      var cards = document.querySelectorAll(".card");
+      for (var i = 0; i < cards.length; i++) {
+        var pid = cards[i].getAttribute("data-pid") || "";
+        var wished = false;
+        for (var j = 0; j < wishItems.length; j++) {
+          if (String(wishItems[j].pid) === String(pid)) { wished = true; break; }
+        }
+        markStars(pid, wished);
+      }
     }
 
     // ===== 찜 목록을 수파베이스에 저장하기 =====
@@ -2178,6 +2249,7 @@
             });
           }
           refreshWish();
+          syncStars();
           console.log("[찜] 저장해둔 " + wishItems.length + "종을 불러왔습니다.");
         });
     }
@@ -2293,59 +2365,96 @@
 
     // 검색창에 글자를 칠 때마다 실행됨
     // 상품 이름에 그 글자가 들어간 상품만 보여줌
+    // ===== 검색 결과 페이지 =====
+    // 검색창에 글자를 칠 때마다 실행됨
+    // 검색어가 있으면 '찾으신 물건' 구역만 보여주고, 비우면 원래 화면으로 돌아감
     function searchProduct() {
       var word = document.getElementById("searchInput").value.trim();
-      var sections = document.querySelectorAll(".products");
-      var totalFound = 0;
 
-      for (var i = 0; i < sections.length; i++) {
-        var cardList = sections[i].querySelectorAll(".card");
-        var found = 0;
-
-        for (var j = 0; j < cardList.length; j++) {
-          var name = cardList[j].querySelector("h3").innerText;
-
-          if (name.indexOf(word) > -1) {
-            cardList[j].style.display = "block";
-            found = found + 1;
-          } else {
-            cardList[j].style.display = "none";
-          }
-        }
-
-        totalFound = totalFound + found;
-
-        // 찾은 상품이 하나도 없는 구역은 통째로 숨기기
-        if (found === 0) {
-          sections[i].style.display = "none";
-        } else {
-          sections[i].style.display = "block";
-        }
-      }
-
-      // 검색 결과가 하나도 없으면 안내문 보여주기
-      if (totalFound === 0) {
-        document.getElementById("noResult").innerText =
-          "'" + word + "' 에 해당하는 상품이 없어요. 다른 이름으로 검색해 보세요.";
-        document.getElementById("noResult").style.display = "block";
-      } else {
-        document.getElementById("noResult").style.display = "none";
-      }
-
-      // 검색창을 비우면 카테고리 버튼을 '전체'로 되돌리기
       if (word === "") {
-        var buttons = document.querySelectorAll(".category-btn");
-        for (var k = 0; k < buttons.length; k++) {
-          buttons[k].classList.remove("active");
+        clearSearch();
+        return;
+      }
+
+      // 이름에 검색어가 들어간 상품만 고르기 (영문 대소문자 구분 없음)
+      var lower = word.toLowerCase();
+      var found = [];
+      for (var i = 0; i < allProducts.length; i++) {
+        if (allProducts[i].name.toLowerCase().indexOf(lower) > -1) {
+          found.push(allProducts[i]);
         }
-        buttons[0].classList.add("active");
+      }
+
+      // 검색 결과 구역만 남기고 나머지 구역은 감추기
+      showSearchMode(true);
+
+      var box = document.getElementById("searchBox");
+      var summary = document.getElementById("searchSummary");
+
+      if (found.length === 0) {
+        box.innerHTML = "";
+        summary.innerHTML = '<span class="search-word">' + esc(word) + '</span> 는 오늘 안 들어왔네요. 다른 걸로 찾아보세요.';
+        document.getElementById("noResult").style.display = "none";
+        return;
+      }
+
+      var html = "";
+      for (var j = 0; j < found.length; j++) {
+        html += productCard(found[j]);
+      }
+      box.innerHTML = html;
+      summary.innerHTML = '<span class="search-word">' + esc(word) + '</span> 로 찾은 물건 ' + found.length + '가지입니다.';
+      document.getElementById("noResult").style.display = "none";
+
+      // 새로 만든 카드에 별 버튼과 담기 동작 붙이고, 찜해둔 것은 별을 채워주기
+      setupCards();
+      syncStars();
+    }
+
+    // 검색을 그만두고 원래 화면으로 돌아가기
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.getElementById("noResult").style.display = "none";
+      document.getElementById("searchBox").innerHTML = "";
+      showSearchMode(false);
+
+      // 분류 버튼을 '다 보기'로 되돌리기
+      var buttons = document.querySelectorAll(".category-btn");
+      for (var k = 0; k < buttons.length; k++) {
+        buttons[k].classList.remove("active");
+      }
+      if (buttons.length > 0) buttons[0].classList.add("active");
+
+      // 모든 상품 구역 다시 보이기
+      var sections = document.querySelectorAll(".products");
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].id === "searchResults") continue;
+        sections[i].style.display = "block";
       }
     }
 
+    // 검색 중일 때는 배너, 이벤트, 분류 버튼, 상품 구역을 감춤
+    function showSearchMode(on) {
+      var hideList = [".banner", ".promo", ".category-box", ".about"];
+      for (var i = 0; i < hideList.length; i++) {
+        var box = document.querySelector(hideList[i]);
+        if (box) box.style.display = on ? "none" : "block";
+      }
+
+      var sections = document.querySelectorAll(".products");
+      for (var j = 0; j < sections.length; j++) {
+        if (sections[j].id === "searchResults") continue;
+        sections[j].style.display = on ? "none" : "block";
+      }
+
+      document.getElementById("searchResults").style.display = on ? "block" : "none";
+    }
     function showCategory(id, clickedButton) {
-      // 검색 상태 지우기 (숨겨둔 상품 카드 다시 보이게)
+      // 검색 상태에서 빠져나오기
       document.getElementById("searchInput").value = "";
       document.getElementById("noResult").style.display = "none";
+      document.getElementById("searchBox").innerHTML = "";
+      showSearchMode(false);
       var allCards = document.querySelectorAll(".card");
       for (var c = 0; c < allCards.length; c++) {
         allCards[c].style.display = "block";
@@ -2354,6 +2463,11 @@
       // 모든 상품 구역을 확인해서 보일지 숨길지 정하기
       var sections = document.querySelectorAll(".products");
       for (var i = 0; i < sections.length; i++) {
+        // 검색 결과 구역은 검색할 때만 쓰는 곳이라 건너뜀
+        if (sections[i].id === "searchResults") {
+          sections[i].style.display = "none";
+          continue;
+        }
         if (id === "all" || sections[i].id === id) {
           sections[i].style.display = "block";
         } else {
@@ -2427,6 +2541,7 @@
 
     // ===== 수파베이스에서 상품 불러오기 =====
     var productsReady = false; // 상품 카드가 다 그려졌는지
+    var allProducts = [];      // 검색에 쓰려고 상품 전체를 기억해 둠
 
     // 글자 안의 따옴표나 꺾쇠가 화면을 망가뜨리지 않게 바꿔주기
     function esc(text) {
@@ -2470,6 +2585,7 @@
 
     // 받아온 상품들을 구역별로 나눠 화면에 다시 그리기
     function drawProducts(list) {
+      allProducts = list;
       var byCategory = {};
       for (var i = 0; i < list.length; i++) {
         var cat = list[i].category;
@@ -2498,6 +2614,7 @@
       refreshCart();
       refreshWish();
       setupCards();
+      syncStars();
       productsReady = true;
       console.log("[상품] 수파베이스에서 " + drawn + "개를 불러왔습니다.");
 
