@@ -496,6 +496,39 @@
       border-top: none;
     }
 
+    /* 주문 완료 화면 */
+    .order-done-mark {
+      text-align: center;
+      font-size: 48px;
+      margin: 16px 0 6px 0;
+    }
+    .order-done-title {
+      font-family: "Gaegu", "맑은 고딕", cursive;
+      text-align: center;
+      font-size: 26px;
+      color: #8C2A22;
+      margin: 0 0 6px 0;
+    }
+    .order-done-no {
+      text-align: center;
+      font-size: 15px;
+      color: #8A7B66;
+      margin: 0 0 18px 0;
+    }
+    .order-done-no b {
+      color: #33302B;
+      font-size: 18px;
+    }
+    .order-done-word {
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #33302B;
+      margin: 18px 0 8px 0;
+      padding-top: 16px;
+      border-top: 2px dashed #E8D5B5;
+    }
+
     /* 장바구니의 주문하기 버튼 */
     .order-go {
       width: 100%;
@@ -1328,6 +1361,19 @@
       <div class="cart-list" id="orderBody">
         <p class="auth-msg" id="orderMsg"></p>
 
+        <!-- 주문이 끝난 뒤 보여줄 화면 -->
+        <div id="orderDone" style="display: none;">
+          <p class="order-done-mark">🧾</p>
+          <p class="order-done-title">주문이 들어갔습니다!</p>
+          <p class="order-done-no">주문번호 <b id="orderNo">-</b></p>
+          <div id="orderDoneInfo"></div>
+          <p class="order-done-word">
+            새벽장 보고 다듬어 만드느라 <b>3일</b> 걸립니다.<br>
+            조금만 기다려 주세요. 고맙습니다!
+          </p>
+        </div>
+
+        <div id="orderForm">
         <h4 class="order-part">무엇을 담으셨나요</h4>
         <div id="orderSummary"></div>
 
@@ -1348,6 +1394,7 @@
           <label for="orderMemo">하실 말씀</label>
           <input class="auth-input" type="text" id="orderMemo" placeholder="문 앞에 놓아주세요 등 (안 적으셔도 됩니다)" maxlength="100">
         </div>
+        </div>
       </div>
 
       <div class="cart-foot-order">
@@ -1356,7 +1403,8 @@
           <span id="orderTotal">0원</span>
         </div>
         <button class="auth-submit" id="orderSubmit" onclick="submitOrder()">이대로 주문하기</button>
-        <button class="cart-clear auth-logout" onclick="backToCart()">← 장바구니로</button>
+        <button class="cart-clear auth-logout" id="orderBack2Cart" onclick="backToCart()">← 장바구니로</button>
+        <button class="auth-submit" id="orderDoneClose" onclick="closeOrder()" style="display: none;">가게 둘러보기</button>
       </div>
     </div>
   </div>
@@ -2257,6 +2305,7 @@
       }
 
       setMsg("orderMsg", "", "");
+      resetOrderView();
       drawOrderSummary();
 
       // 단골이면 이름을 미리 적어두기
@@ -2320,12 +2369,22 @@
       document.getElementById("orderTotal").innerText = won(cartSum);
     }
 
-    // '이대로 주문하기' 를 눌렀을 때
+    // '이대로 주문하기' 를 눌렀을 때 - 가게 장부(수파베이스)에 주문을 적음
     function submitOrder() {
       var name = document.getElementById("orderName").value.trim();
       var phone = document.getElementById("orderPhone").value.trim();
       var addr = document.getElementById("orderAddr").value.trim();
+      var memo = document.getElementById("orderMemo").value.trim();
+      var button = document.getElementById("orderSubmit");
 
+      if (!currentUser) {
+        setMsg("orderMsg", "주문은 단골만 하실 수 있어요.", "err");
+        return;
+      }
+      if (cartItems.length === 0) {
+        setMsg("orderMsg", "담으신 것이 없어요.", "err");
+        return;
+      }
       if (!name) {
         setMsg("orderMsg", "받으실 분 성함을 적어주세요.", "err");
         return;
@@ -2338,12 +2397,117 @@
         setMsg("orderMsg", "받으실 곳을 적어주세요.", "err");
         return;
       }
+      if (!dbReady("orderMsg")) return;
 
-      // 아직 주문을 가게 장부에 적는 기능은 연결되어 있지 않습니다
-      setMsg("orderMsg", "주문서는 다 적으셨어요! (가게로 보내는 기능은 아직 준비 중입니다)", "ok");
-      document.getElementById("orderBody").scrollTop = 0;
+      var service = serviceInfo();
+      var payTotal = cartSum;
+      var listTotal = cartListSum;
+
+      button.disabled = true;
+      button.innerText = "장부에 적는 중...";
+      setMsg("orderMsg", "", "");
+
+      // 1) 주문서 한 장을 먼저 적고
+      db.from("orders").insert({
+        user_id: currentUser.id,
+        receiver_name: name,
+        phone: phone,
+        address: addr,
+        memo: memo,
+        list_total: listTotal,
+        discount: listTotal - payTotal,
+        pay_total: payTotal,
+        gift_count: service.qty
+      }).select("id, created_at").then(function (res) {
+
+        if (res.error || !res.data || res.data.length === 0) {
+          button.disabled = false;
+          button.innerText = "이대로 주문하기";
+          console.warn("[주문] 저장 실패", res.error);
+          setMsg("orderMsg", "주문을 적지 못했어요. 잠시 후 다시 눌러 주세요.", "err");
+          return;
+        }
+
+        var orderId = res.data[0].id;
+
+        // 2) 담은 물건을 한 줄씩 붙여 적기
+        var lines = [];
+        for (var i = 0; i < cartItems.length; i++) {
+          lines.push({
+            order_id: orderId,
+            product_id: cartItems[i].pid ? parseInt(cartItems[i].pid, 10) : null,
+            name: cartItems[i].name,
+            unit_price: cartItems[i].price,
+            count: cartItems[i].count,
+            is_gift: false
+          });
+        }
+        if (service.qty > 0 && service.item) {
+          lines.push({
+            order_id: orderId,
+            product_id: service.item.pid ? parseInt(service.item.pid, 10) : null,
+            name: service.item.name,
+            unit_price: 0,
+            count: service.qty,
+            is_gift: true
+          });
+        }
+
+        db.from("order_items").insert(lines).then(function (res2) {
+          button.disabled = false;
+          button.innerText = "이대로 주문하기";
+
+          if (res2.error) {
+            console.warn("[주문] 물건 목록 저장 실패", res2.error);
+            setMsg("orderMsg", "주문은 적혔는데 물건 목록이 덜 적혔어요. 가게로 연락 주세요.", "err");
+            return;
+          }
+
+          showOrderDone(orderId, name, addr, payTotal, service.qty);
+        });
+      });
     }
 
+    // 주문이 끝난 화면 보여주기
+    function showOrderDone(orderId, name, addr, payTotal, giftCount) {
+      document.getElementById("orderNo").innerText = "#" + orderId;
+
+      var html = "";
+      html += '<div class="order-line"><span class="name">받으실 분</span><span class="cost">' + esc(name) + '</span></div>';
+      html += '<div class="order-line"><span class="name">받으실 곳</span><span class="cost">' + esc(addr) + '</span></div>';
+      if (giftCount > 0) {
+        html += '<div class="order-line gift"><span class="name">\uD83C\uDF81 서비스</span><span class="cost">' + giftCount + '개</span></div>';
+      }
+      html += '<div class="order-line"><span class="name">내실 값</span><span class="cost">' + won(payTotal) + '</span></div>';
+      document.getElementById("orderDoneInfo").innerHTML = html;
+
+      // 입력칸은 감추고 완료 화면만 보이기
+      document.getElementById("orderForm").style.display = "none";
+      document.getElementById("orderDone").style.display = "block";
+      document.getElementById("orderSubmit").style.display = "none";
+      document.getElementById("orderBack2Cart").style.display = "none";
+      document.getElementById("orderDoneClose").style.display = "block";
+      document.querySelector("#orderBack .cart-foot-order .total-row").style.display = "none";
+      document.getElementById("orderBody").scrollTop = 0;
+
+      // 주문했으니 봉지는 비우기
+      cartItems = [];
+      refreshCart();
+      saveCart();
+
+      // 입력칸 정리 (다음 주문 때를 위해)
+      document.getElementById("orderMemo").value = "";
+    }
+
+    // 주문서를 다시 열 때는 입력 화면으로 되돌리기
+    function resetOrderView() {
+      document.getElementById("orderForm").style.display = "block";
+      document.getElementById("orderDone").style.display = "none";
+      document.getElementById("orderSubmit").style.display = "block";
+      document.getElementById("orderBack2Cart").style.display = "block";
+      document.getElementById("orderDoneClose").style.display = "none";
+      document.querySelector("#orderBack .cart-foot-order .total-row").style.display = "flex";
+    }
     // ===== 찜한 상품 =====
     // 별을 누른 상품을 모아두는 목록 (장바구니와 같은 모양으로 저장)
     var wishItems = [];
