@@ -231,23 +231,43 @@
     .top-btn:hover {
       background-color: #DFF3D8;
     }
-    /* 회원가입 버튼만 오른쪽 위 구석에 따로 놓기 */
-    .top-btn.auth-top-btn {
+    /* 오른쪽 위 구석: 계정 버튼과 로그아웃 버튼이 나란히 */
+    .auth-corner {
       position: absolute;
       top: 20px;
       right: 20px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .auth-corner .top-btn {
       margin: 0;
-      max-width: 45%;
+    }
+    /* 계정 이름이 길면 말줄임표로 */
+    .top-btn.auth-top-btn {
+      max-width: 230px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+    /* 헤더의 로그아웃 버튼 (연한 초록) */
+    .top-btn.logout-top-btn {
+      background-color: #DFF3D8;
+      color: #4B8A45;
+    }
+    .top-btn.logout-top-btn:hover {
+      background-color: #C9E8BE;
+    }
     /* 화면이 좁으면 제목과 겹치지 않게 흐름 배치로 */
     @media (max-width: 700px) {
-      .top-btn.auth-top-btn {
+      .auth-corner {
         position: static;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+      .top-btn.auth-top-btn {
         max-width: 100%;
-        margin: 0 auto 14px auto;
       }
     }
     /* 장바구니에 담은 개수 딱지 */
@@ -863,7 +883,10 @@
   <header>
     <h1 class="eng-name">YEONNI'S FOOD</h1>
     <p>오늘 아침에 딴 채소로 만든 산뜻한 한 그릇</p>
-    <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 로그인 · 가입</button>
+    <div class="auth-corner">
+      <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 로그인 · 가입</button>
+      <button class="top-btn logout-top-btn" id="logoutBtn" onclick="signOut()" style="display: none;">로그아웃</button>
+    </div>
     <button class="top-btn" onclick="openWish()">
       ⭐ 찜한 상품 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
     </button>
@@ -1731,7 +1754,14 @@
       if (!dbReady("authDoneMsg")) return;
       db.auth.signOut().then(function () {
         drawAuthState(null);
-        showAuthMsg("로그아웃 되었습니다.", "ok");
+
+        // 창이 열려 있으면 로그인 화면에 안내를 띄우고,
+        // 헤더 버튼으로 로그아웃한 경우에는 알림창으로 알려주기
+        if (document.getElementById("authBack").classList.contains("open")) {
+          showLoginMsg("로그아웃 되었습니다.", "ok");
+        } else {
+          showAlert("로그아웃 되었습니다.");
+        }
       });
     }
 
@@ -1897,6 +1927,7 @@
       var edit = document.getElementById("authEdit");
       var login = document.getElementById("authLogin");
       var topButton = document.getElementById("authBtn");
+      var logoutButton = document.getElementById("logoutBtn");
 
       // 지금 로그인한 사람을 기억해 두기 (내 정보 수정에서 사용)
       currentUser = user;
@@ -1918,6 +1949,7 @@
         document.getElementById("authWho").innerText = nick + "님";
         document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
         topButton.innerHTML = "\uD83D\uDC64 " + nick + "님";
+        logoutButton.style.display = "block";
       } else {
         // 로그인하지 않은 상태에서는 로그인 화면을 먼저 보여주기
         form.style.display = "none";
@@ -1925,6 +1957,7 @@
         done.style.display = "none";
         document.getElementById("authTitle").innerText = "\uD83D\uDC64 로그인";
         topButton.innerHTML = "\uD83D\uDC64 로그인 \u00B7 가입";
+        logoutButton.style.display = "none";
       }
     }
 
