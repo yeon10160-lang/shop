@@ -445,6 +445,23 @@
       margin-top: 6px;
       font-size: 17px;
     }
+    /* 수정 화면 맨 아래 로그아웃 (취소 버튼과 구분되게 테두리만) */
+    .auth-signout {
+      width: 100%;
+      margin-top: 10px;
+      background-color: transparent;
+      color: #8A3F3F;
+      border: 2px solid #F0D7D7;
+      padding: 9px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .auth-signout:hover {
+      background-color: #FBE3E3;
+      color: #8A3F3F;
+    }
+
     /* 로그인 <-> 회원가입 오가는 줄 */
     .auth-switch {
       text-align: center;
@@ -1365,6 +1382,7 @@
 
         <button class="auth-submit" id="authSave" onclick="saveProfile()">저장하기</button>
         <button class="cart-clear auth-logout" onclick="cancelEdit()">취소</button>
+        <button class="auth-signout" onclick="signOut()">로그아웃</button>
       </div>
 
     </div>
