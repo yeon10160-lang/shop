@@ -190,6 +190,21 @@
       border-color: #FFD400;
       box-shadow: 0 4px 0 rgba(0, 0, 0, 0.28), 0 0 0 5px rgba(255, 212, 0, 0.45);
     }
+    /* 상품 불러오는 중 / 실패 안내 */
+    .load-note {
+      text-align: center;
+      padding: 50px 20px;
+      font-size: 17px;
+      color: #8A7B66;
+    }
+    .load-note p {
+      margin: 0 0 16px 0;
+    }
+    .load-note button {
+      padding: 11px 24px;
+      font-size: 15px;
+    }
+
     /* 검색 결과가 없을 때 보여줄 글 */
     .no-result {
       display: none;
@@ -1063,6 +1078,12 @@
   </div>
 
   <!-- 검색 결과가 없을 때 -->
+  <!-- 상품을 불러오는 동안 / 못 불러왔을 때 보여줄 안내 -->
+  <div class="load-note" id="loadNote">
+    <p id="loadNoteText">오늘 들어온 물건을 꺼내는 중입니다…</p>
+    <button id="loadRetry" onclick="loadProducts()" style="display: none;">다시 꺼내보기</button>
+  </div>
+
   <p class="no-result" id="noResult">그건 오늘 안 들어왔네요. 다른 걸로 찾아보세요.</p>
 
   <!-- 샐러드 상품 3개 -->
@@ -1070,65 +1091,6 @@
     <h2>제일 잘나가는 샐러드</h2>
     <p class="section-desc">아침마다 제일 먼저 나가는 것들입니다</p>
     <div class="card-box">
-
-      <div class="card">
-        <span class="best-tag">잘나가요</span>
-        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" alt="닭가슴살 리코타 샐러드">
-        <h3>닭가슴살 리코타 샐러드</h3>
-        <p class="old-price">12,000원</p>
-        <p class="new-price">9,600원</p>
-        <button onclick="showAlert('닭가슴살 리코타 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <span class="new-tag">새로왔어요</span>
-        <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500" alt="아보카도 연어 샐러드">
-        <h3>아보카도 연어 샐러드</h3>
-        <p class="old-price">15,000원</p>
-        <p class="new-price">12,000원</p>
-        <button onclick="showAlert('아보카도 연어 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500" alt="토마토 부라타 샐러드">
-        <h3>토마토 부라타 샐러드</h3>
-        <p class="old-price">13,000원</p>
-        <p class="new-price">10,400원</p>
-        <button onclick="showAlert('토마토 부라타 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/17303318/pexels-photo-17303318.jpeg?auto=compress&w=500" alt="크런치 오리엔탈 샐러드">
-        <h3>크런치 오리엔탈 샐러드</h3>
-        <p class="old-price">11,000원</p>
-        <p class="new-price">8,800원</p>
-        <button onclick="showAlert('크런치 오리엔탈 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/9004736/pexels-photo-9004736.jpeg?auto=compress&w=500" alt="가든 그린 샐러드">
-        <h3>가든 그린 샐러드</h3>
-        <p class="old-price">10,000원</p>
-        <p class="new-price">8,000원</p>
-        <button onclick="showAlert('가든 그린 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/4062511/pexels-photo-4062511.jpeg?auto=compress&w=500" alt="그릴드 치킨 시저 샐러드">
-        <h3>그릴드 치킨 시저 샐러드</h3>
-        <p class="old-price">13,000원</p>
-        <p class="new-price">10,400원</p>
-        <button onclick="showAlert('그릴드 치킨 시저 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/19302564/pexels-photo-19302564.jpeg?auto=compress&w=500" alt="새우 시저 샐러드">
-        <h3>새우 시저 샐러드</h3>
-        <p class="old-price">16,000원</p>
-        <p class="new-price">12,800원</p>
-        <button onclick="showAlert('새우 시저 샐러드 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1137,29 +1099,6 @@
     <h2>든든한 한 사발</h2>
     <p class="section-desc">밥 대신 드셔도 배부른 한 사발</p>
     <div class="card-box">
-
-      <div class="card">
-        <span class="new-tag">새로왔어요</span>
-        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500" alt="현미 포케볼">
-        <h3>현미 포케볼</h3>
-        <p class="new-price">14,000원</p>
-        <button onclick="showAlert('현미 포케볼 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1512852939750-1305098529bf?w=500" alt="퀴노아 두부볼">
-        <h3>퀴노아 두부볼</h3>
-        <p class="new-price">13,500원</p>
-        <button onclick="showAlert('퀴노아 두부볼 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=500" alt="구운채소 곡물볼">
-        <h3>구운채소 곡물볼</h3>
-        <p class="new-price">12,500원</p>
-        <button onclick="showAlert('구운채소 곡물볼 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1169,44 +1108,6 @@
     <h2>채소 꽉 찬 버거</h2>
     <p class="section-desc">빵보다 채소가 더 많습니다, 속 편해요</p>
     <div class="card-box">
-
-      <div class="card">
-        <span class="new-tag">새로왔어요</span>
-        <img src="https://images.pexels.com/photos/3607284/pexels-photo-3607284.jpeg?auto=compress&w=500" alt="비트 패티 버거">
-        <h3>비트 패티 버거</h3>
-        <p class="new-price">11,000원</p>
-        <button onclick="showAlert('비트 패티 버거 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <span class="best-tag">잘나가요</span>
-        <img src="https://images.pexels.com/photos/20722067/pexels-photo-20722067.jpeg?auto=compress&w=500" alt="아보카도 흑미번 버거">
-        <h3>아보카도 흑미번 버거</h3>
-        <p class="new-price">12,500원</p>
-        <button onclick="showAlert('아보카도 흑미번 버거 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/10654301/pexels-photo-10654301.jpeg?auto=compress&w=500" alt="시금치번 두부 버거">
-        <h3>시금치번 두부 버거</h3>
-        <p class="new-price">11,500원</p>
-        <button onclick="showAlert('시금치번 두부 버거 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/20741663/pexels-photo-20741663.jpeg?auto=compress&w=500" alt="크리스피 채소 버거">
-        <h3>크리스피 채소 버거</h3>
-        <p class="new-price">10,500원</p>
-        <button onclick="showAlert('크리스피 채소 버거 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/6546025/pexels-photo-6546025.jpeg?auto=compress&w=500" alt="팔라펠 통밀 버거">
-        <h3>팔라펠 통밀 버거</h3>
-        <p class="new-price">12,000원</p>
-        <button onclick="showAlert('팔라펠 통밀 버거 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1215,44 +1116,6 @@
     <h2>손으로 눌러 만든 샌드위치</h2>
     <p class="section-desc">채소 아끼지 않고 꾹꾹 눌러 담았습니다</p>
     <div class="card-box">
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/9012028/pexels-photo-9012028.jpeg?auto=compress&w=500" alt="아보카도 새싹 샌드위치">
-        <h3>아보카도 새싹 샌드위치</h3>
-        <p class="new-price">9,500원</p>
-        <button onclick="showAlert('아보카도 새싹 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <span class="best-tag">잘나가요</span>
-        <img src="https://images.pexels.com/photos/6169449/pexels-photo-6169449.jpeg?auto=compress&w=500" alt="그릴 치킨 사워도우 샌드위치">
-        <h3>그릴 치킨 사워도우</h3>
-        <p class="new-price">12,000원</p>
-        <button onclick="showAlert('그릴 치킨 사워도우 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/30910204/pexels-photo-30910204.jpeg?auto=compress&w=500" alt="통곡물 채소 샌드위치">
-        <h3>통곡물 채소 샌드위치</h3>
-        <p class="new-price">9,000원</p>
-        <button onclick="showAlert('통곡물 채소 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <span class="new-tag">새로왔어요</span>
-        <img src="https://images.pexels.com/photos/6327138/pexels-photo-6327138.jpeg?auto=compress&w=500" alt="아보카도 오픈 샌드위치">
-        <h3>아보카도 오픈 샌드위치</h3>
-        <p class="new-price">10,000원</p>
-        <button onclick="showAlert('아보카도 오픈 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/28396784/pexels-photo-28396784.jpeg?auto=compress&w=500" alt="바게트 채소 샌드위치">
-        <h3>바게트 채소 샌드위치</h3>
-        <p class="new-price">11,000원</p>
-        <button onclick="showAlert('바게트 채소 샌드위치 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1261,29 +1124,6 @@
     <h2>채소 올린 피자</h2>
     <p class="section-desc">갓 구운 반죽 위에 채소를 수북이</p>
     <div class="card-box">
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/11654221/pexels-photo-11654221.jpeg?auto=compress&w=500" alt="루꼴라 토마토 피자">
-        <h3>루꼴라 토마토 피자</h3>
-        <p class="new-price">18,000원</p>
-        <button onclick="showAlert('루꼴라 토마토 피자 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <span class="new-tag">새로왔어요</span>
-        <img src="https://images.pexels.com/photos/37604434/pexels-photo-37604434.jpeg?auto=compress&w=500" alt="부라타 루꼴라 피자">
-        <h3>부라타 루꼴라 피자</h3>
-        <p class="new-price">21,000원</p>
-        <button onclick="showAlert('부라타 루꼴라 피자 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/6697470/pexels-photo-6697470.jpeg?auto=compress&w=500" alt="선드라이 토마토 피자">
-        <h3>선드라이 토마토 피자</h3>
-        <p class="new-price">19,000원</p>
-        <button onclick="showAlert('선드라이 토마토 피자 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1292,42 +1132,6 @@
     <h2>직접 담근 드레싱</h2>
     <p class="section-desc">가게에서 쓰는 그대로 담아드립니다</p>
     <div class="card-box">
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/10060235/pexels-photo-10060235.jpeg?auto=compress&w=500" alt="발사믹 드레싱">
-        <h3>발사믹 드레싱</h3>
-        <p class="new-price">8,000원</p>
-        <button onclick="showAlert('발사믹 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/1332313/pexels-photo-1332313.jpeg?auto=compress&w=500" alt="요거트 어니언 드레싱">
-        <h3>요거트 어니언 드레싱</h3>
-        <p class="new-price">8,500원</p>
-        <button onclick="showAlert('요거트 어니언 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/17942046/pexels-photo-17942046.jpeg?auto=compress&w=500" alt="오리엔탈 참깨 드레싱">
-        <h3>오리엔탈 참깨 드레싱</h3>
-        <p class="new-price">9,000원</p>
-        <button onclick="showAlert('오리엔탈 참깨 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500" alt="레몬 올리브 드레싱">
-        <h3>레몬 올리브 드레싱</h3>
-        <p class="new-price">9,500원</p>
-        <button onclick="showAlert('레몬 올리브 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
-      <div class="card">
-        <img src="https://images.pexels.com/photos/12203617/pexels-photo-12203617.jpeg?auto=compress&w=500" alt="홀그레인 머스터드 드레싱">
-        <h3>홀그레인 머스터드 드레싱</h3>
-        <p class="new-price">8,800원</p>
-        <button onclick="showAlert('홀그레인 머스터드 드레싱 봉지에 담았습니다!')">봉지에 담기</button>
-      </div>
-
     </div>
   </section>
 
@@ -1619,6 +1423,7 @@
       var price = parseInt(this.getAttribute("data-price"), 10);
       var list = parseInt(this.getAttribute("data-list"), 10);
       var img = this.getAttribute("data-img");
+      var pid = this.getAttribute("data-pid");
 
       // 이미 담은 상품이면 개수만 1 늘리기
       var already = null;
@@ -1630,12 +1435,82 @@
       if (already) {
         already.count = already.count + 1;
       } else {
-        cartItems.push({ name: name, img: img, price: price, list: list, count: 1 });
+        cartItems.push({ pid: pid, name: name, img: img, price: price, list: list, count: 1 });
       }
       refreshCart();
+      saveCart();
     }
 
     // 맨 위 버튼의 개수 딱지와 금액 딱지를 다시 그리기
+    // ===== 장바구니를 수파베이스에 저장하기 =====
+    // 로그인한 단골만 저장됩니다. 로그인하지 않으면 이 창에서만 유지됩니다.
+    var cartLoading = false;     // 불러오는 중에는 저장하지 않기 위한 표시
+    var cartSaveTimer = null;    // 빠르게 여러 번 누를 때 한 번만 저장하려고 잠깐 기다림
+    var loadedCartUserId = null; // 누구의 장바구니를 불러왔는지
+
+    // 지금 장바구니 내용을 수파베이스에 저장하기
+    function saveCart() {
+      if (!db || !currentUser || cartLoading) return;
+
+      clearTimeout(cartSaveTimer);
+      cartSaveTimer = setTimeout(function () {
+        var rows = [];
+        for (var i = 0; i < cartItems.length; i++) {
+          if (!cartItems[i].pid) continue;
+          rows.push({
+            user_id: currentUser.id,
+            product_id: parseInt(cartItems[i].pid, 10),
+            count: cartItems[i].count
+          });
+        }
+
+        // 내 것만 지우고 지금 담긴 것으로 다시 넣기
+        db.from("cart_items").delete().eq("user_id", currentUser.id).then(function (res) {
+          if (res.error) {
+            console.warn("[장바구니] 비우기 실패", res.error);
+            return;
+          }
+          if (rows.length === 0) return;
+          db.from("cart_items").insert(rows).then(function (res2) {
+            if (res2.error) console.warn("[장바구니] 저장 실패", res2.error);
+          });
+        });
+      }, 600);
+    }
+
+    // 로그인한 단골의 장바구니를 수파베이스에서 불러오기
+    function loadCart() {
+      if (!db || !currentUser) return;
+
+      cartLoading = true;
+      db.from("cart_items")
+        .select("qty:count, products(id, name, image_url, list_price, sale_price)")
+        .then(function (res) {
+          cartLoading = false;
+          if (res.error) {
+            console.warn("[장바구니] 불러오기 실패", res.error);
+            return;
+          }
+
+          cartItems = [];
+          for (var i = 0; i < res.data.length; i++) {
+            var row = res.data[i];
+            var pr = row.products;
+            if (!pr) continue;
+            cartItems.push({
+              pid: pr.id,
+              name: pr.name,
+              img: pr.image_url,
+              price: pr.sale_price,
+              list: pr.list_price,
+              count: row.qty
+            });
+          }
+          refreshCart();
+          console.log("[장바구니] 저장해둔 " + cartItems.length + "종을 불러왔습니다.");
+        });
+    }
+
     // 3개 담을 때마다 1개를 서비스로 드리는 행사 계산
     // 서비스 상품은 장바구니에서 가장 싼 것으로 자동으로 골라 넣음
     function serviceInfo() {
@@ -1798,12 +1673,14 @@
         cartItems.splice(index, 1);
       }
       refreshCart();
+      saveCart();
     }
 
     // 그 상품만 장바구니에서 지우기
     function removeItem(index) {
       cartItems.splice(index, 1);
       refreshCart();
+      saveCart();
     }
     // ===== 회원가입 (수파베이스 Auth) =====
 
@@ -2117,6 +1994,12 @@
         mypageButton.style.display = "block";
         mypageButton.innerHTML = "\uD83D\uDCD2 " + nick + "님 장부";
         logoutButton.style.display = "block";
+
+        // 처음 들어온 단골이면 저장해둔 장바구니를 불러오기
+        if (loadedCartUserId !== user.id) {
+          loadedCartUserId = user.id;
+          loadCart();
+        }
       } else {
         // 로그인하지 않은 상태에서는 로그인 화면을 먼저 보여주기
         form.style.display = "none";
@@ -2127,6 +2010,13 @@
         loginButton.innerHTML = "\uD83D\uDC64 로그인";
         mypageButton.style.display = "none";
         logoutButton.style.display = "none";
+
+        // 나가면 이 창의 장바구니는 비우기 (수파베이스에 저장된 것은 그대로 남음)
+        if (loadedCartUserId) {
+          loadedCartUserId = null;
+          cartItems = [];
+          refreshCart();
+        }
       }
     }
 
@@ -2294,6 +2184,7 @@
     function clearCart() {
       cartItems = [];
       refreshCart();
+      saveCart();
     }
 
     // 카테고리 버튼을 누르면 그 상품 구역만 보이게 하는 함수
@@ -2429,6 +2320,7 @@
         addButtons[c].setAttribute("data-list", readListPrice(card));
         addButtons[c].setAttribute("data-name", cardName ? cardName.innerText : "상품");
         addButtons[c].setAttribute("data-img", cardImg ? cardImg.getAttribute("src") : "");
+        addButtons[c].setAttribute("data-pid", card.getAttribute("data-pid") || "");
         addButtons[c].setAttribute("data-ready", "1");
         addButtons[c].addEventListener("click", addToCart);
       }
@@ -2450,7 +2342,7 @@
     // 상품 하나를 카드 모양 글자로 만들기
     function productCard(item) {
       var name = esc(item.name);
-      var html = '<div class="card' + (item.sold_out ? ' sold-out' : '') + '">';
+      var html = '<div class="card' + (item.sold_out ? ' sold-out' : '') + '" data-pid="' + item.id + '">';
 
       if (item.sold_out) {
         html += '<span class="soldout-tag">오늘은 다 나갔어요</span>';
@@ -2510,17 +2402,42 @@
       console.log("[상품] 수파베이스에서 " + drawn + "개를 불러왔습니다.");
     }
 
-    // 페이지를 열 때 상품을 불러오기
-    // 못 불러오면 아무것도 바꾸지 않아서, 원래 적혀 있던 상품이 그대로 보임
-    if (db) {
+    // 안내 글을 바꾸는 작은 도우미
+    function showLoadNote(text, canRetry) {
+      var note = document.getElementById("loadNote");
+      if (!note) return;
+      note.style.display = text ? "block" : "none";
+      if (text) {
+        document.getElementById("loadNoteText").innerText = text;
+        document.getElementById("loadRetry").style.display = canRetry ? "inline-block" : "none";
+      }
+    }
+
+    // 수파베이스에서 상품을 불러오기 (실패하면 다시 꺼내보기 버튼이 나옴)
+    function loadProducts() {
+      if (!db) {
+        showLoadNote("지금은 가게와 연결이 안 되네요. 잠시 후 다시 눌러 주세요.", true);
+        return;
+      }
+      showLoadNote("오늘 들어온 물건을 꺼내는 중입니다…", false);
+
       db.from("products").select("*").order("sort_order").then(function (result) {
-        if (result.error || !result.data || result.data.length === 0) {
-          console.warn("[상품] 수파베이스에서 불러오지 못해 원래 목록을 그대로 씁니다.", result.error);
+        if (result.error) {
+          console.warn("[상품] 불러오기 실패", result.error);
+          showLoadNote("물건을 꺼내오지 못했어요. 다시 한번 눌러 주세요.", true);
           return;
         }
+        if (!result.data || result.data.length === 0) {
+          showLoadNote("오늘은 아직 내놓은 물건이 없습니다.", true);
+          return;
+        }
+        showLoadNote("", false);
         drawProducts(result.data);
       });
     }
+
+    // 페이지를 열 때 상품 불러오기
+    loadProducts();
 
     // 별을 누를 때마다 3단계로 바뀜
     // 빈 별 -> 파란 별 -> 진한 파란 별 -> 다시 빈 별
