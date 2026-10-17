@@ -23,6 +23,7 @@
       color: white;
       text-align: center;
       padding: 30px 20px;
+      position: relative;
     }
     header h1 {
       margin: 0;
@@ -195,16 +196,420 @@
       /* 베스트 딱지의 기준이 되는 위치 */
       position: relative;
     }
-    /* 맨 위 찜한 개수 표시 */
+    /* 찜한 개수 딱지 */
     .wish-count {
       background-color: #2E7BE5;
       color: white;
-      display: inline-block;
-      margin-top: 12px;
-      padding: 6px 16px;
+      border-radius: 20px;
+      padding: 2px 9px;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+    /* 찜한 상품 합계 금액 딱지 */
+    .wish-price {
+      background-color: #0B3C87;
+      color: white;
+      border-radius: 20px;
+      padding: 2px 9px;
+      margin-left: 5px;
+      font-size: 13px;
+    }
+
+    /* 맨 위 찜 / 장바구니 알약 버튼 (둘이 같은 모양) */
+    .top-btn {
+      display: block;
+      margin: 12px auto 0 auto;
+      background-color: white;
+      color: #35502F;
+      border: none;
+      padding: 10px 18px;
       border-radius: 20px;
       font-size: 15px;
       font-weight: bold;
+      cursor: pointer;
+    }
+    .top-btn:hover {
+      background-color: #DFF3D8;
+    }
+    /* 회원가입 버튼만 오른쪽 위 구석에 따로 놓기 */
+    .top-btn.auth-top-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin: 0;
+      max-width: 45%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    /* 화면이 좁으면 제목과 겹치지 않게 흐름 배치로 */
+    @media (max-width: 700px) {
+      .top-btn.auth-top-btn {
+        position: static;
+        max-width: 100%;
+        margin: 0 auto 14px auto;
+      }
+    }
+    /* 장바구니에 담은 개수 딱지 */
+    .cart-count {
+      background-color: #2E7BE5;
+      color: white;
+      border-radius: 20px;
+      padding: 2px 9px;
+      margin-left: 7px;
+      font-size: 13px;
+    }
+    /* 장바구니 합계 금액 딱지 */
+    .cart-price {
+      background-color: #4B8A45;
+      color: white;
+      border-radius: 20px;
+      padding: 2px 9px;
+      margin-left: 5px;
+      font-size: 13px;
+    }
+
+    /* ===== 장바구니 상세 창 ===== */
+    /* 화면 전체를 덮는 어두운 배경 */
+    .cart-back {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+    }
+    /* 열렸을 때만 보이기 */
+    .cart-back.open {
+      display: block;
+    }
+    /* 가운데 흰 상자 */
+    .cart-window {
+      background-color: white;
+      width: 90%;
+      max-width: 460px;
+      max-height: 80vh;
+      margin: 8vh auto 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    /* 상자 맨 위 초록 띠 */
+    .cart-head {
+      background-color: #7CC576;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-head h3 {
+      margin: 0;
+      font-size: 19px;
+    }
+    /* 닫기 X 버튼 */
+    .cart-close {
+      background-color: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+    }
+    .cart-close:hover {
+      background-color: transparent;
+      opacity: 0.7;
+    }
+    /* 찜 상세 창 머리띠는 파란색 */
+    .cart-head.wish-head {
+      background-color: #2E7BE5;
+    }
+    /* 회원가입 창 머리띠는 진한 초록색 */
+    .cart-head.auth-head {
+      background-color: #4B8A45;
+    }
+    /* 가입 화면 맨 위 가게 소개 한 줄 */
+    .auth-intro {
+      background-color: #F4FBF0;
+      color: #4B8A45;
+      font-size: 14px;
+      line-height: 1.6;
+      text-align: center;
+      padding: 13px 14px;
+      border-radius: 10px;
+      margin: 0 0 16px 0;
+    }
+    .auth-intro b {
+      display: block;
+      color: #35502F;
+      letter-spacing: 2px;
+      margin-bottom: 3px;
+    }
+
+    /* 회원가입 입력 칸이 들어가는 부분 */
+    .auth-form {
+      padding: 20px;
+    }
+    /* 입력 칸 한 묶음 (이름표 + 칸) */
+    .auth-field {
+      margin-bottom: 14px;
+    }
+    .auth-field label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      color: #35502F;
+      margin-bottom: 6px;
+    }
+    .auth-input {
+      width: 100%;
+      box-sizing: border-box;
+      border: 2px solid #DFF3D8;
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #35502F;
+    }
+    .auth-input:focus {
+      outline: none;
+      border-color: #7CC576;
+    }
+    /* 입력 칸 아래 작은 도움말 */
+    .auth-hint {
+      margin: 6px 0 0 0;
+      font-size: 12px;
+      color: #7A8F75;
+    }
+    /* 회원이 되기 버튼 (칸 너비에 꽉 차게) */
+    .auth-submit {
+      width: 100%;
+      margin-top: 4px;
+    }
+    /* 안내 / 오류 메시지 자리 */
+    .auth-msg {
+      display: none;
+      margin: 0 0 14px 0;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .auth-msg.show {
+      display: block;
+    }
+    /* 성공은 초록, 실패는 빨강 */
+    .auth-msg.ok {
+      background-color: #DFF3D8;
+      color: #35502F;
+    }
+    .auth-msg.err {
+      background-color: #FBE3E3;
+      color: #8A3F3F;
+    }
+    /* 로그인된 상태에서 보여주는 안내 */
+    .auth-who {
+      text-align: center;
+      padding: 10px 0 18px 0;
+      color: #35502F;
+      font-size: 15px;
+    }
+    .auth-who b {
+      display: block;
+      margin-top: 6px;
+      font-size: 17px;
+    }
+    /* 로그인한 계정의 이메일 (작게) */
+    .auth-mail {
+      text-align: center;
+      margin: -10px 0 18px 0;
+      font-size: 13px;
+      color: #7A8F75;
+    }
+    /* 로그아웃 / 취소 버튼 */
+    .auth-logout {
+      width: 100%;
+      background-color: #DFF3D8;
+      color: #4B8A45;
+      margin-top: 10px;
+    }
+    .auth-logout:hover {
+      background-color: #C9E8BE;
+    }
+
+    /* 담은 상품 목록 (넘치면 스크롤) */
+    .cart-list {
+      overflow-y: auto;
+      padding: 10px 20px;
+    }
+    /* 상품 한 줄 */
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid #DFF3D8;
+    }
+    /* 상품 작은 사진 */
+    .cart-item img {
+      width: 64px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+    /* 이름과 단가가 들어가는 칸 */
+    .cart-item-info {
+      flex-grow: 1;
+    }
+    .cart-item-name {
+      margin: 0 0 4px 0;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    .cart-item-each {
+      margin: 0;
+      font-size: 13px;
+      color: #7A8F75;
+    }
+    /* 할인 전 정가는 흐린 취소선으로 */
+    .cart-item-each s {
+      color: #B3C4AE;
+      margin-right: 4px;
+    }
+    /* 한 상품의 합계 금액 */
+    .cart-item-sum {
+      font-size: 15px;
+      font-weight: bold;
+      color: #35502F;
+      white-space: nowrap;
+    }
+    /* 수량 조절 줄 ( - 숫자 + 삭제 ) */
+    .cart-qty {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 7px;
+    }
+    /* 빼기 / 더하기 동그란 버튼 */
+    .qty-btn {
+      background-color: #DFF3D8;
+      color: #35502F;
+      border: none;
+      border-radius: 50%;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .qty-btn:hover {
+      background-color: #A8DC9E;
+    }
+    /* 가운데 수량 숫자 */
+    .qty-num {
+      min-width: 26px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+    }
+    /* 이 상품만 지우는 버튼 */
+    .cart-remove {
+      background-color: transparent;
+      color: #B06A6A;
+      border: none;
+      padding: 0 0 0 6px;
+      font-size: 17px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .cart-remove:hover {
+      background-color: transparent;
+      color: #8A3F3F;
+    }
+    /* 장바구니가 비었을 때 안내 */
+    .cart-empty {
+      text-align: center;
+      padding: 40px 0;
+      color: #7A8F75;
+    }
+    /* 할인 자동 적용 안내 띠 */
+    .first-order-note {
+      background-color: #FFF4CC;
+      color: #8A6D00;
+      font-size: 13px;
+      font-weight: bold;
+      text-align: center;
+      padding: 9px 12px;
+      border-radius: 10px;
+      margin: 12px 0 2px 0;
+    }
+    /* 주문 금액 계산 줄들이 들어가는 맨 아래 칸 */
+    .cart-foot-order {
+      border-top: 2px solid #DFF3D8;
+      padding: 14px 20px 16px 20px;
+    }
+    /* 계산 한 줄 (왼쪽 이름 / 오른쪽 금액) */
+    .cart-sum-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #7A8F75;
+      padding: 3px 0;
+    }
+    /* 할인 줄은 주황색 */
+    .cart-sum-row.sale-row {
+      color: #D98324;
+      font-weight: bold;
+    }
+    /* 마지막 결제 금액 줄 */
+    .cart-sum-row.total-row {
+      border-top: 1px solid #DFF3D8;
+      margin-top: 7px;
+      padding-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #35502F;
+    }
+    /* 비우기 버튼은 계산 줄 아래 왼쪽에 */
+    .cart-foot-order .cart-clear {
+      margin-top: 14px;
+    }
+
+    /* 상자 맨 아래 합계 줄 */
+    .cart-foot {
+      border-top: 2px solid #DFF3D8;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-foot-total {
+      font-size: 18px;
+      font-weight: bold;
+      color: #35502F;
+    }
+    /* 비우기 버튼 */
+    .cart-clear {
+      background-color: #DFF3D8;
+      color: #4B8A45;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .cart-clear:hover {
+      background-color: #C9E8BE;
     }
 
     /* 찜하기 별 버튼 - 오른쪽 아래, 파랑 */
@@ -434,7 +839,13 @@
   <header>
     <h1 class="eng-name">YEONNI'S FOOD</h1>
     <p>오늘 아침에 딴 채소로 만든 산뜻한 한 그릇</p>
-    <p class="wish-count">찜한 상품 <span id="wishNumber">0</span>개</p>
+    <button class="top-btn auth-top-btn" id="authBtn" onclick="openAuth()">👤 회원가입</button>
+    <button class="top-btn" onclick="openWish()">
+      ⭐ 찜한 상품 <span class="wish-count" id="wishNumber">0개</span><span class="wish-price" id="wishPrice">0원</span>
+    </button>
+    <button class="top-btn" onclick="openCart()">
+      🛒 장바구니 담기 <span class="cart-count" id="cartNumber">0개</span><span class="cart-price" id="cartPrice">0원</span>
+    </button>
   </header>
 
   <!-- 메뉴 4개 (누르면 해당 구역으로 이동) -->
@@ -451,9 +862,9 @@
   <!-- 큰 배너 -->
   <section class="banner">
     <img src="https://images.pexels.com/photos/33323285/pexels-photo-33323285.jpeg?auto=compress&w=1200" alt="신선한 샐러드 한 그릇">
-    <h2>첫 주문 30% 할인!</h2>
+    <h2>인기 샐러드 20% 할인!</h2>
     <p>매일 새벽 배송되는 신선한 샐러드를 만나보세요</p>
-    <button onclick="showAlert('지금 바로 할인 상품을 확인해 보세요!')">할인 상품 보러가기</button>
+    <button onclick="showAlert('인기 샐러드 7종이 20% 할인 중이에요!')">할인 상품 보러가기</button>
   </section>
 
   <!-- 이벤트 안내 -->
@@ -495,7 +906,7 @@
         <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500" alt="닭가슴살 리코타 샐러드">
         <h3>닭가슴살 리코타 샐러드</h3>
         <p class="old-price">12,000원</p>
-        <p class="new-price">8,400원</p>
+        <p class="new-price">9,600원</p>
         <button onclick="showAlert('닭가슴살 리코타 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -504,7 +915,7 @@
         <img src="https://images.unsplash.com/photo-1505253716362-afaea1d3d1af?w=500" alt="아보카도 연어 샐러드">
         <h3>아보카도 연어 샐러드</h3>
         <p class="old-price">15,000원</p>
-        <p class="new-price">10,500원</p>
+        <p class="new-price">12,000원</p>
         <button onclick="showAlert('아보카도 연어 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -512,7 +923,7 @@
         <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?w=500" alt="토마토 부라타 샐러드">
         <h3>토마토 부라타 샐러드</h3>
         <p class="old-price">13,000원</p>
-        <p class="new-price">9,100원</p>
+        <p class="new-price">10,400원</p>
         <button onclick="showAlert('토마토 부라타 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -520,7 +931,7 @@
         <img src="https://images.pexels.com/photos/17303318/pexels-photo-17303318.jpeg?auto=compress&w=500" alt="크런치 오리엔탈 샐러드">
         <h3>크런치 오리엔탈 샐러드</h3>
         <p class="old-price">11,000원</p>
-        <p class="new-price">7,700원</p>
+        <p class="new-price">8,800원</p>
         <button onclick="showAlert('크런치 오리엔탈 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -528,7 +939,7 @@
         <img src="https://images.pexels.com/photos/9004736/pexels-photo-9004736.jpeg?auto=compress&w=500" alt="가든 그린 샐러드">
         <h3>가든 그린 샐러드</h3>
         <p class="old-price">10,000원</p>
-        <p class="new-price">7,000원</p>
+        <p class="new-price">8,000원</p>
         <button onclick="showAlert('가든 그린 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -536,7 +947,7 @@
         <img src="https://images.pexels.com/photos/4062511/pexels-photo-4062511.jpeg?auto=compress&w=500" alt="그릴드 치킨 시저 샐러드">
         <h3>그릴드 치킨 시저 샐러드</h3>
         <p class="old-price">13,000원</p>
-        <p class="new-price">9,100원</p>
+        <p class="new-price">10,400원</p>
         <button onclick="showAlert('그릴드 치킨 시저 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -544,7 +955,7 @@
         <img src="https://images.pexels.com/photos/19302564/pexels-photo-19302564.jpeg?auto=compress&w=500" alt="새우 시저 샐러드">
         <h3>새우 시저 샐러드</h3>
         <p class="old-price">16,000원</p>
-        <p class="new-price">11,200원</p>
+        <p class="new-price">12,800원</p>
         <button onclick="showAlert('새우 시저 샐러드를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -561,24 +972,21 @@
         <span class="new-tag">NEW</span>
         <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=500" alt="현미 포케볼">
         <h3>현미 포케볼</h3>
-        <p class="old-price">14,000원</p>
-        <p class="new-price">9,800원</p>
+        <p class="new-price">14,000원</p>
         <button onclick="showAlert('현미 포케볼을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1512852939750-1305098529bf?w=500" alt="퀴노아 두부볼">
         <h3>퀴노아 두부볼</h3>
-        <p class="old-price">13,500원</p>
-        <p class="new-price">9,450원</p>
+        <p class="new-price">13,500원</p>
         <button onclick="showAlert('퀴노아 두부볼을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1607532941433-304659e8198a?w=500" alt="구운채소 곡물볼">
         <h3>구운채소 곡물볼</h3>
-        <p class="old-price">12,500원</p>
-        <p class="new-price">8,750원</p>
+        <p class="new-price">12,500원</p>
         <button onclick="showAlert('구운채소 곡물볼을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -596,8 +1004,7 @@
         <span class="new-tag">NEW</span>
         <img src="https://images.pexels.com/photos/3607284/pexels-photo-3607284.jpeg?auto=compress&w=500" alt="비트 패티 버거">
         <h3>비트 패티 버거</h3>
-        <p class="old-price">11,000원</p>
-        <p class="new-price">7,700원</p>
+        <p class="new-price">11,000원</p>
         <button onclick="showAlert('비트 패티 버거를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -605,32 +1012,28 @@
         <span class="best-tag">BEST</span>
         <img src="https://images.pexels.com/photos/20722067/pexels-photo-20722067.jpeg?auto=compress&w=500" alt="아보카도 흑미번 버거">
         <h3>아보카도 흑미번 버거</h3>
-        <p class="old-price">12,500원</p>
-        <p class="new-price">8,750원</p>
+        <p class="new-price">12,500원</p>
         <button onclick="showAlert('아보카도 흑미번 버거를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/10654301/pexels-photo-10654301.jpeg?auto=compress&w=500" alt="시금치번 두부 버거">
         <h3>시금치번 두부 버거</h3>
-        <p class="old-price">11,500원</p>
-        <p class="new-price">8,050원</p>
+        <p class="new-price">11,500원</p>
         <button onclick="showAlert('시금치번 두부 버거를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/20741663/pexels-photo-20741663.jpeg?auto=compress&w=500" alt="크리스피 채소 버거">
         <h3>크리스피 채소 버거</h3>
-        <p class="old-price">10,500원</p>
-        <p class="new-price">7,350원</p>
+        <p class="new-price">10,500원</p>
         <button onclick="showAlert('크리스피 채소 버거를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/6546025/pexels-photo-6546025.jpeg?auto=compress&w=500" alt="팔라펠 통밀 버거">
         <h3>팔라펠 통밀 버거</h3>
-        <p class="old-price">12,000원</p>
-        <p class="new-price">8,400원</p>
+        <p class="new-price">12,000원</p>
         <button onclick="showAlert('팔라펠 통밀 버거를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -646,8 +1049,7 @@
       <div class="card">
         <img src="https://images.pexels.com/photos/9012028/pexels-photo-9012028.jpeg?auto=compress&w=500" alt="아보카도 새싹 샌드위치">
         <h3>아보카도 새싹 샌드위치</h3>
-        <p class="old-price">9,500원</p>
-        <p class="new-price">6,650원</p>
+        <p class="new-price">9,500원</p>
         <button onclick="showAlert('아보카도 새싹 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -655,16 +1057,14 @@
         <span class="best-tag">BEST</span>
         <img src="https://images.pexels.com/photos/6169449/pexels-photo-6169449.jpeg?auto=compress&w=500" alt="그릴 치킨 사워도우 샌드위치">
         <h3>그릴 치킨 사워도우</h3>
-        <p class="old-price">12,000원</p>
-        <p class="new-price">8,400원</p>
+        <p class="new-price">12,000원</p>
         <button onclick="showAlert('그릴 치킨 사워도우 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/30910204/pexels-photo-30910204.jpeg?auto=compress&w=500" alt="통곡물 채소 샌드위치">
         <h3>통곡물 채소 샌드위치</h3>
-        <p class="old-price">9,000원</p>
-        <p class="new-price">6,300원</p>
+        <p class="new-price">9,000원</p>
         <button onclick="showAlert('통곡물 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -672,16 +1072,14 @@
         <span class="new-tag">NEW</span>
         <img src="https://images.pexels.com/photos/6327138/pexels-photo-6327138.jpeg?auto=compress&w=500" alt="아보카도 오픈 샌드위치">
         <h3>아보카도 오픈 샌드위치</h3>
-        <p class="old-price">10,000원</p>
-        <p class="new-price">7,000원</p>
+        <p class="new-price">10,000원</p>
         <button onclick="showAlert('아보카도 오픈 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/28396784/pexels-photo-28396784.jpeg?auto=compress&w=500" alt="바게트 채소 샌드위치">
         <h3>바게트 채소 샌드위치</h3>
-        <p class="old-price">11,000원</p>
-        <p class="new-price">7,700원</p>
+        <p class="new-price">11,000원</p>
         <button onclick="showAlert('바게트 채소 샌드위치를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -697,8 +1095,7 @@
       <div class="card">
         <img src="https://images.pexels.com/photos/11654221/pexels-photo-11654221.jpeg?auto=compress&w=500" alt="루꼴라 토마토 피자">
         <h3>루꼴라 토마토 피자</h3>
-        <p class="old-price">18,000원</p>
-        <p class="new-price">12,600원</p>
+        <p class="new-price">18,000원</p>
         <button onclick="showAlert('루꼴라 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -706,16 +1103,14 @@
         <span class="new-tag">NEW</span>
         <img src="https://images.pexels.com/photos/37604434/pexels-photo-37604434.jpeg?auto=compress&w=500" alt="부라타 루꼴라 피자">
         <h3>부라타 루꼴라 피자</h3>
-        <p class="old-price">21,000원</p>
-        <p class="new-price">14,700원</p>
+        <p class="new-price">21,000원</p>
         <button onclick="showAlert('부라타 루꼴라 피자를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/6697470/pexels-photo-6697470.jpeg?auto=compress&w=500" alt="선드라이 토마토 피자">
         <h3>선드라이 토마토 피자</h3>
-        <p class="old-price">19,000원</p>
-        <p class="new-price">13,300원</p>
+        <p class="new-price">19,000원</p>
         <button onclick="showAlert('선드라이 토마토 피자를 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -731,40 +1126,35 @@
       <div class="card">
         <img src="https://images.pexels.com/photos/10060235/pexels-photo-10060235.jpeg?auto=compress&w=500" alt="발사믹 드레싱">
         <h3>발사믹 드레싱</h3>
-        <p class="old-price">8,000원</p>
-        <p class="new-price">5,600원</p>
+        <p class="new-price">8,000원</p>
         <button onclick="showAlert('발사믹 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/1332313/pexels-photo-1332313.jpeg?auto=compress&w=500" alt="요거트 어니언 드레싱">
         <h3>요거트 어니언 드레싱</h3>
-        <p class="old-price">8,500원</p>
-        <p class="new-price">5,950원</p>
+        <p class="new-price">8,500원</p>
         <button onclick="showAlert('요거트 어니언 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/17942046/pexels-photo-17942046.jpeg?auto=compress&w=500" alt="오리엔탈 참깨 드레싱">
         <h3>오리엔탈 참깨 드레싱</h3>
-        <p class="old-price">9,000원</p>
-        <p class="new-price">6,300원</p>
+        <p class="new-price">9,000원</p>
         <button onclick="showAlert('오리엔탈 참깨 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=500" alt="레몬 올리브 드레싱">
         <h3>레몬 올리브 드레싱</h3>
-        <p class="old-price">9,500원</p>
-        <p class="new-price">6,650원</p>
+        <p class="new-price">9,500원</p>
         <button onclick="showAlert('레몬 올리브 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
       <div class="card">
         <img src="https://images.pexels.com/photos/12203617/pexels-photo-12203617.jpeg?auto=compress&w=500" alt="홀그레인 머스터드 드레싱">
         <h3>홀그레인 머스터드 드레싱</h3>
-        <p class="old-price">8,800원</p>
-        <p class="new-price">6,160원</p>
+        <p class="new-price">8,800원</p>
         <button onclick="showAlert('홀그레인 머스터드 드레싱을 장바구니에 담았어요!')">장바구니 담기</button>
       </div>
 
@@ -832,10 +1222,726 @@
     <p class="copyright">ⓒ 2026 연니네 푸드. All rights reserved.</p>
   </footer>
 
+  <!-- 회원가입 창 (평소에는 숨어 있음) -->
+  <div class="cart-back" id="authBack" onclick="closeAuthOutside(event)">
+    <div class="cart-window">
+      <div class="cart-head auth-head">
+        <h3 id="authTitle">
+👤
+ 회원가입</h3>
+        <button class="cart-close" onclick="closeAuth()">&times;</button>
+      </div>
+
+      <!-- 가입 전 화면 -->
+      <div class="auth-form" id="authForm">
+        <p class="auth-intro">
+          <b>YEONNI'S FOOD</b>
+          오늘 아침에 딴 채소로 만든 산뜻한 한 그릇, 새벽마다 신선하게 배송해 드려요.
+        </p>
+        <p class="auth-msg" id="authMsg"></p>
+
+        <div class="auth-field">
+          <label for="authNick">닉네임</label>
+          <input class="auth-input" type="text" id="authNick" placeholder="가게에서 불릴 이름" autocomplete="nickname" maxlength="12">
+          <p class="auth-hint">2~12자로 적어 주세요. 가입 후 화면에 이 이름이 보여요.</p>
+        </div>
+
+        <div class="auth-field">
+          <label for="authEmail">이메일</label>
+          <input class="auth-input" type="email" id="authEmail" placeholder="example@email.com" autocomplete="email">
+        </div>
+
+        <div class="auth-field">
+          <label for="authPw">비밀번호</label>
+          <input class="auth-input" type="password" id="authPw" placeholder="6자 이상" autocomplete="new-password">
+          <p class="auth-hint">영문, 숫자 상관없이 6자 이상이면 됩니다.</p>
+        </div>
+
+        <div class="auth-field">
+          <label for="authPw2">비밀번호 확인</label>
+          <input class="auth-input" type="password" id="authPw2" placeholder="한 번 더 입력해 주세요" autocomplete="new-password">
+        </div>
+
+        <button class="auth-submit" id="authSubmit" onclick="signUp()">회원이 되기</button>
+      </div>
+
+      <!-- 가입(로그인)된 뒤 화면 -->
+      <div class="auth-form" id="authDone" style="display: none;">
+        <p class="auth-msg" id="authDoneMsg"></p>
+        <p class="auth-who" id="authWelcome">환영합니다!<b id="authWho"></b></p>
+        <p class="auth-mail" id="authMail"></p>
+        <button class="auth-submit" onclick="openEdit()">내 정보 수정</button>
+        <button class="cart-clear auth-logout" onclick="signOut()">로그아웃</button>
+      </div>
+
+      <!-- 내 정보 수정 화면 -->
+      <div class="auth-form" id="authEdit" style="display: none;">
+        <p class="auth-msg" id="authEditMsg"></p>
+
+        <div class="auth-field">
+          <label for="editNick">닉네임</label>
+          <input class="auth-input" type="text" id="editNick" placeholder="가게에서 불릴 이름" maxlength="12">
+          <p class="auth-hint">2~12자로 적어 주세요.</p>
+        </div>
+
+        <div class="auth-field">
+          <label for="editPw">새 비밀번호</label>
+          <input class="auth-input" type="password" id="editPw" placeholder="바꾸지 않으려면 비워 두세요" autocomplete="new-password">
+          <p class="auth-hint">비워 두면 비밀번호는 그대로 유지됩니다.</p>
+        </div>
+
+        <div class="auth-field">
+          <label for="editPw2">새 비밀번호 확인</label>
+          <input class="auth-input" type="password" id="editPw2" placeholder="한 번 더 입력해 주세요" autocomplete="new-password">
+        </div>
+
+        <button class="auth-submit" id="authSave" onclick="saveProfile()">저장하기</button>
+        <button class="cart-clear auth-logout" onclick="cancelEdit()">취소</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 찜한 상품 상세 창 (평소에는 숨어 있음) -->
+  <div class="cart-back" id="wishBack" onclick="closeWishOutside(event)">
+    <div class="cart-window">
+      <div class="cart-head wish-head">
+        <h3>⭐ 찜한 상품</h3>
+        <button class="cart-close" onclick="closeWish()">&times;</button>
+      </div>
+      <div class="cart-list" id="wishList"></div>
+      <div class="cart-foot">
+        <button class="cart-clear" onclick="clearWish()">비우기</button>
+        <span class="cart-foot-total">합계 <span id="wishFootSum">0원</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 장바구니 상세 창 (평소에는 숨어 있음) -->
+  <div class="cart-back" id="cartBack" onclick="closeCartOutside(event)">
+    <div class="cart-window">
+      <div class="cart-head">
+        <h3>🛒 내 장바구니</h3>
+        <button class="cart-close" onclick="closeCart()">&times;</button>
+      </div>
+      <div class="cart-list" id="cartList"></div>
+      <div class="cart-foot-order">
+        <div class="cart-sum-row" id="cartListRow">
+          <span>정가 합계</span>
+          <span id="cartListSum">0원</span>
+        </div>
+        <div class="cart-sum-row sale-row" id="cartSaleRow">
+          <span>인기 샐러드 20% 할인 (자동 적용)</span>
+          <span id="cartSaleSum">-0원</span>
+        </div>
+        <div class="cart-sum-row total-row">
+          <span>결제 금액</span>
+          <span id="cartFootSum">0원</span>
+        </div>
+        <button class="cart-clear" onclick="clearCart()">비우기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 수파베이스(Supabase) 라이브러리 불러오기 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+
+  <script>
+    // ===== 수파베이스 연결 =====
+    // 아래 두 값은 브라우저에 공개되어도 되는 값입니다.
+    // (비밀 키(secret key)는 절대 이 파일에 넣으면 안 됩니다)
+    var SUPABASE_URL = "https://wrbuarmphjaybauceaaz.supabase.co";
+    var SUPABASE_KEY = "sb_publishable_41iA_dp6bnZhGY4_t7GI0w_VVcKbGs1";
+
+    // 연결된 수파베이스를 db 라는 이름으로 쓰기
+    var db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 연결이 잘 됐는지 개발자 도구(F12) 콘솔에 알려주기
+    if (db) {
+      console.log("[수파베이스] 연결 준비 완료:", SUPABASE_URL);
+    } else {
+      console.error("[수파베이스] 연결 실패 - 라이브러리를 불러오지 못했습니다");
+    }
+  </script>
+
   <script>
     // 버튼을 누르면 알림창을 띄우는 함수
     function showAlert(message) {
       alert(message);
+    }
+
+    // ===== 맨 위 왼쪽 장바구니 =====
+    // 담은 개수와 합계 금액
+    var cartTotal = 0;
+    var cartSum = 0;
+    var cartListSum = 0;
+
+    // 가격 글자("8,400원")에서 숫자만 뽑아내기
+    // 할인율 딱지(30%)가 같이 붙어 있어도 '원' 앞의 숫자만 가져옴
+    function readPrice(card) {
+      var priceBox = card.querySelector(".new-price");
+      if (!priceBox) return 0;
+      var found = priceBox.innerText.match(/([0-9,]+)\s*원/);
+      if (!found) return 0;
+      return parseInt(found[1].replace(/,/g, ""), 10);
+    }
+
+    // 할인 전 정가("12,000원")도 같은 방법으로 뽑아내기
+    function readListPrice(card) {
+      var priceBox = card.querySelector(".old-price");
+      // 할인 상품이 아니면 정가 줄이 없음 -> 파는 값이 곧 정가
+      if (!priceBox) return readPrice(card);
+      var found = priceBox.innerText.match(/([0-9,]+)\s*원/);
+      if (!found) return readPrice(card);
+      return parseInt(found[1].replace(/,/g, ""), 10);
+    }
+
+    // 숫자를 1,000 단위로 끊어서 보여주기
+    function won(number) {
+      return number.toLocaleString("ko-KR") + "원";
+    }
+
+    // 담은 상품을 하나씩 모아두는 목록
+    // { 이름, 사진주소, 한개값, 개수 } 모양으로 저장됨
+    var cartItems = [];
+
+    // 상품 카드의 '장바구니 담기' 버튼마다 그 카드의 정보를 기억시켜 두기
+    var addButtons = document.querySelectorAll(".card button:not(.heart-btn)");
+    for (var c = 0; c < addButtons.length; c++) {
+      var card = addButtons[c].closest(".card");
+      var cardImg = card.querySelector("img");
+      var cardName = card.querySelector("h3");
+      addButtons[c].setAttribute("data-price", readPrice(card));
+      addButtons[c].setAttribute("data-list", readListPrice(card));
+      addButtons[c].setAttribute("data-name", cardName ? cardName.innerText : "상품");
+      addButtons[c].setAttribute("data-img", cardImg ? cardImg.getAttribute("src") : "");
+      addButtons[c].addEventListener("click", addToCart);
+    }
+
+    // 버튼을 누르면 목록에 넣고 개수와 금액을 다시 계산하기
+    function addToCart() {
+      var name = this.getAttribute("data-name");
+      var price = parseInt(this.getAttribute("data-price"), 10);
+      var list = parseInt(this.getAttribute("data-list"), 10);
+      var img = this.getAttribute("data-img");
+
+      // 이미 담은 상품이면 개수만 1 늘리기
+      var already = null;
+      for (var i = 0; i < cartItems.length; i++) {
+        if (cartItems[i].name === name) {
+          already = cartItems[i];
+        }
+      }
+      if (already) {
+        already.count = already.count + 1;
+      } else {
+        cartItems.push({ name: name, img: img, price: price, list: list, count: 1 });
+      }
+      refreshCart();
+    }
+
+    // 맨 위 버튼의 개수 딱지와 금액 딱지를 다시 그리기
+    function refreshCart() {
+      cartTotal = 0;
+      cartSum = 0;
+      cartListSum = 0;
+      for (var i = 0; i < cartItems.length; i++) {
+        cartTotal = cartTotal + cartItems[i].count;
+        cartSum = cartSum + cartItems[i].price * cartItems[i].count;
+        cartListSum = cartListSum + cartItems[i].list * cartItems[i].count;
+      }
+      // 인기 샐러드 20% 할인은 따로 누를 필요 없이 자동으로 빠지는 금액
+      var saleSum = cartListSum - cartSum;
+
+      document.getElementById("cartNumber").innerText = cartTotal + "개";
+      document.getElementById("cartPrice").innerText = won(cartSum);
+      document.getElementById("cartListSum").innerText = won(cartListSum);
+      document.getElementById("cartSaleSum").innerText = "-" + won(saleSum);
+
+      // 할인 상품이 하나도 없으면 정가/할인 줄은 보여줄 필요가 없음
+      var showSale = saleSum > 0 ? "flex" : "none";
+      document.getElementById("cartListRow").style.display = showSale;
+      document.getElementById("cartSaleRow").style.display = showSale;
+
+      // 상세 창이 열려 있으면 그 안의 목록도 같이 고치기
+      if (document.getElementById("cartBack").classList.contains("open")) {
+        drawCartList();
+      }
+    }
+
+    // 상세 창 안에 담은 상품들을 사진과 함께 그리기
+    function drawCartList() {
+      var box = document.getElementById("cartList");
+
+      if (cartItems.length === 0) {
+        box.innerHTML = '<p class="cart-empty">장바구니가 비어 있어요.<br>마음에 드는 상품을 담아 주세요!</p>';
+      } else {
+        // 할인 상품이 담겨 있을 때만 안내 띠 보여주기
+        var html = "";
+        if (cartListSum > cartSum) {
+          html = '<p class="first-order-note">\uD83C\uDF89 인기 샐러드 20% 할인이 자동으로 적용되었습니다</p>';
+        }
+        for (var i = 0; i < cartItems.length; i++) {
+          var item = cartItems[i];
+          html += '<div class="cart-item">';
+          html += '  <img src="' + item.img + '" alt="' + item.name + '">';
+          html += '  <div class="cart-item-info">';
+          html += '    <p class="cart-item-name">' + item.name + '</p>';
+          // 할인된 상품만 정가를 취소선으로 함께 보여주기
+          var eachText = '한 개 ' + won(item.price);
+          if (item.list > item.price) {
+            eachText = '<s>' + won(item.list) + '</s> ' + eachText;
+          }
+          html += '    <p class="cart-item-each">' + eachText + '</p>';
+          html += '    <div class="cart-qty">';
+          html += '      <button class="qty-btn" onclick="changeCount(' + i + ', -1)">-</button>';
+          html += '      <span class="qty-num">' + item.count + '</span>';
+          html += '      <button class="qty-btn" onclick="changeCount(' + i + ', 1)">+</button>';
+          html += '      <button class="cart-remove" onclick="removeItem(' + i + ')">&times;</button>';
+          html += '    </div>';
+          html += '  </div>';
+          html += '  <span class="cart-item-sum">' + won(item.price * item.count) + '</span>';
+          html += '</div>';
+        }
+        box.innerHTML = html;
+      }
+      document.getElementById("cartFootSum").innerText = won(cartSum);
+    }
+
+    // 맨 위 장바구니 버튼을 눌렀을 때 상세 창 열기
+    function openCart() {
+      drawCartList();
+      document.getElementById("cartBack").classList.add("open");
+    }
+
+    // 상세 창 닫기
+    function closeCart() {
+      document.getElementById("cartBack").classList.remove("open");
+    }
+
+    // 어두운 바깥쪽을 눌렀을 때만 닫기 (흰 상자 안을 눌렀을 때는 그대로)
+    function closeCartOutside(event) {
+      if (event.target.id === "cartBack") {
+        closeCart();
+      }
+    }
+
+    // 키보드 ESC 를 눌러도 창이 모두 닫히게 하기
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        closeCart();
+        closeWish();
+        closeAuth();
+      }
+      // 입력 칸에서 엔터를 치면 그 화면의 버튼을 누른 것과 같게 하기
+      if (event.key === "Enter" && event.target.classList.contains("auth-input")) {
+        if (event.target.closest("#authEdit")) {
+          saveProfile();
+        } else {
+          signUp();
+        }
+      }
+    });
+
+    // - 또는 + 를 눌렀을 때 수량 바꾸기
+    // 1개에서 - 를 누르면 목록에서 아예 빼기
+    function changeCount(index, diff) {
+      var item = cartItems[index];
+      if (!item) return;
+      item.count = item.count + diff;
+      if (item.count < 1) {
+        cartItems.splice(index, 1);
+      }
+      refreshCart();
+    }
+
+    // 그 상품만 장바구니에서 지우기
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      refreshCart();
+    }
+    // ===== 회원가입 (수파베이스 Auth) =====
+
+    // 회원가입 창 열기 / 닫기
+    function openAuth() {
+      showAuthMsg("", "");
+      setMsg("authDoneMsg", "", "");
+      document.getElementById("authBack").classList.add("open");
+    }
+
+    function closeAuth() {
+      document.getElementById("authBack").classList.remove("open");
+    }
+
+    function closeAuthOutside(event) {
+      if (event.target.id === "authBack") {
+        closeAuth();
+      }
+    }
+
+    // 창 안에 안내/오류 글을 보여주기 (kind 는 "ok" 또는 "err")
+    function setMsg(boxId, text, kind) {
+      var box = document.getElementById(boxId);
+      box.innerText = text;
+      box.className = "auth-msg";
+      if (text) {
+        box.classList.add("show");
+        box.classList.add(kind);
+      }
+    }
+
+    // 가입 화면 메시지
+    function showAuthMsg(text, kind) {
+      setMsg("authMsg", text, kind);
+    }
+
+    // 내 정보 수정 화면 메시지
+    function showEditMsg(text, kind) {
+      setMsg("authEditMsg", text, kind);
+    }
+
+    // 회원이 되기 버튼을 눌렀을 때
+    function signUp() {
+      var nick = document.getElementById("authNick").value.trim();
+      var email = document.getElementById("authEmail").value.trim();
+      var pw = document.getElementById("authPw").value;
+      var pw2 = document.getElementById("authPw2").value;
+      var button = document.getElementById("authSubmit");
+
+      // 보내기 전에 입력값부터 확인하기
+      if (nick.length < 2 || nick.length > 12) {
+        showAuthMsg("닉네임은 2~12자로 적어 주세요.", "err");
+        return;
+      }
+      if (!email) {
+        showAuthMsg("이메일을 입력해 주세요.", "err");
+        return;
+      }
+      if (email.indexOf("@") === -1 || email.indexOf(".") === -1) {
+        showAuthMsg("이메일 주소 모양이 올바르지 않아요.", "err");
+        return;
+      }
+      if (pw.length < 6) {
+        showAuthMsg("비밀번호는 6자 이상이어야 해요.", "err");
+        return;
+      }
+      if (pw !== pw2) {
+        showAuthMsg("비밀번호 확인이 일치하지 않아요.", "err");
+        return;
+      }
+
+      // 두 번 눌리지 않게 잠깐 버튼을 잠그기
+      button.disabled = true;
+      button.innerText = "가입하는 중...";
+      showAuthMsg("", "");
+
+      // 닉네임은 수파베이스 사용자 정보(user_metadata)에 함께 저장됨
+      db.auth.signUp({
+        email: email,
+        password: pw,
+        options: { data: { nickname: nick } }
+      }).then(function (result) {
+        button.disabled = false;
+        button.innerText = "회원이 되기";
+
+        if (result.error) {
+          showAuthMsg(authErrorText(result.error.message), "err");
+          return;
+        }
+
+        // 가입 성공 - 입력칸 비우기
+        document.getElementById("authNick").value = "";
+        document.getElementById("authEmail").value = "";
+        document.getElementById("authPw").value = "";
+        document.getElementById("authPw2").value = "";
+        showAuthMsg("\uD83C\uDF89 축하합니다! 회원가입이 완료되었습니다.", "ok");
+        drawAuthState(result.data.user, true);
+      });
+    }
+
+    // 로그아웃
+    function signOut() {
+      db.auth.signOut().then(function () {
+        drawAuthState(null);
+        showAuthMsg("로그아웃 되었습니다.", "ok");
+      });
+    }
+
+    // 지금 로그인한 사람 (없으면 null)
+    var currentUser = null;
+
+    // '내 정보 수정' 버튼을 눌렀을 때
+    function openEdit() {
+      if (!currentUser) return;
+      showEditMsg("", "");
+      setMsg("authDoneMsg", "", "");
+      document.getElementById("editNick").value = nickOf(currentUser);
+      document.getElementById("editPw").value = "";
+      document.getElementById("editPw2").value = "";
+      document.getElementById("authDone").style.display = "none";
+      document.getElementById("authEdit").style.display = "block";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 정보 수정";
+    }
+
+    // 수정하지 않고 돌아가기
+    function cancelEdit() {
+      document.getElementById("authEdit").style.display = "none";
+      document.getElementById("authDone").style.display = "block";
+      document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
+    }
+
+    // 저장하기 버튼을 눌렀을 때
+    function saveProfile() {
+      var nick = document.getElementById("editNick").value.trim();
+      var pw = document.getElementById("editPw").value;
+      var pw2 = document.getElementById("editPw2").value;
+      var button = document.getElementById("authSave");
+
+      if (nick.length < 2 || nick.length > 12) {
+        showEditMsg("닉네임은 2~12자로 적어 주세요.", "err");
+        return;
+      }
+      // 비밀번호는 적었을 때만 확인하기
+      if (pw && pw.length < 6) {
+        showEditMsg("비밀번호는 6자 이상이어야 해요.", "err");
+        return;
+      }
+      if (pw !== pw2) {
+        showEditMsg("비밀번호 확인이 일치하지 않아요.", "err");
+        return;
+      }
+
+      // 바꿀 내용 모으기 (비밀번호는 적었을 때만 넣기)
+      var changes = { data: { nickname: nick } };
+      if (pw) {
+        changes.password = pw;
+      }
+
+      button.disabled = true;
+      button.innerText = "저장하는 중...";
+      showEditMsg("", "");
+
+      db.auth.updateUser(changes).then(function (result) {
+        button.disabled = false;
+        button.innerText = "저장하기";
+
+        if (result.error) {
+          showEditMsg(authErrorText(result.error.message), "err");
+          return;
+        }
+
+        // 저장 성공 - 바뀐 정보로 화면 다시 그리고 내 계정 화면으로 돌아가기
+        drawAuthState(result.data.user);
+        setMsg("authDoneMsg", "저장되었습니다!", "ok");
+      });
+    }
+
+    // 사용자의 닉네임 꺼내기
+    // 닉네임 없이 가입한 사람은 이메일의 @ 앞부분을 대신 쓰기
+    function nickOf(user) {
+      var meta = user.user_metadata || {};
+      if (meta.nickname) return meta.nickname;
+      return user.email ? user.email.split("@")[0] : "회원";
+    }
+
+    // 로그인 상태에 맞춰 화면 바꾸기
+    // user 가 있으면 환영 화면, 없으면 가입 화면
+    // justJoined 가 true 면 방금 가입한 것이므로 축하 문구를 보여줌
+    function drawAuthState(user, justJoined) {
+      var form = document.getElementById("authForm");
+      var done = document.getElementById("authDone");
+      var edit = document.getElementById("authEdit");
+      var topButton = document.getElementById("authBtn");
+
+      // 지금 로그인한 사람을 기억해 두기 (내 정보 수정에서 사용)
+      currentUser = user;
+
+      // 상태가 바뀌면 수정 화면은 항상 닫기
+      edit.style.display = "none";
+
+      if (user) {
+        form.style.display = "none";
+        done.style.display = "block";
+        document.getElementById("authMail").innerText = user.email;
+
+        var nick = nickOf(user);
+
+        // 방금 가입했으면 축하 인사, 그냥 로그인 상태면 환영 인사
+        var greeting = justJoined ? "\uD83C\uDF89 축하합니다! 회원이 되셨어요." : "환영합니다!";
+        document.getElementById("authWelcome").innerHTML = greeting + '<b id="authWho"></b>';
+        document.getElementById("authWho").innerText = nick + "님";
+        document.getElementById("authTitle").innerText = "\uD83D\uDC64 내 계정";
+        topButton.innerHTML = "\uD83D\uDC64 " + nick + "님";
+      } else {
+        form.style.display = "block";
+        done.style.display = "none";
+        document.getElementById("authTitle").innerText = "\uD83D\uDC64 회원가입";
+        topButton.innerHTML = "\uD83D\uDC64 회원가입";
+      }
+    }
+
+    // 수파베이스가 보내주는 영어 오류를 한국어로 바꿔주기
+    function authErrorText(message) {
+      if (message.indexOf("already registered") !== -1) {
+        return "이미 가입된 이메일이에요.";
+      }
+      if (message.indexOf("Password should be") !== -1) {
+        return "비밀번호는 6자 이상이어야 해요.";
+      }
+      if (message.indexOf("invalid") !== -1 || message.indexOf("Invalid") !== -1) {
+        return "이메일 주소를 다시 확인해 주세요.";
+      }
+      if (message.indexOf("rate limit") !== -1 || message.indexOf("security purposes") !== -1) {
+        return "잠시 후에 다시 시도해 주세요.";
+      }
+      return "가입에 실패했어요. (" + message + ")";
+    }
+
+    // 페이지를 열 때 이미 로그인되어 있으면 그 상태로 보여주기
+    db.auth.getSession().then(function (result) {
+      var session = result.data.session;
+      drawAuthState(session ? session.user : null);
+    });
+    // ===== 찜한 상품 =====
+    // 별을 누른 상품을 모아두는 목록 (장바구니와 같은 모양으로 저장)
+    var wishItems = [];
+
+    // 카드 하나의 정보를 읽어오기 (이름 / 사진 / 값)
+    function readCard(card) {
+      var img = card.querySelector("img");
+      var name = card.querySelector("h3");
+      return {
+        name: name ? name.innerText : "상품",
+        img: img ? img.getAttribute("src") : "",
+        price: readPrice(card),
+        count: 1,
+        card: card
+      };
+    }
+
+    // 별을 채웠을 때 찜 목록에 넣기 (이미 있으면 그대로 두기)
+    function putInWish(card) {
+      for (var i = 0; i < wishItems.length; i++) {
+        if (wishItems[i].card === card) return;
+      }
+      wishItems.push(readCard(card));
+    }
+
+    // 별을 풀었을 때 찜 목록에서 빼기
+    function takeOutWish(card) {
+      for (var i = 0; i < wishItems.length; i++) {
+        if (wishItems[i].card === card) {
+          wishItems.splice(i, 1);
+          return;
+        }
+      }
+    }
+
+    // 카드의 별을 다시 빈 별로 되돌리기
+    function resetStar(card) {
+      var star = card.querySelector(".heart-btn");
+      if (!star) return;
+      star.classList.remove("on");
+      star.classList.remove("dark");
+      star.innerHTML = "\u2606";
+    }
+
+    // 맨 위 찜 버튼의 개수 딱지와 금액 딱지를 다시 그리기
+    function refreshWish() {
+      var total = 0;
+      var sum = 0;
+      for (var i = 0; i < wishItems.length; i++) {
+        total = total + wishItems[i].count;
+        sum = sum + wishItems[i].price * wishItems[i].count;
+      }
+      document.getElementById("wishNumber").innerText = total + "개";
+      document.getElementById("wishPrice").innerText = won(sum);
+      document.getElementById("wishFootSum").innerText = won(sum);
+
+      if (document.getElementById("wishBack").classList.contains("open")) {
+        drawWishList();
+      }
+    }
+
+    // 찜 상세 창 안에 찜한 상품들을 사진과 함께 그리기
+    function drawWishList() {
+      var box = document.getElementById("wishList");
+
+      if (wishItems.length === 0) {
+        box.innerHTML = '<p class="cart-empty">찜한 상품이 없어요.<br>마음에 드는 상품의 별을 눌러 보세요!</p>';
+        return;
+      }
+
+      var html = "";
+      for (var i = 0; i < wishItems.length; i++) {
+        var item = wishItems[i];
+        html += '<div class="cart-item">';
+        html += '  <img src="' + item.img + '" alt="' + item.name + '">';
+        html += '  <div class="cart-item-info">';
+        html += '    <p class="cart-item-name">' + item.name + '</p>';
+        html += '    <p class="cart-item-each">한 개 ' + won(item.price) + '</p>';
+        html += '    <div class="cart-qty">';
+        html += '      <button class="qty-btn" onclick="changeWishCount(' + i + ', -1)">-</button>';
+        html += '      <span class="qty-num">' + item.count + '</span>';
+        html += '      <button class="qty-btn" onclick="changeWishCount(' + i + ', 1)">+</button>';
+        html += '      <button class="cart-remove" onclick="removeWish(' + i + ')">&times;</button>';
+        html += '    </div>';
+        html += '  </div>';
+        html += '  <span class="cart-item-sum">' + won(item.price * item.count) + '</span>';
+        html += '</div>';
+      }
+      box.innerHTML = html;
+    }
+
+    // 맨 위 찜 버튼을 눌렀을 때 상세 창 열기
+    function openWish() {
+      drawWishList();
+      document.getElementById("wishBack").classList.add("open");
+    }
+
+    function closeWish() {
+      document.getElementById("wishBack").classList.remove("open");
+    }
+
+    function closeWishOutside(event) {
+      if (event.target.id === "wishBack") {
+        closeWish();
+      }
+    }
+
+    // 찜한 상품의 수량 바꾸기 (1개에서 - 를 누르면 찜 자체를 풀기)
+    function changeWishCount(index, diff) {
+      var item = wishItems[index];
+      if (!item) return;
+      item.count = item.count + diff;
+      if (item.count < 1) {
+        resetStar(item.card);
+        wishItems.splice(index, 1);
+      }
+      refreshWish();
+    }
+
+    // 그 상품만 찜 풀기
+    function removeWish(index) {
+      var item = wishItems[index];
+      if (!item) return;
+      resetStar(item.card);
+      wishItems.splice(index, 1);
+      refreshWish();
+    }
+
+    // 찜 전부 풀기 (카드의 별도 모두 빈 별로)
+    function clearWish() {
+      for (var i = 0; i < wishItems.length; i++) {
+        resetStar(wishItems[i].card);
+      }
+      wishItems = [];
+      refreshWish();
+    }
+    // 장바구니 비우기
+    function clearCart() {
+      cartItems = [];
+      refreshCart();
     }
 
     // 카테고리 버튼을 누르면 그 상품 구역만 보이게 하는 함수
@@ -930,12 +2036,16 @@
       var oldBox = cards[i].querySelector(".old-price");
       var newBox = cards[i].querySelector(".new-price");
 
+      // 할인하지 않는 상품은 정가 줄이 없으므로 딱지도 붙이지 않음
+      if (!oldBox) continue;
+
       // 글자에서 숫자만 뽑아내기 (예: "12,000원" -> 12000)
       var oldPrice = Number(oldBox.innerText.replace(/[^0-9]/g, ""));
       var newPrice = Number(newBox.innerText.replace(/[^0-9]/g, ""));
 
       // 할인율 계산 (소수점은 반올림)
       var rate = Math.round((oldPrice - newPrice) / oldPrice * 100);
+      if (rate <= 0) continue;
 
       // 가격 앞에 노란색 할인율 딱지 붙이기
       newBox.innerHTML = '<span class="sale">' + rate + '%</span>' + newBox.innerText;
@@ -952,28 +2062,26 @@
 
     // 별을 누를 때마다 3단계로 바뀜
     // 빈 별 -> 파란 별 -> 진한 파란 별 -> 다시 빈 별
+    // 별을 채우면 찜 목록에 들어가고, 빈 별로 돌아오면 목록에서 빠짐
     function toggleHeart() {
+      var card = this.closest(".card");
       if (this.classList.contains("dark")) {
         // 3단계였으면 풀기
         this.classList.remove("dark");
-        this.innerHTML = "☆";
+        this.innerHTML = "\u2606";
+        takeOutWish(card);
       } else if (this.classList.contains("on")) {
         // 2단계였으면 진하게
         this.classList.remove("on");
         this.classList.add("dark");
-        this.innerHTML = "★";
+        this.innerHTML = "\u2605";
       } else {
         // 빈 별이었으면 채우기
         this.classList.add("on");
-        this.innerHTML = "★";
+        this.innerHTML = "\u2605";
+        putInWish(card);
       }
-      countWish();
-    }
-
-    // 찜한 개수를 세어서 맨 위에 보여주기 (파란 별 + 진한 별)
-    function countWish() {
-      var picked = document.querySelectorAll(".heart-btn.on, .heart-btn.dark");
-      document.getElementById("wishNumber").innerText = picked.length;
+      refreshWish();
     }
   </script>
 
