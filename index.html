@@ -146,19 +146,30 @@
     }
 
     /* ===== 검색창 (상품 목록 위, 가운데) ===== */
+    /* 간판 바로 아래 검색창 */
     .search-box {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 25px 20px 0 20px;
+      margin: 16px auto 0 auto;
       text-align: center;
     }
     #searchInput {
-      width: 280px;
-      padding: 10px 16px;
+      width: 100%;
+      max-width: 360px;
+      box-sizing: border-box;
+      padding: 11px 18px;
       font-size: 15px;
+      font-family: inherit;
       color: #33302B;
-      border: 2px solid #E8D5B5;
-      border-radius: 20px;
+      background-color: #FFFDF8;
+      border: 3px solid #8C2A22;
+      border-radius: 22px;
+      text-align: center;
+    }
+    #searchInput::placeholder {
+      color: #A89880;
+    }
+    #searchInput:focus {
+      outline: none;
+      border-color: #FFD400;
     }
     /* 검색 결과가 없을 때 보여줄 글 */
     .no-result {
@@ -970,6 +981,11 @@
   <header>
     <h1 class="eng-name">YEONNI'S SALAD</h1>
     <p class="market-line">화곡동 골목시장 안쪽 세 번째 집</p>
+
+    <!-- 간판 바로 아래 검색창 -->
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="무엇을 찾으세요?" oninput="searchProduct()">
+    </div>
     <p>새벽장서 떼 온 채소, 오늘 아침에 손수 무쳤습니다</p>
     <div class="top-bar">
       <button class="top-btn" onclick="openWish()">
@@ -1012,10 +1028,6 @@
     </p>
   </section>
 
-  <!-- 검색창 (상품 목록 위, 가운데) -->
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="무엇을 찾으세요?" oninput="searchProduct()">
-  </div>
 
   <!-- 카테고리 버튼 (누르면 그 상품만 보임) -->
   <div class="category-box">
