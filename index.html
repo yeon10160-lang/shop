@@ -98,13 +98,12 @@
     /* 배너 사진 */
     .banner img {
       width: 100%;
-      max-width: 700px;
-      height: 360px;
-      object-fit: cover;
-      object-position: center 55%;
+      max-width: 860px;
+      height: auto;
       border-radius: 15px;
       margin-bottom: 25px;
       border: 4px solid #FBF4E6;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.18);
     }
 
     /* ===== 버튼 ===== */
@@ -1209,7 +1208,7 @@
 
   <!-- 큰 배너 -->
   <section class="banner">
-    <img id="bannerImg" src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=1600" alt="닭가슴살 리코타 샐러드">
+    <img id="bannerImg" src="images/banner-shop.jpg" alt="연니네 샐러드 가게 안에서 웃고 있는 손님들">
     <h2>잘나가는 샐러드 20% 깎아드려요</h2>
     <p>새벽장 보고 그날 무쳐서, 그날 보내드립니다</p>
     <button onclick="showAlert('잘나가는 샐러드 일곱 가지, 20% 깎아드려요!')">깎아주는 것 보러가기</button>
@@ -3080,7 +3079,7 @@
       setupCards();
       syncStars();
       productsReady = true;
-      setBannerImage(list);
+      // 배너는 가게 사진을 쓰므로 상품 사진으로 덮어쓰지 않음
       console.log("[상품] 수파베이스에서 " + drawn + "개를 불러왔습니다.");
 
       // 상품 카드가 준비된 뒤에야 저장해둔 장바구니와 찜을 불러올 수 있음
@@ -3088,29 +3087,6 @@
         loadCart();
         loadWish();
       }
-    }
-
-    // 배너 사진을 '닭가슴살 리코타 샐러드' 상품 사진으로 맞추기
-    // (그 상품이 없으면 '잘나가요' 딱지가 붙은 첫 상품을 씀)
-    function setBannerImage(list) {
-      var banner = document.getElementById("bannerImg");
-      if (!banner) return;
-
-      var pick = null;
-      for (var i = 0; i < list.length; i++) {
-        if (list[i].name.indexOf("닭가슴살 리코타") > -1) { pick = list[i]; break; }
-      }
-      if (!pick) {
-        for (var j = 0; j < list.length; j++) {
-          if (list[j].tag === "잘나가요") { pick = list[j]; break; }
-        }
-      }
-      if (!pick) return;
-
-      // 상품 사진은 작은 크기(w=500)라 배너용 큰 크기로 바꿔 쓰기
-      banner.src = pick.image_url.split("?")[0] + "?w=1600";
-      banner.alt = pick.name;
-      console.log("[배너] 사진을 '" + pick.name + "' 으로 맞췄습니다.");
     }
 
     // 안내 글을 바꾸는 작은 도우미
